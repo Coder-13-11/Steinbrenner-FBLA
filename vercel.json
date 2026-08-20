@@ -1,0 +1,7 @@
+{
+  "rewrites": [
+    { "source": "/memberhub", "destination": "/index.html" },
+    { "source": "/memberhub/", "destination": "/index.html" },
+    { "source": "/memberhub/:path*", "destination": "/index.html" }
+  ]
+}

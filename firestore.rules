@@ -18,8 +18,8 @@ rules_version = '2';
 //    - eventSignups: eventId + status (attendance)
 //    - eventSignups: uid + status (my RSVPs)
 //    - chapterEvents: startAt (if events list fails)
-// 4) Netlify: redeploy so index.html + _redirects ship.
-//    Share link (standalone app): https://steinbrennerfbla.netlify.app/memberhub
+// 4) Vercel: redeploy so index.html + vercel.json rewrites ship.
+//    Share link (standalone app): https://steinbrennerfbla.com/memberhub
 // 5) Manual tests:
 //    - Non-staff member: Home / Events / Hours; secondary news/board/activity; no Staff composers
 //    - Staff (admins/{email}): post announcement (News + Staff forms), create event with type+date+time

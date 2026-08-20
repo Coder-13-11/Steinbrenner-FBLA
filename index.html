@@ -1858,7 +1858,7 @@ function escapeHtml(str) {
 }
 
 function hrsAuthHostIssue() {
-  const SITE = 'https://steinbrennerfbla.netlify.app';
+  const SITE = 'https://steinbrennerfbla.com';
   const proto = location.protocol;
   const host = location.hostname;
   // Website origin checks only — login accepts ANY Google email (gmail.com, etc.)
@@ -2020,12 +2020,12 @@ function hrsAuthErrorMessage(err) {
     'auth/too-many-requests': 'Too many attempts. Wait a minute and try again.',
     'auth/operation-not-allowed': 'Email/password sign-in is not enabled yet in Firebase Console → Authentication → Sign-in method.',
     'auth/network-request-failed': 'Network error. Check your connection and try again.',
-    'auth/unauthorized-domain': 'Add steinbrennerfbla.netlify.app under Firebase Authentication → Settings → Authorized domains.'
+    'auth/unauthorized-domain': 'Add steinbrennerfbla.com under Firebase Authentication → Settings → Authorized domains.'
   };
   return map[code] || (err && err.message) || 'Sign-in failed.';
 }
 
-const HRS_CONTINUE_URL = 'https://steinbrennerfbla.netlify.app/memberhub';
+const HRS_CONTINUE_URL = 'https://steinbrennerfbla.com/memberhub';
 
 async function hrsSendVerification(user) {
   await sendEmailVerification(user, { url: HRS_CONTINUE_URL, handleCodeInApp: false });
