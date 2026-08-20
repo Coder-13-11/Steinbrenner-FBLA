@@ -11,7 +11,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="assets/logos/favicon-16.png">
 <link rel="apple-touch-icon" href="assets/logos/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script>
 (function () {
   try {
@@ -35,8 +35,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:900;display:flex;align-items:cen
 nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(212,160,23,.2)}
 .logo{display:flex;align-items:center;gap:12px;cursor:pointer;text-decoration:none;min-width:0}
 .logo-pair{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.logo-crest{height:46px;width:auto;display:block;object-fit:contain;border-radius:6px}
-.logo-school{height:42px;width:auto;display:block;object-fit:contain}
+.logo-crest{height:46px;width:auto;display:block;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.28))}
+.logo-school{height:42px;width:auto;display:block;object-fit:contain;filter:drop-shadow(0 0 1px rgba(240,192,64,.45)) drop-shadow(0 2px 8px rgba(0,0,0,.28))}
 .logo-text{display:flex;flex-direction:column;line-height:1.1;min-width:0}
 .logo-text .l1{font-family:'Bebas Neue',sans-serif;font-size:1.15rem;letter-spacing:.08em;color:var(--white)}
 .logo-text .l2{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);font-weight:500}
@@ -44,9 +44,9 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .ft-affil a{color:rgba(255,255,255,.35);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;text-decoration:none;transition:color .2s}
 .ft-affil a:hover{color:var(--gold2)}
 .ft-logos{display:flex;align-items:center;gap:14px;margin-bottom:1rem}
-.ft-logos img{height:52px;width:auto;object-fit:contain;border-radius:6px}
-.join-logo{display:block;width:auto;height:72px;margin:0 auto 1.25rem;object-fit:contain;border-radius:10px}
-.eyebrow-logo{width:22px;height:22px;object-fit:contain;flex-shrink:0;border-radius:4px}
+.ft-logos img{height:52px;width:auto;object-fit:contain;filter:drop-shadow(0 2px 8px rgba(0,0,0,.28))}
+.join-logo{display:block;width:auto;height:72px;margin:0 auto 1.25rem;object-fit:contain}
+.eyebrow-logo{width:22px;height:22px;object-fit:contain;flex-shrink:0}
 .who-row{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:5rem 2rem 2rem;display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:center}
 .who-copy .kicker{margin-bottom:.8rem}
 .who-copy h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,5vw,3.8rem);line-height:1;letter-spacing:.03em;margin-bottom:1.25rem}
@@ -57,10 +57,10 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .traits{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:2rem 2rem 6rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.06);border-radius:18px;overflow:hidden}
 .trait{background:rgba(5,16,42,.95);padding:1.6rem 1.4rem;transition:background .25s}
 .trait:hover{background:rgba(12,32,96,.55)}
-.trait h4{font-family:'Instrument Serif',serif;font-size:1.15rem;margin-bottom:.4rem;color:var(--gold2)}
+.trait h4{font-family:'Outfit',sans-serif;font-size:1.02rem;font-weight:650;letter-spacing:.01em;margin-bottom:.4rem;color:var(--gold2)}
 .trait p{color:rgba(255,255,255,.42);font-size:.86rem;line-height:1.65}
 .about-brand{display:flex;gap:1.25rem;align-items:center;margin-bottom:1.75rem}
-.about-brand img{height:78px;width:auto;object-fit:contain;border-radius:8px}
+.about-brand img{height:78px;width:auto;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.3))}
 @media(max-width:1000px){.who-row{grid-template-columns:1fr;text-align:center}.who-side{order:-1}.traits{grid-template-columns:1fr 1fr}}
 @media(max-width:680px){
   .logo-crest{height:36px}.logo-school{height:34px}.logo-pair{gap:6px}
@@ -96,7 +96,7 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .hero-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,12vw,11rem);line-height:.92;letter-spacing:.03em;color:var(--white);animation:fsu 1s .35s both}
 .hg{color:var(--gold2)}
 .ho{-webkit-text-stroke:2px rgba(255,255,255,.2);color:transparent}
-.hero-sub{font-family:'Instrument Serif',serif;font-style:italic;font-size:clamp(1.1rem,2.5vw,1.5rem);color:rgba(255,255,255,.55);max-width:500px;margin:1.5rem auto 3rem;line-height:1.6;animation:fsu 1s .5s both}
+.hero-sub{font-family:'Outfit',sans-serif;font-size:clamp(1.05rem,2.2vw,1.28rem);font-weight:400;color:rgba(255,255,255,.62);max-width:540px;margin:1.5rem auto 3rem;line-height:1.65;animation:fsu 1s .5s both}
 .hero-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;animation:fsu 1s .65s both;margin-bottom:5rem}
 .btn-g{background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-weight:700;font-size:.88rem;letter-spacing:.06em;padding:.9rem 2.2rem;border-radius:10px;border:none;cursor:pointer;text-decoration:none;display:inline-block;transition:all .25s;text-transform:uppercase}
 .btn-g:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(212,160,23,.45)}
@@ -126,14 +126,16 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .wc:hover::before{transform:scaleX(1)}
 .wn{font-family:'Bebas Neue',sans-serif;font-size:5rem;line-height:1;color:rgba(255,255,255,.04);position:absolute;top:1rem;right:1.5rem;transition:color .3s}
 .wc:hover .wn{color:rgba(212,160,23,.08)}
-.wi{width:50px;height:50px;background:rgba(212,160,23,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;border:1px solid rgba(212,160,23,.2);font-size:1.3rem}
-.wc h3{font-family:'Instrument Serif',serif;font-size:1.3rem;color:var(--white);margin-bottom:.75rem;line-height:1.2}
+.wi{width:50px;height:50px;background:rgba(212,160,23,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.5rem;border:1px solid rgba(212,160,23,.2);color:var(--gold2)}
+.wi svg,.ahi-ic svg,.ci svg,.gic svg{width:22px;height:22px;display:block}
+.sbtn svg{width:16px;height:16px;display:block}
+.wc h3{font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:650;color:var(--white);margin-bottom:.75rem;line-height:1.3}
 .wc p{color:rgba(255,255,255,.42);font-size:.88rem;line-height:1.75}
 /* CTA BIG */
 .cta-big{position:relative;z-index:1;margin:0 2rem 4rem;border-radius:24px;overflow:hidden;background:linear-gradient(135deg,var(--gold) 0%,#8a6200 60%,var(--navy2) 100%);padding:6rem 4rem;text-align:center}
 .cta-big::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/svg%3E")}
 .cta-big h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,6rem);letter-spacing:.05em;color:var(--navy);line-height:1;margin-bottom:1rem;position:relative}
-.cta-big p{color:rgba(5,16,42,.65);font-size:1.05rem;margin-bottom:2.5rem;position:relative;font-family:'Instrument Serif',serif;font-style:italic}
+.cta-big p{color:rgba(5,16,42,.65);font-size:1.05rem;margin-bottom:2.5rem;position:relative;font-family:'Outfit',sans-serif}
 .btn-dark{background:var(--navy);color:var(--gold2);font-weight:700;font-size:.9rem;letter-spacing:.08em;text-transform:uppercase;padding:1rem 2.5rem;border-radius:10px;cursor:pointer;border:none;text-decoration:none;display:inline-block;transition:all .25s;position:relative}
 .btn-dark:hover{background:var(--navy3);transform:translateY(-3px);box-shadow:0 12px 30px rgba(5,16,42,.5)}
 /* PAGE BANNER */
@@ -141,7 +143,7 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .pb-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 80% at 50% 0%,rgba(212,160,23,.1) 0%,transparent 70%)}
 .pb h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(3.5rem,8vw,7rem);letter-spacing:.04em;line-height:1;position:relative}
 .pb h1 span{color:var(--gold2)}
-.pb .sub{font-family:'Instrument Serif',serif;font-style:italic;color:rgba(255,255,255,.45);font-size:1.1rem;margin-top:1rem;position:relative}
+.pb .sub{font-family:'Outfit',sans-serif;color:rgba(255,255,255,.55);font-size:1.05rem;margin-top:1rem;position:relative;line-height:1.6}
 .gl{width:50px;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));border-radius:2px;margin:1.5rem auto 0;position:relative}
 /* ABOUT */
 .about-body{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start}
@@ -150,7 +152,7 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .ahl{display:flex;flex-direction:column;gap:1px;background:rgba(255,255,255,.06);border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.06)}
 .ahi{background:rgba(5,16,42,.9);padding:1.5rem 2rem;display:flex;align-items:center;gap:1.5rem;transition:background .25s}
 .ahi:hover{background:rgba(12,32,96,.5)}
-.ahi-ic{width:44px;height:44px;background:rgba(212,160,23,.1);border:1px solid rgba(212,160,23,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.ahi-ic{width:44px;height:44px;background:rgba(212,160,23,.1);border:1px solid rgba(212,160,23,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;color:var(--gold2);flex-shrink:0}
 .ahi h4{font-size:.9rem;font-weight:600;color:var(--white);margin-bottom:.2rem}
 .ahi p{font-size:.8rem;color:rgba(255,255,255,.38)}
 /* OFFICERS */
@@ -163,7 +165,7 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .ofa img{width:100%;height:100%;object-fit:cover;object-position:center 15%;display:block;position:relative;z-index:1}
 .ofi{padding:1.25rem}
 .of-role{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);font-weight:600;margin-bottom:.3rem}
-.of-name{font-family:'Instrument Serif',serif;font-size:1.05rem;color:var(--white)}
+.of-name{font-family:'Outfit',sans-serif;font-size:1.02rem;font-weight:600;color:var(--white)}
 .off-adviser{margin-top:2rem;display:flex;justify-content:center}
 .ofc-adviser{max-width:360px;width:100%;border:2px solid rgba(212,160,23,.45)!important;background:linear-gradient(135deg,rgba(212,160,23,.12) 0%,rgba(5,16,42,.98) 55%)!important;box-shadow:0 0 0 1px rgba(212,160,23,.1),0 12px 40px rgba(212,160,23,.12)}
 .ofc-adviser:hover{border-color:var(--gold2)!important;box-shadow:0 0 0 1px rgba(212,160,23,.2),0 16px 48px rgba(212,160,23,.22);transform:translateY(-8px)}
@@ -187,7 +189,7 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .bpre{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.2)}
 .brol{background:rgba(234,179,8,.1);color:#facc15;border:1px solid rgba(234,179,8,.2)}
 .bcha{background:rgba(168,85,247,.1);color:#c084fc;border:1px solid rgba(168,85,247,.2)}
-.evc h3{font-family:'Instrument Serif',serif;font-size:1.05rem;color:var(--white);margin-bottom:.6rem;line-height:1.3}
+.evc h3{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:650;color:var(--white);margin-bottom:.6rem;line-height:1.3}
 .evc p{color:rgba(255,255,255,.38);font-size:.82rem;line-height:1.65}
 .ev-foot{margin-top:1rem;display:flex;gap:.4rem;flex-wrap:wrap}
 .ev-tag{font-size:.62rem;color:rgba(255,255,255,.3);background:rgba(255,255,255,.05);padding:.2rem .55rem;border-radius:4px;letter-spacing:.05em}
@@ -196,19 +198,26 @@ nav.scrolled{background:rgba(5,16,42,.95);backdrop-filter:blur(20px);border-bott
 .ev-res a:hover,.ev-link:hover{opacity:.65}
 .gres{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:1.75rem 2rem;margin-bottom:2.5rem}
 .gres h4{font-size:.68rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold2);font-weight:600;margin-bottom:1rem}
+.gres-copy{color:rgba(255,255,255,.5);font-size:.85rem;margin:-.25rem 0 1rem;line-height:1.65;max-width:820px}
+.gres-copy strong{color:var(--gold2);font-weight:600}
 .gres-links{display:flex;flex-wrap:wrap;gap:.6rem}
 .gres-links a{font-size:.8rem;color:rgba(255,255,255,.6);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:.5rem 1rem;border-radius:100px;text-decoration:none;transition:all .2s}
 .gres-links a:hover{color:var(--gold2);border-color:rgba(212,160,23,.35);background:rgba(212,160,23,.08)}
 /* SERVICE HOURS */
 .hrs-body{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:3rem 2rem 8rem}
 .hrs-pitch{max-width:640px}
+body.hub-standalone .hrs-pitch{margin:0 auto;text-align:center}
+body.hub-standalone .hrs-pitch .hero-sub{text-align:center;max-width:520px;margin-left:auto;margin-right:auto}
+body.hub-standalone .hrs-pitch .pk-list{margin-left:auto;margin-right:auto}
+body.hub-standalone .hrs-pitch .pk-list li{justify-content:center;text-align:left}
+body.hub-standalone .hrs-auth-card{margin-left:auto;margin-right:auto;text-align:left}
 .hrs-tiers-preview{display:flex;justify-content:center;gap:1px;background:rgba(255,255,255,.02);border-top:1px solid rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.05);margin-top:4rem}
 .hrs-signin-wrap{margin-top:2.5rem}
 .hrs-signin-note{display:block;margin-top:.75rem;color:rgba(255,255,255,.32);font-size:.78rem;letter-spacing:.03em}
 .hrs-profile{display:flex;align-items:center;gap:1rem;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid rgba(255,255,255,.07)}
 .hrs-avatar{width:56px;height:56px;border-radius:50%;object-fit:cover;border:2px solid rgba(212,160,23,.35)}
 .hrs-profile-info{flex:1}
-.hrs-profile-name{font-family:'Instrument Serif',serif;font-size:1.2rem;color:var(--white)}
+.hrs-profile-name{font-family:'Outfit',sans-serif;font-size:1.2rem;font-weight:650;color:var(--white)}
 .hrs-profile-email{font-size:.78rem;color:rgba(255,255,255,.38)}
 .hrs-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2.5rem;align-items:start}
 .hrs-tier-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.1);border-radius:24px;padding:2.5rem}
@@ -347,7 +356,9 @@ textarea.hrs-input{resize:vertical;min-height:90px}
 #page-hours .btn-gh:hover{border-color:var(--hub-gold);color:var(--hub-gold)}
 #page-hours .btn-reject{color:var(--hub-danger);border-color:var(--hub-danger-line);background:transparent}
 #page-hours .btn-reject:hover{border-color:var(--hub-danger);opacity:.9}
-#page-hours .hub-onboard h2,#page-hours .hrs-pending-card h2,#page-hours .hrs-verify h2{color:var(--hub-text);font-size:clamp(1.8rem,4vw,2.35rem);line-height:1.2}
+#page-hours .hrs-signin-note{color:var(--hub-muted)}
+#page-hours .hrs-verify-actions{justify-content:center}
+#page-hours .hub-onboard h2,#page-hours .hrs-pending-card h2,#page-hours .hrs-verify h2{font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:-.02em;color:var(--hub-text);font-size:clamp(1.8rem,4vw,2.35rem);line-height:1.2}
 #page-hours .hub-onboard>p,#page-hours .hrs-pending-card p,#page-hours .hrs-verify p{color:var(--hub-muted);font-size:1.05rem;line-height:1.7}
 #page-hours .hrs-profile{align-items:center;gap:1.15rem;margin-bottom:2rem;padding:1.35rem 1.4rem;border:1px solid var(--hub-line);border-radius:18px;background:var(--hub-panel);box-shadow:var(--hub-shadow);border-bottom:1px solid var(--hub-line)}
 #page-hours .hrs-profile-name{font-family:'Outfit',sans-serif;font-size:clamp(1.85rem,4.5vw,2.55rem);font-weight:700;letter-spacing:-.02em;line-height:1.15;color:var(--hub-text);display:flex;flex-wrap:wrap;align-items:center;gap:.55rem .75rem}
@@ -500,15 +511,16 @@ body.hub-standalone .hub-theme-btn-inline{display:none}
   #page-hours .hrs-profile{flex-wrap:wrap}
   #page-hours .hrs-profile-actions{width:100%;justify-content:flex-start}
 }
-.hub-onboard{max-width:560px;margin:0 auto;padding:2.25rem}
+.hub-onboard{max-width:560px;margin:0 auto;padding:2.25rem;text-align:center}
 .hub-onboard>p{color:rgba(255,255,255,.45);font-size:.9rem;line-height:1.7;margin-bottom:1.75rem}
+.hub-onboard form{text-align:left}
 .hub-chips{display:flex;flex-wrap:wrap;gap:.5rem}
 .hub-chip{display:inline-flex;align-items:center;gap:.4rem;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:.45rem .9rem;font-size:.8rem;color:rgba(255,255,255,.65);cursor:pointer;user-select:none}
 .hub-chip input{accent-color:var(--gold)}
 .hub-chip:has(input:checked){border-color:rgba(212,160,23,.45);background:rgba(212,160,23,.12);color:var(--gold2)}
 .evt-list,.ann-list{display:flex;flex-direction:column;gap:1rem}
 .evt-card{padding:1.35rem 1.4rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:start}
-.evt-card h4{font-family:'Instrument Serif',serif;font-size:1.15rem;color:var(--white);margin-bottom:.35rem}
+.evt-card h4{font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:650;color:var(--white);margin-bottom:.35rem}
 .evt-meta{font-size:.78rem;color:rgba(255,255,255,.4);margin-bottom:.55rem;line-height:1.5}
 .evt-desc{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.65}
 .evt-actions{display:flex;flex-direction:column;gap:.5rem;align-items:stretch;min-width:140px}
@@ -527,19 +539,24 @@ body.hub-standalone .hub-theme-btn-inline{display:none}
 .hrs-auth-divider::before,.hrs-auth-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,.1)}
 .hrs-auth-err{color:#fca5a5;font-size:.82rem;margin-top:.75rem;line-height:1.5;min-height:1.2em}
 .hrs-avatar-ph{width:48px;height:48px;border-radius:50%;background:rgba(212,160,23,.2);color:var(--gold2);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;flex-shrink:0;border:1px solid rgba(212,160,23,.3)}
-.hrs-verify{max-width:520px;padding:2rem 0}
-.hrs-verify h2{font-family:'Instrument Serif',serif;font-size:clamp(1.8rem,3vw,2.4rem);color:var(--white);margin:.4rem 0 1rem}
-.hrs-verify p{color:rgba(255,255,255,.55);line-height:1.65;margin:0 0 1.1rem}
+.hrs-verify{max-width:520px;margin:2rem auto 0;padding:2.4rem 2rem 2.2rem;text-align:center}
+.hrs-verify h2{font-family:'Outfit',sans-serif;font-size:clamp(1.7rem,3vw,2.2rem);font-weight:700;letter-spacing:-.02em;color:var(--white);margin:.35rem 0 1rem}
+.hrs-verify p{color:rgba(255,255,255,.55);line-height:1.7;margin:0 0 1rem}
 .hrs-verify-email{color:var(--gold2);font-weight:600;word-break:break-all}
-.hrs-verify-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.5rem}
+.hrs-verify-actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1.5rem;justify-content:center}
+@media(max-width:560px){
+  .hrs-verify-actions{flex-direction:column;align-items:stretch}
+  .hrs-verify-actions .btn-g,.hrs-verify-actions .btn-gh{width:100%}
+}
 .hrs-verify-msg{margin-top:1rem;font-size:.85rem;color:rgba(255,255,255,.45);line-height:1.5;min-height:1.2em}
 .hrs-verify-msg.err{color:#fca5a5}
 .hrs-verify-msg.ok{color:#86efac}
 .hrs-role-badge{display:inline-block;margin-left:.5rem;padding:.2rem .55rem;font-size:.65rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle}
-.hrs-pending-card{max-width:560px;margin:0 auto;padding:2.25rem}
+.hrs-pending-card{max-width:560px;margin:0 auto;padding:2.25rem;text-align:center}
 .hrs-pending-card>p{color:rgba(255,255,255,.45);font-size:.9rem;line-height:1.7;margin-bottom:1rem}
+.hrs-pending-card .hrs-verify-actions{justify-content:center}
 .ann-card{padding:1.25rem 1.35rem}
-.ann-card h4{font-family:'Instrument Serif',serif;font-size:1.1rem;color:var(--white);margin-bottom:.35rem}
+.ann-card h4{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:650;color:var(--white);margin-bottom:.35rem}
 .ann-meta{font-size:.75rem;color:rgba(255,255,255,.38);margin-bottom:.55rem}
 .ann-body{font-size:.9rem;color:rgba(255,255,255,.55);line-height:1.65;white-space:pre-wrap}
 .ann-pin{display:inline-block;margin-right:.4rem;font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
@@ -552,6 +569,7 @@ body.hub-standalone .hub-theme-btn-inline{display:none}
 .join-lay{position:relative;z-index:1;max-width:1200px;margin:0 auto;padding:4rem 2rem 8rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
 .jl h2{font-family:'Bebas Neue',sans-serif;font-size:3rem;letter-spacing:.04em;color:var(--white);margin-bottom:1.25rem;line-height:1}
 .jl p{color:rgba(255,255,255,.48);font-size:.95rem;line-height:1.85;margin-bottom:1rem}
+.join-aside{color:rgba(255,255,255,.45);font-size:.95rem;line-height:1.8;margin-top:1rem}
 .step-r{display:flex;gap:1.25rem;margin-bottom:1.5rem;align-items:flex-start}
 .step-b{width:34px;height:34px;background:linear-gradient(135deg,var(--gold),var(--gold2));border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.82rem;color:var(--navy);flex-shrink:0;margin-top:2px}
 .step-c strong{display:block;color:var(--white);font-size:.95rem;margin-bottom:.25rem}
@@ -564,15 +582,16 @@ body.hub-standalone .hub-theme-btn-inline{display:none}
 .pk-list{list-style:none;margin-bottom:2rem}
 .pk-list li{display:flex;align-items:center;gap:10px;color:rgba(255,255,255,.6);font-size:.88rem;padding:.65rem 0;border-bottom:1px solid rgba(255,255,255,.05)}
 .pk-list li:last-child{border-bottom:none}
-.pki{width:20px;height:20px;background:rgba(212,160,23,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;color:var(--gold2);flex-shrink:0}
+.pki{width:20px;height:20px;background:rgba(212,160,23,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pki::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--gold2)}
 .ig-a{display:block;background:linear-gradient(135deg,var(--gold),var(--gold2));color:var(--navy);font-weight:700;text-align:center;padding:1rem;border-radius:12px;text-decoration:none;font-size:.9rem;letter-spacing:.05em;text-transform:uppercase;transition:all .25s}
 .ig-a:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(212,160,23,.4)}
 /* GALLERY */
 .gal-body{position:relative;z-index:1;padding:3rem 2rem 8rem;max-width:1200px;margin:0 auto}
 .gal-grid{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:120px;gap:1rem}
-.gi{border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;color:rgba(255,255,255,.2);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;transition:all .3s;cursor:pointer}
-.gi:hover{border-color:rgba(212,160,23,.3);background:rgba(12,32,96,.3);color:rgba(255,255,255,.4)}
-.gi .gic{font-size:1.5rem}
+.gi{border-radius:14px;overflow:hidden;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.55rem;color:rgba(255,255,255,.35);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;transition:all .3s;cursor:pointer}
+.gi:hover{border-color:rgba(212,160,23,.3);background:rgba(12,32,96,.3);color:rgba(255,255,255,.55)}
+.gi .gic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:rgba(212,160,23,.1);border:1px solid rgba(212,160,23,.2);color:var(--gold2)}
 .gi:nth-child(1){grid-column:span 7;grid-row:span 3}
 .gi:nth-child(2){grid-column:span 5;grid-row:span 2}
 .gi:nth-child(3){grid-column:span 5;grid-row:span 1}
@@ -584,11 +603,11 @@ body.hub-standalone .hub-theme-btn-inline{display:none}
 /* CONTACT */
 .con-body{position:relative;z-index:1;max-width:800px;margin:0 auto;padding:4rem 2rem 8rem}
 .con-body h2{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;letter-spacing:.04em;color:var(--white);margin-bottom:.75rem}
-.con-body>.sub{color:rgba(255,255,255,.42);font-size:.97rem;line-height:1.8;margin-bottom:3rem;font-family:'Instrument Serif',serif;font-style:italic}
+.con-body>.sub{color:rgba(255,255,255,.5);font-size:.97rem;line-height:1.8;margin-bottom:3rem;font-family:'Outfit',sans-serif}
 .con-cards{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:3rem}
 .cc{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:2rem;text-decoration:none;text-align:center;display:block;transition:all .3s}
 .cc:hover{border-color:rgba(212,160,23,.35);background:rgba(12,32,96,.4);transform:translateY(-4px)}
-.cc .ci{font-size:1.8rem;margin-bottom:.75rem;display:block}
+.cc .ci{width:44px;height:44px;margin:0 auto .85rem;background:rgba(212,160,23,.1);border:1px solid rgba(212,160,23,.2);border-radius:12px;display:flex;align-items:center;justify-content:center;color:var(--gold2)}
 .cc .ct{font-size:.62rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold2);font-weight:600;display:block;margin-bottom:.4rem}
 .cc .cv{color:var(--white);font-size:.9rem;font-weight:500;word-break:break-all}
 .faq-l{display:flex;flex-direction:column;gap:.75rem}
@@ -619,24 +638,74 @@ body[data-hub-theme="light"]:not(.hub-standalone) #bg-canvas{opacity:.06;filter:
 body[data-hub-theme="light"]:not(.hub-standalone) nav.scrolled{
   background:rgba(255,255,255,.94);border-bottom-color:rgba(24,32,51,.1);
 }
-body[data-hub-theme="light"]:not(.hub-standalone) .logo-text .l1,
-body[data-hub-theme="light"]:not(.hub-standalone) .nav-links a{color:#182033}
+body[data-hub-theme="light"]:not(.hub-standalone) .logo-text .l1{color:#182033}
 body[data-hub-theme="light"]:not(.hub-standalone) .nav-links a{color:rgba(24,32,51,.65)}
 body[data-hub-theme="light"]:not(.hub-standalone) .nav-links a.active,
 body[data-hub-theme="light"]:not(.hub-standalone) .nav-links a:hover{color:#9a7209}
-body[data-hub-theme="light"]:not(.hub-standalone) .hero-h,
-body[data-hub-theme="light"]:not(.hub-standalone) .big-h,
-body[data-hub-theme="light"]:not(.hub-standalone) .who-copy h2,
-body[data-hub-theme="light"]:not(.hub-standalone) .pb h1,
-body[data-hub-theme="light"]:not(.hub-standalone) h2,
-body[data-hub-theme="light"]:not(.hub-standalone) h3{color:#182033}
+body[data-hub-theme="light"]:not(.hub-standalone) .nav-cta{color:var(--navy)!important}
+body[data-hub-theme="light"]:not(.hub-standalone) .hamburger span{background:#182033}
+body[data-hub-theme="light"]:not(.hub-standalone) .hero-h{color:#182033}
+body[data-hub-theme="light"]:not(.hub-standalone) .ho{-webkit-text-stroke:0;color:#182033}
+body[data-hub-theme="light"]:not(.hub-standalone) .hg{color:#9a7209}
 body[data-hub-theme="light"]:not(.hub-standalone) .hero-sub,
-body[data-hub-theme="light"]:not(.hub-standalone) .sub,
 body[data-hub-theme="light"]:not(.hub-standalone) .who-copy p,
 body[data-hub-theme="light"]:not(.hub-standalone) .stat-l,
 body[data-hub-theme="light"]:not(.hub-standalone) .ft-bp,
 body[data-hub-theme="light"]:not(.hub-standalone) .ft-col a,
-body[data-hub-theme="light"]:not(.hub-standalone) .ft-bot p{color:rgba(24,32,51,.58)}
+body[data-hub-theme="light"]:not(.hub-standalone) .ft-bot p,
+body[data-hub-theme="light"]:not(.hub-standalone) .about-text p,
+body[data-hub-theme="light"]:not(.hub-standalone) .jl p,
+body[data-hub-theme="light"]:not(.hub-standalone) .join-aside{color:rgba(24,32,51,.62)}
+body[data-hub-theme="light"]:not(.hub-standalone) .who-copy h2,
+body[data-hub-theme="light"]:not(.hub-standalone) .big-h,
+body[data-hub-theme="light"]:not(.hub-standalone) .jl h2,
+body[data-hub-theme="light"]:not(.hub-standalone) .con-body h2{color:#182033}
+body[data-hub-theme="light"]:not(.hub-standalone) .big-h .dim{color:rgba(24,32,51,.32)}
+body[data-hub-theme="light"]:not(.hub-standalone) .btn-gh{color:#182033;border-color:rgba(24,32,51,.2)}
+body[data-hub-theme="light"]:not(.hub-standalone) .mq-wrap{border-color:rgba(24,32,51,.08);background:rgba(24,32,51,.03)}
+body[data-hub-theme="light"]:not(.hub-standalone) .mq-item{color:rgba(24,32,51,.4)}
+body[data-hub-theme="light"]:not(.hub-standalone) .stats{background:transparent;border-top-color:rgba(24,32,51,.08)}
+body[data-hub-theme="light"]:not(.hub-standalone) .traits,
+body[data-hub-theme="light"]:not(.hub-standalone) .why-grid,
+body[data-hub-theme="light"]:not(.hub-standalone) .ahl{background:rgba(24,32,51,.08);border-color:rgba(24,32,51,.08)}
+body[data-hub-theme="light"]:not(.hub-standalone) .trait,
+body[data-hub-theme="light"]:not(.hub-standalone) .wc,
+body[data-hub-theme="light"]:not(.hub-standalone) .stat-it,
+body[data-hub-theme="light"]:not(.hub-standalone) .evc,
+body[data-hub-theme="light"]:not(.hub-standalone) .jcard,
+body[data-hub-theme="light"]:not(.hub-standalone) .cc,
+body[data-hub-theme="light"]:not(.hub-standalone) .fq,
+body[data-hub-theme="light"]:not(.hub-standalone) .gi,
+body[data-hub-theme="light"]:not(.hub-standalone) .ofc,
+body[data-hub-theme="light"]:not(.hub-standalone) .gres,
+body[data-hub-theme="light"]:not(.hub-standalone) .ahi{
+  background:#fff;border-color:rgba(24,32,51,.1);color:#182033;
+}
+body[data-hub-theme="light"]:not(.hub-standalone) .trait:hover,
+body[data-hub-theme="light"]:not(.hub-standalone) .wc:hover,
+body[data-hub-theme="light"]:not(.hub-standalone) .ahi:hover{background:#f7f8fb}
+body[data-hub-theme="light"]:not(.hub-standalone) .trait h4{color:#9a7209}
+body[data-hub-theme="light"]:not(.hub-standalone) .trait p,
+body[data-hub-theme="light"]:not(.hub-standalone) .wc p,
+body[data-hub-theme="light"]:not(.hub-standalone) .evc p,
+body[data-hub-theme="light"]:not(.hub-standalone) .fq-a,
+body[data-hub-theme="light"]:not(.hub-standalone) .ahi p,
+body[data-hub-theme="light"]:not(.hub-standalone) .jcard>p,
+body[data-hub-theme="light"]:not(.hub-standalone) .pk-list li,
+body[data-hub-theme="light"]:not(.hub-standalone) .step-c span{color:rgba(24,32,51,.58)}
+body[data-hub-theme="light"]:not(.hub-standalone) .wc h3,
+body[data-hub-theme="light"]:not(.hub-standalone) .evc h3,
+body[data-hub-theme="light"]:not(.hub-standalone) .fq-q span,
+body[data-hub-theme="light"]:not(.hub-standalone) .cc .cv,
+body[data-hub-theme="light"]:not(.hub-standalone) .ahi h4,
+body[data-hub-theme="light"]:not(.hub-standalone) .of-name,
+body[data-hub-theme="light"]:not(.hub-standalone) .step-c strong{color:#182033}
+body[data-hub-theme="light"]:not(.hub-standalone) .wn{color:rgba(24,32,51,.07)}
+body[data-hub-theme="light"]:not(.hub-standalone) .wi,
+body[data-hub-theme="light"]:not(.hub-standalone) .ahi-ic,
+body[data-hub-theme="light"]:not(.hub-standalone) .cc .ci{
+  background:rgba(184,134,11,.1);border-color:rgba(184,134,11,.28);color:#9a7209;
+}
 body[data-hub-theme="light"]:not(.hub-standalone) footer{
   background:#e4e8f0;border-top-color:rgba(24,32,51,.1);
 }
@@ -646,17 +715,33 @@ body[data-hub-theme="light"]:not(.hub-standalone) .ft-theme-btn{
 body[data-hub-theme="light"]:not(.hub-standalone) .ft-theme-btn:hover{
   color:rgba(24,32,51,.75);border-color:rgba(24,32,51,.28);
 }
-body[data-hub-theme="light"]:not(.hub-standalone) .stat-it,
-body[data-hub-theme="light"]:not(.hub-standalone) .why-card,
-body[data-hub-theme="light"]:not(.hub-standalone) .evc,
-body[data-hub-theme="light"]:not(.hub-standalone) .jcard,
-body[data-hub-theme="light"]:not(.hub-standalone) .cc,
-body[data-hub-theme="light"]:not(.hub-standalone) .fq,
-body[data-hub-theme="light"]:not(.hub-standalone) .gi{
-  background:#fff;border-color:rgba(24,32,51,.1);color:#182033;
-}
 body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
   color:rgba(24,32,51,.55);background:#fff;border-color:rgba(24,32,51,.15);
+}
+body[data-hub-theme="light"]:not(.hub-standalone) .filt{
+  background:#fff;border-color:rgba(24,32,51,.12);color:rgba(24,32,51,.55);
+}
+body[data-hub-theme="light"]:not(.hub-standalone) .filt.active{
+  background:rgba(184,134,11,.12);border-color:#9a7209;color:#9a7209;
+}
+body[data-hub-theme="light"]:not(.hub-standalone) .gres-links a{
+  background:#fff;border-color:rgba(24,32,51,.12);color:rgba(24,32,51,.6);
+}
+body[data-hub-theme="light"]:not(.hub-standalone) .sbtn{
+  background:#fff;border-color:rgba(24,32,51,.12);color:rgba(24,32,51,.45);
+}
+body[data-hub-theme="light"]:not(.hub-standalone) .gres-copy,
+body[data-hub-theme="light"]:not(.hub-standalone) .con-body>.sub{color:rgba(24,32,51,.58)}
+body[data-hub-theme="light"]:not(.hub-standalone) .pk-list li{border-bottom-color:rgba(24,32,51,.08)}
+body[data-hub-theme="light"]:not(.hub-standalone) .ev-tag{background:rgba(24,32,51,.06);color:rgba(24,32,51,.5)}
+body[data-hub-theme="light"]:not(.hub-standalone) .ev-res{border-top-color:rgba(24,32,51,.08)}
+body[data-hub-theme="light"]:not(.hub-standalone) .ofc-adviser{
+  background:#fff !important;
+  border-color:rgba(184,134,11,.45)!important;
+}
+body[data-hub-theme="light"]:not(.hub-standalone) .ofc-adviser .of-name{color:#9a7209}
+body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
+  background:rgba(255,255,255,.98);border-bottom-color:rgba(24,32,51,.1);
 }
 .ft-col h4{font-size:.65rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:600;margin-bottom:1.25rem}
 .ft-col ul{list-style:none}
@@ -757,7 +842,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
     <div class="orb orb2"></div>
     <div class="eyebrow"><img class="eyebrow-logo" src="assets/logos/fbla-official-crest.png" alt="" width="22" height="21"><span class="edot"></span>Steinbrenner High School · Lutz, FL</div>
     <h1 class="hero-h"><span class="ho">Future</span><br><span class="hg">Business</span><br>Leaders</h1>
-    <p class="hero-sub">Competitions. Leadership. Service. Steinbrenner FBLA prepares students for college, careers, and everything beyond.</p>
+    <p class="hero-sub">Competitions, leadership, and service at Steinbrenner High School.</p>
     <div class="hero-btns">
       <button class="btn-g" onclick="showPage('join')">Join FBLA</button>
       <button class="btn-gh" onclick="showPage('events')">Browse Events</button>
@@ -777,8 +862,8 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
       <div class="kicker">Who We Are</div>
       <h2>Steinbrenner FBLA builds future business leaders</h2>
       <p>Future Business Leaders of America (FBLA) is a nonprofit 501(c)(3) education association with a quarter million students preparing for careers in business and related fields. Steinbrenner FBLA is our local chapter at Steinbrenner High School — meetings, service, competitions, and leadership that actually open doors.</p>
-      <p>Members compete at district, state, and nationals in 80+ events, build résumé-ready experience, and earn service hours recognized by the chapter. It looks great on college applications — and even better on the stage.</p>
-      <button class="btn-g" onclick="showPage('about')" style="margin-top:.5rem">Meet the Chapter →</button>
+      <p>Members compete at district, state, and nationals in 80+ events, log service hours, and build experience for college applications.</p>
+      <button class="btn-g" onclick="showPage('about')" style="margin-top:.5rem">Meet the chapter</button>
     </div>
     <div class="who-side">
       <img class="crest" src="assets/logos/fbla-official-crest.png" alt="Official FBLA emblem — Service, Education, Progress">
@@ -799,19 +884,19 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
     <div class="kicker">Why Join Us</div>
     <h2 class="big-h">Everything that <span class="dim">sets you</span><br>apart starts here</h2>
     <div class="why-grid">
-      <div class="wc"><div class="wn">01</div><div class="wi">🏆</div><h3>Compete & Win at Every Level</h3><p>Enter 80+ events — accounting to app development. Advance from district → state SLC → National Leadership Conference.</p></div>
-      <div class="wc"><div class="wn">02</div><div class="wi">🤝</div><h3>Lead. Grow. Connect.</h3><p>Take on officer roles, run community service projects, and network directly with business professionals who judge your events.</p></div>
-      <div class="wc"><div class="wn">03</div><div class="wi">🎓</div><h3>Build a College-Ready Portfolio</h3><p>FBLA wins, leadership positions, and project experience are exactly what top colleges and employers look for on applications.</p></div>
-      <div class="wc"><div class="wn">04</div><div class="wi">💼</div><h3>Apply Real Business Skills</h3><p>Write business plans, run financial analyses, build apps, design campaigns — all in real competitive settings with real stakes.</p></div>
-      <div class="wc"><div class="wn">05</div><div class="wi">🌐</div><h3>Tap Into a National Network</h3><p>Join 230,000+ driven peers across the country. FBLA is recognized by top colleges and Fortune 500 companies alike.</p></div>
-      <div class="wc"><div class="wn">06</div><div class="wi">🌟</div><h3>Win Scholarships & Awards</h3><p>FBLA offers merit scholarships, chapter awards, and national recognition programs that reward your hard work and achievements.</p></div>
+      <div class="wc"><div class="wn">01</div><div class="wi"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M8 4h8v3a4 4 0 0 1-8 0V4zM5.5 5.5H4A3.5 3.5 0 0 0 7.5 9M18.5 5.5H20A3.5 3.5 0 0 1 16.5 9M12 11v4M8 21h8M10 21v-6h4v6"/></svg></div><h3>Compete at every level</h3><p>Choose from 80+ events — accounting to app development. Advance from district to the State Leadership Conference and the National Leadership Conference.</p></div>
+      <div class="wc"><div class="wn">02</div><div class="wi"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div><h3>Lead and connect</h3><p>Take on officer roles, run service projects, and meet business professionals who judge chapter events.</p></div>
+      <div class="wc"><div class="wn">03</div><div class="wi"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="m2 10 10-6 10 6-10 6-10-6zM6 13v4.2C6 18.7 8.7 20.5 12 20.5s6-1.8 6-3.3V13"/></svg></div><h3>Build a college-ready record</h3><p>Competition placements, leadership titles, and project work that stand out on applications.</p></div>
+      <div class="wc"><div class="wn">04</div><div class="wi"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M8 7V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1M3 7h18v13H3zM3 12h18"/></svg></div><h3>Practice real business skills</h3><p>Write plans, run numbers, build apps, and present campaigns in timed competitive settings.</p></div>
+      <div class="wc"><div class="wn">05</div><div class="wi"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM3.2 12h17.6M12 3c2.8 3.4 2.8 14.6 0 18M12 3C9.2 6.4 9.2 17.6 12 21"/></svg></div><h3>Join a national network</h3><p>FBLA includes more than 230,000 members nationwide and is recognized by colleges and employers.</p></div>
+      <div class="wc"><div class="wn">06</div><div class="wi"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 15a4.2 4.2 0 1 0 0-8.4 4.2 4.2 0 0 0 0 8.4zM8.5 14.2 7 21l5-2.6L17 21l-1.5-6.8"/></svg></div><h3>Scholarships and awards</h3><p>Merit scholarships, chapter awards, and national recognition programs for members who put in the work.</p></div>
     </div>
   </section>
 
   <div class="cta-big reveal">
-    <h2>Ready to Make Your Mark?</h2>
-    <p>It's a club with meetings, competitions, service hours, and résumé-building experience — follow @steinfbla for membership announcements.</p>
-    <a class="btn-dark" onclick="showPage('join')">See How to Join →</a>
+    <h2>Ready to join?</h2>
+    <p>Meetings, competitions, service hours, and résumé-building experience. Follow @steinfbla for membership dates.</p>
+    <a class="btn-dark" onclick="showPage('join')">See how to join</a>
   </div>
 </div>
 
@@ -819,7 +904,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
 
 <!-- ABOUT -->
 <div class="page" id="page-about">
-  <section class="pb"><div class="pb-bg"></div><h1>About <span>Our Chapter</span></h1><p class="sub">Our story, our mission, and the people behind it.</p><div class="gl"></div></section>
+  <section class="pb"><div class="pb-bg"></div><h1>About <span>Our Chapter</span></h1><p class="sub">Officers, adviser, and chapter facts.</p><div class="gl"></div></section>
   <div class="about-body reveal">
     <div class="about-text">
       <div class="about-brand">
@@ -832,11 +917,11 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
       <p>Whether you're passionate about coding, finance, marketing, law, or public speaking — there's an event and a community waiting for you here.</p>
     </div>
     <div class="ahl">
-      <div class="ahi"><div class="ahi-ic">🏫</div><div><h4>Steinbrenner High School</h4><p>Lutz, Florida · Hillsborough County Public Schools</p></div></div>
-      <div class="ahi"><div class="ahi-ic">📅</div><div><h4>Active Year-Round</h4><p>Meetings, competitions, and events throughout the school year</p></div></div>
-      <div class="ahi"><div class="ahi-ic">🏆</div><div><h4>District → State → Nationals</h4><p>Members compete at all three levels of FBLA competition</p></div></div>
-      <div class="ahi"><div class="ahi-ic">📸</div><div><h4>Follow Us Online</h4><p>@steinfbla on Instagram for updates and announcements</p></div></div>
-      <div class="ahi"><div class="ahi-ic">✉️</div><div><h4>Contact</h4><p>allisoncuffaro@gmail.com</p></div></div>
+      <div class="ahi"><div class="ahi-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="m3 10 9-6 9 6v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 19zM9 21v-7h6v7"/></svg></div><div><h4>Steinbrenner High School</h4><p>Lutz, Florida · Hillsborough County Public Schools</p></div></div>
+      <div class="ahi"><div class="ahi-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M8 3v3M16 3v3M4.5 8h15M6 5h12a1.5 1.5 0 0 1 1.5 1.5v13A1.5 1.5 0 0 1 18 21H6a1.5 1.5 0 0 1-1.5-1.5V6.5A1.5 1.5 0 0 1 6 5z"/></svg></div><div><h4>Active year-round</h4><p>Meetings, competitions, and events throughout the school year</p></div></div>
+      <div class="ahi"><div class="ahi-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M8 4h8v3a4 4 0 0 1-8 0V4zM5.5 5.5H4A3.5 3.5 0 0 0 7.5 9M18.5 5.5H20A3.5 3.5 0 0 1 16.5 9M12 11v4M8 21h8M10 21v-6h4v6"/></svg></div><div><h4>District, state, and nationals</h4><p>Members compete at all three levels of FBLA competition</p></div></div>
+      <div class="ahi"><div class="ahi-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor"/></svg></div><div><h4>Follow us online</h4><p>@steinfbla on Instagram for updates and announcements</p></div></div>
+      <div class="ahi"><div class="ahi-ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg></div><div><h4>Contact</h4><p>allisoncuffaro@gmail.com</p></div></div>
     </div>
   </div>
   <div class="off-wrap reveal">
@@ -865,7 +950,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
   <div class="ev-body">
     <div class="gres reveal">
       <h4>Official FBLA Competitive Event Resources</h4>
-      <p style="color:rgba(255,255,255,.45);font-size:.85rem;margin:-.25rem 0 1rem;line-height:1.65;max-width:820px"><strong style="color:var(--gold2)">2026–2027 national guidelines</strong> publish on this same hub at the beginning of September. Until then, every link below points to the current official <strong style="color:var(--white)">2025–2026</strong> national documents hosted by FBLA.</p>
+      <p class="gres-copy"><strong>2026–2027 national guidelines</strong> are scheduled on this hub in September. Until then, every link below opens the current official 2025–2026 national documents from FBLA.</p>
       <div class="gres-links">
         <a href="https://www.fbla.org/high-school/competitive-events/" target="_blank" rel="noopener noreferrer">National Competitive Events Hub ↗</a>
         <a href="https://connect.fbla.org/headquarters/files/High%20School%20Competitive%20Events%20Resources/25-26-High-School-Guidelines-All-in-One.pdf" target="_blank" rel="noopener noreferrer">2025–26 All Guidelines + Rating Sheets (PDF) ↗</a>
@@ -894,14 +979,14 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
   <section class="pb"><div class="pb-bg"></div><h1>Our <span>Gallery</span></h1><p class="sub">Conferences, competitions, and chapter memories.</p><div class="gl"></div></section>
   <div class="gal-body reveal">
     <div class="gal-grid">
-      <div class="gi"><span class="gic">📸</span><span>Conference Photos</span></div>
-      <div class="gi"><span class="gic">🏆</span><span>Awards Night</span></div>
-      <div class="gi"><span class="gic">🎤</span><span>Public Speaking</span></div>
-      <div class="gi"><span class="gic">📋</span><span>Chapter Meeting</span></div>
-      <div class="gi"><span class="gic">🤝</span><span>Networking</span></div>
-      <div class="gi"><span class="gic">✈️</span><span>NLC Trip</span></div>
+      <div class="gi"><span class="gic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 8h3.2l1.6-2h6.4l1.6 2H20v11H4z"/><circle cx="12" cy="14" r="3.2" fill="none" stroke="currentColor" stroke-width="1.75"/></svg></span><span>Conference photos</span></div>
+      <div class="gi"><span class="gic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M8 4h8v3a4 4 0 0 1-8 0V4zM12 11v4M8 21h8M10 21v-6h4v6"/></svg></span><span>Awards night</span></div>
+      <div class="gi"><span class="gic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M12 3.8A2.6 2.6 0 0 0 9.4 6.4v5.2a2.6 2.6 0 0 0 5.2 0V6.4A2.6 2.6 0 0 0 12 3.8zM6.8 11.6a5.2 5.2 0 0 0 10.4 0M12 16.8v3.4M8.8 20.2h6.4"/></svg></span><span>Public speaking</span></div>
+      <div class="gi"><span class="gic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M9 4h6M8 4.5h8v16H8zM10 10h4M10 14h4"/></svg></span><span>Chapter meeting</span></div>
+      <div class="gi"><span class="gic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span>Networking</span></div>
+      <div class="gi"><span class="gic"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M3 12 21 4l-7.5 17-2.2-6.8L3 12z"/></svg></span><span>NLC trip</span></div>
     </div>
-    <div class="gal-note">📷 <strong>Photos coming soon!</strong><br>Follow <a href="https://instagram.com/steinfbla" target="_blank">@steinfbla</a> on Instagram for the latest chapter photos and event coverage.</div>
+    <div class="gal-note"><strong>Photos from conferences and chapter events will appear here.</strong><br>Follow <a href="https://instagram.com/steinfbla" target="_blank">@steinfbla</a> on Instagram for current coverage.</div>
   </div>
 </div>
 
@@ -927,13 +1012,13 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
     <div id="hrs-signedout">
       <div class="hrs-pitch reveal">
         <div class="kicker">Member Portal</div>
-        <h2 class="big-h" style="font-size:clamp(2.5rem,5vw,4.5rem)">Your chapter HQ <span class="dim">in one login</span></h2>
-        <p class="hero-sub" style="margin:0 0 2rem;text-align:left;max-width:560px">Create an account or sign in with your email to log volunteer hours, RSVP to chapter events, and climb the service leaderboard.</p>
+        <h2 class="big-h" style="font-size:clamp(2.5rem,5vw,4.5rem)">Chapter tools <span class="dim">in one login</span></h2>
+        <p class="hero-sub" style="margin:0 0 2rem;max-width:560px">Sign in to log volunteer hours, RSVP to chapter events, and follow the service leaderboard.</p>
         <ul class="pk-list" style="max-width:520px">
-          <li><span class="pki">✦</span>Confirm a real email, finish profile, then await adviser approval</li>
-          <li><span class="pki">✦</span>Read chapter announcements once approved</li>
-          <li><span class="pki">✦</span>RSVP to events and log volunteer hours</li>
-          <li><span class="pki">✦</span>Climb the service leaderboard</li>
+          <li><span class="pki"></span>Confirm your email, complete your profile, then wait for adviser approval</li>
+          <li><span class="pki"></span>Read chapter announcements once approved</li>
+          <li><span class="pki"></span>RSVP to events and log volunteer hours</li>
+          <li><span class="pki"></span>Track your place on the service leaderboard</li>
         </ul>
         <div class="hrs-auth-card">
           <div class="hrs-auth-modes">
@@ -958,7 +1043,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
           </form>
           <div class="hrs-auth-divider">or</div>
           <button class="btn-gh" type="button" style="width:100%" onclick="hrsSignInGoogle()">Continue with Google</button>
-          <span class="hrs-signin-note" style="display:block;margin-top:.85rem">Use a real email — you'll confirm it before entering · Google is optional</span>
+          <span class="hrs-signin-note" style="display:block;margin-top:.85rem">You will confirm your email before using Member Hub. Google sign-in is also available.</span>
           <div id="hrs-domain-warn" class="hrs-domain-warn" style="display:none"></div>
         </div>
       </div>
@@ -975,10 +1060,10 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
       <div class="hrs-verify reveal">
         <div class="kicker">Confirm your email</div>
         <h2>Check your inbox</h2>
-        <p>We sent a verification link to <span class="hrs-verify-email" id="verify-email"></span>. Open that email and click the link — fake or mistyped addresses won't work.</p>
-        <p>After you verify, come back here and continue. Check spam/junk if you don't see it (from Firebase / noreply).</p>
+        <p>We sent a verification link to <span class="hrs-verify-email" id="verify-email"></span>. Open that message and select the link to confirm this address.</p>
+        <p>Return here and select Continue. If you do not see the email, check your spam folder.</p>
         <div class="hrs-verify-actions">
-          <button class="btn-g" type="button" id="verify-continue" onclick="hrsCheckVerified()">I've verified — Continue</button>
+          <button class="btn-g" type="button" id="verify-continue" onclick="hrsCheckVerified()">Continue</button>
           <button class="btn-gh" type="button" id="verify-resend" onclick="hrsResendVerification()">Resend email</button>
           <button class="btn-gh" type="button" onclick="hrsSignOut()">Sign out</button>
         </div>
@@ -991,7 +1076,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
       <div class="hub-onboard reveal">
         <div class="kicker">Welcome</div>
         <h2>Finish setting up your profile</h2>
-        <p>This takes under a minute. After you submit, an adviser or officer must approve your membership before you can use the hub.</p>
+        <p>Complete this form, then an adviser or officer will approve your membership before you can use the hub.</p>
         <form id="hrs-onboard-form" onsubmit="hrsCompleteOnboarding(event)">
           <div class="hrs-field"><label class="hrs-label">Preferred name</label><input class="hrs-input" type="text" id="ob-name" required maxlength="80"></div>
           <div class="hrs-form-row">
@@ -1013,7 +1098,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
               <label class="hub-chip"><input type="checkbox" name="ob-int" value="Fundraising"> Fundraising</label>
             </div>
           </div>
-          <button class="btn-g" type="submit" id="ob-submit" style="width:100%;margin-top:.5rem">Submit for Chapter Approval →</button>
+          <button class="btn-g" type="submit" id="ob-submit" style="width:100%;margin-top:.5rem">Submit for chapter approval</button>
           <div class="hrs-submit-msg" id="ob-msg"></div>
         </form>
       </div>
@@ -1024,7 +1109,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
       <div class="hrs-pending-card reveal">
         <div class="kicker" id="pending-kicker">Membership</div>
         <h2 id="pending-title">Awaiting adviser approval</h2>
-        <p id="pending-copy">Your profile is in. An adviser or officer will review your request to join the Member Hub. You'll get access to announcements, events, and hour logging once approved.</p>
+        <p id="pending-copy">Your profile has been submitted. An adviser or officer will review your request. After approval, you can use announcements, events, and hour logging.</p>
         <p style="color:rgba(255,255,255,.35);font-size:.82rem;margin-bottom:1.5rem">Signed in as <span id="pending-email"></span></p>
         <div class="hrs-verify-actions">
           <button class="btn-g" type="button" onclick="hrsRefreshMembership()">Check status</button>
@@ -1094,7 +1179,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
 
       <!-- Announcements (secondary) -->
       <div class="hub-panel" id="hub-news">
-        <div id="hrs-staff-ann-hint" class="staff-hint admin-only" style="display:none">Staff posting requires your email in Firestore <code>admins</code>. If publish fails, check that first.</div>
+        <div id="hrs-staff-ann-hint" class="staff-hint admin-only" style="display:none">Staff posting is limited to listed advisers and officers. If publish fails, contact the webmaster.</div>
         <div class="admin-only" id="hrs-ann-create-wrap">
           <div class="hrs-form-card reveal">
             <h3>Post announcement</h3>
@@ -1257,12 +1342,12 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
 
 <!-- JOIN -->
 <div class="page" id="page-join">
-  <section class="pb"><div class="pb-bg"></div><h1>Join <span>FBLA</span></h1><p class="sub">Become part of something bigger than yourself.</p><div class="gl"></div></section>
+  <section class="pb"><div class="pb-bg"></div><h1>Join <span>FBLA</span></h1><p class="sub">Steinbrenner High School chapter membership.</p><div class="gl"></div></section>
   <div class="join-lay reveal">
     <div class="jl">
-      <h2>It's a club. It's a competition. It's your edge.</h2>
-      <p>Steinbrenner FBLA is open to every Warrior. We meet on club days, wear the shirts, run fundraisers, and log service hours — and then we compete against other high schools for a shot at district, state, and nationals.</p>
-      <p style="color:rgba(255,255,255,.45);font-size:.95rem;line-height:1.8;margin-top:1rem">Looks great on a résumé. Looks great for college applications. And it's one of the best ways to meet people outside your usual circle.</p>
+      <h2>Join the Steinbrenner chapter</h2>
+      <p>Steinbrenner FBLA is open to every Warrior. Members meet on club days, complete service hours, and compete against other high schools at district, state, and nationals.</p>
+      <p class="join-aside">Membership supports college applications, résumés, and a network beyond your usual classes.</p>
       <div style="margin-top:2rem">
         <div class="step-r"><div class="step-b">1</div><div class="step-c"><strong>Watch for the Application</strong><span>Membership form status will post on <strong style="color:var(--gold2)">@steinfbla</strong> and in school announcements. Application: coming soon.</span></div></div>
         <div class="step-r"><div class="step-b">2</div><div class="step-c"><strong>Pay Dues On Time</strong><span>Pay dues by the announced deadline to be included in the first club meeting. Dues cover national, state, and local membership.</span></div></div>
@@ -1277,12 +1362,12 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
         <p>FBLA application for Steinbrenner is coming soon. Follow Instagram for the form and dues deadline so you don't miss the first meeting.</p>
         <div class="sbadge"><span class="sdot"></span>Application Coming Soon</div>
         <ul class="pk-list">
-          <li><span class="pki">✦</span>Compete at district, state & national levels</li>
-          <li><span class="pki">✦</span>Monthly meetings · service hours · t-shirts</li>
-          <li><span class="pki">✦</span>College & career-ready portfolio</li>
-          <li><span class="pki">✦</span>Network beyond your friend group</li>
-          <li><span class="pki">✦</span>Scholarship & award eligibility</li>
-          <li><span class="pki">✦</span>Official national FBLA membership</li>
+          <li><span class="pki"></span>Compete at district, state, and national levels</li>
+          <li><span class="pki"></span>Monthly meetings, service hours, and chapter shirts</li>
+          <li><span class="pki"></span>College and career-ready experience</li>
+          <li><span class="pki"></span>A network beyond your usual classes</li>
+          <li><span class="pki"></span>Scholarship and award eligibility</li>
+          <li><span class="pki"></span>Official national FBLA membership</li>
         </ul>
         <a href="https://instagram.com/steinfbla" target="_blank" rel="noopener" class="ig-a">Follow @steinfbla for Updates ↗</a>
         <a href="https://aoit2020.squarespace.com/join-fbla" target="_blank" rel="noopener" class="ig-a" style="margin-top:.75rem;display:block">AOIT / Join FBLA Reference ↗</a>
@@ -1293,13 +1378,13 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
 
 <!-- CONTACT -->
 <div class="page" id="page-contact">
-  <section class="pb"><div class="pb-bg"></div><h1>Get in <span>Touch</span></h1><p class="sub">Questions? We're happy to help.</p><div class="gl"></div></section>
+  <section class="pb"><div class="pb-bg"></div><h1>Get in <span>Touch</span></h1><p class="sub">Adviser email and chapter Instagram.</p><div class="gl"></div></section>
   <div class="con-body reveal">
     <h2>Contact Us</h2>
-    <p class="sub">Reach out via email or Instagram — whether you're a prospective member, parent, or business partner, we'd love to hear from you.</p>
+    <p class="sub">Email the adviser or message the chapter on Instagram. Prospective members, families, and partners are welcome to write.</p>
     <div class="con-cards">
-      <a href="mailto:allisoncuffaro@gmail.com" class="cc"><span class="ci">✉️</span><span class="ct">Email</span><span class="cv">allisoncuffaro@gmail.com</span></a>
-      <a href="https://instagram.com/steinfbla" target="_blank" class="cc"><span class="ci">📸</span><span class="ct">Instagram</span><span class="cv">@steinfbla</span></a>
+      <a href="mailto:allisoncuffaro@gmail.com" class="cc"><span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg></span><span class="ct">Email</span><span class="cv">allisoncuffaro@gmail.com</span></a>
+      <a href="https://instagram.com/steinfbla" target="_blank" class="cc"><span class="ci"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor"/></svg></span><span class="ct">Instagram</span><span class="cv">@steinfbla</span></a>
     </div>
     <div class="faq-l" id="faqList"></div>
   </div>
@@ -1316,7 +1401,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
       <div class="logo" style="cursor:default">
         <div class="logo-text"><span class="l1">Steinbrenner FBLA</span><span class="l2">Future Business Leaders of America</span></div>
       </div>
-      <p class="ft-bp">Steinbrenner High School · Lutz, Florida<br>Building tomorrow's business leaders, today.</p>
+      <p class="ft-bp">Steinbrenner High School · Lutz, Florida<br>Hillsborough County Public Schools.</p>
       <div class="ft-affil">
         <a href="https://www.fbla.org" target="_blank" rel="noopener">National FBLA</a>
         <a href="https://www.flfbla.org" target="_blank" rel="noopener">Florida FBLA</a>
@@ -1343,8 +1428,8 @@ body[data-hub-theme="light"]:not(.hub-standalone) .gal-note{
   <div class="ft-bot">
     <p>© 2026 Steinbrenner FBLA · All rights reserved.</p>
     <div class="srow">
-      <a class="sbtn" href="https://instagram.com/steinfbla" target="_blank">📸</a>
-      <a class="sbtn" href="mailto:allisoncuffaro@gmail.com">✉️</a>
+      <a class="sbtn" href="https://instagram.com/steinfbla" target="_blank" aria-label="Instagram"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="1.75"/><circle cx="17.4" cy="6.6" r="1" fill="currentColor"/></svg></a>
+      <a class="sbtn" href="mailto:allisoncuffaro@gmail.com" aria-label="Email"><svg viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" d="M4 6h16v12H4zM4 6l8 7 8-7"/></svg></a>
       <button type="button" class="ft-theme-btn" id="site-theme-btn" onclick="hrsToggleTheme()" aria-pressed="false" title="Toggle light or dark appearance">Light mode</button>
     </div>
   </div>
@@ -1639,10 +1724,10 @@ function rEv(f){
     const pdf=natPdfUrl(e.n);
     const fl=flGuideUrl(e.n);
     const res=`<div class="ev-res">
-      <a class="ev-link" href="${pdf}" target="_blank" rel="noopener noreferrer">📄 Official Guidelines PDF ↗</a>
-      <a class="ev-link" href="${RES_HUB}" target="_blank" rel="noopener noreferrer">🇺🇸 National CE Hub ↗</a>
-      <a class="ev-link" href="${fl}" target="_blank" rel="noopener noreferrer">📋 Florida Guidelines ↗</a>
-      <a class="ev-link" href="${RES_ALL}" target="_blank" rel="noopener noreferrer">📚 All Events PDF ↗</a>
+      <a class="ev-link" href="${pdf}" target="_blank" rel="noopener noreferrer">Official guidelines PDF</a>
+      <a class="ev-link" href="${RES_HUB}" target="_blank" rel="noopener noreferrer">National CE Hub</a>
+      <a class="ev-link" href="${fl}" target="_blank" rel="noopener noreferrer">Florida guidelines</a>
+      <a class="ev-link" href="${RES_ALL}" target="_blank" rel="noopener noreferrer">All events PDF</a>
     </div>`;
     return `<div class="evc"><span class="ev-b ${b.c}">${b.l}</span><h3>${e.n}</h3><p>${e.d}</p><div class="ev-foot"><span class="ev-tag">Grades 9–12</span>${e.tm?`<span class="ev-tag">${e.tm}</span>`:''}</div>${res}</div>`;
   }).join('');
@@ -1659,7 +1744,7 @@ rEv('all');
 const FAQS=[
   ['When does membership open?','Membership application and dues deadline will be announced on @steinfbla and school channels. Pay dues by the posted date to make the first club meeting.'],
   ['Who can join FBLA?','Any Steinbrenner High School student with an interest in business, technology, or leadership is welcome.'],
-  ['Do I need business experience?',"Not at all! FBLA is for all experience levels — we're here to help you learn and grow."],
+  ['Do I need business experience?','No. Members start at every skill level.'],
   ['When are meetings held?','Meeting times will be announced to registered members at the start of the school year.'],
   ['How do I compete at State / Nationals?','Members first compete at the district level. Top performers advance to the State Leadership Conference, and top state finishers advance to the National Leadership Conference.'],
 ];
@@ -1910,9 +1995,8 @@ function setStaffUI(on) {
   const gate = document.getElementById('hrs-staff-gate-hint');
   if (gate) {
     if (looksStaff && !on) {
-      const em = (hrsUser && hrsUser.email ? hrsUser.email : 'you@email.com').toLowerCase();
       gate.style.display = '';
-      gate.innerHTML = 'Your badge looks like staff, but Member Hub tools need a Firestore <code>admins/' + escapeHtml(em) + '</code> document (field <code>role</code>: advisor or officer).';
+      gate.innerHTML = 'This account is marked as staff, but officer tools are not enabled yet. Ask the adviser or webmaster to finish setup.';
     } else {
       gate.style.display = 'none';
       gate.innerHTML = '';
@@ -1962,7 +2046,7 @@ function hrsShowMembershipPending(user, profile) {
       ? ((profile && profile.membershipNote)
           ? ('Note from staff: ' + profile.membershipNote)
           : 'Your request was not approved. Contact an adviser if you think this is a mistake.')
-      : 'Your profile is in. An adviser or officer will review your request to join the Member Hub. You\'ll get access to announcements, events, and hour logging once approved.';
+      : 'Your profile has been submitted. An adviser or officer will review your request. After approval, you can use announcements, events, and hour logging.';
   }
   if (emailEl) emailEl.textContent = (user && user.email) || '';
   if (msg) { msg.textContent = ''; msg.className = 'hrs-verify-msg'; }
@@ -2017,12 +2101,12 @@ function hrsAuthErrorMessage(err) {
     'auth/user-not-found': 'No account with that email. Create an account first.',
     'auth/wrong-password': 'Incorrect password. Try again.',
     'auth/invalid-credential': 'Email or password is incorrect.',
-    'auth/too-many-requests': 'Too many attempts. Wait a minute and try again.',
-    'auth/operation-not-allowed': 'Email/password sign-in is not enabled yet in Firebase Console → Authentication → Sign-in method.',
+    'auth/too-many-requests': 'Please wait a minute before requesting another email.',
+    'auth/operation-not-allowed': 'Sign-in is temporarily unavailable. Try Google, or try again later.',
     'auth/network-request-failed': 'Network error. Check your connection and try again.',
-    'auth/unauthorized-domain': 'Add steinbrennerfbla.com under Firebase Authentication → Settings → Authorized domains.'
+    'auth/unauthorized-domain': 'Sign-in is temporarily unavailable. Try Google, or try again later.'
   };
-  return map[code] || (err && err.message) || 'Sign-in failed.';
+  return map[code] || 'Sign-in failed. Please try again.';
 }
 
 const HRS_CONTINUE_URL = 'https://steinbrennerfbla.com/memberhub';
@@ -2040,26 +2124,50 @@ function hrsShowVerifyPending(user) {
   hrsShow('verify');
 }
 
+let hrsResendLockUntil = 0;
+function hrsResendCooldownTick(btn) {
+  if (!btn) return;
+  const left = Math.ceil((hrsResendLockUntil - Date.now()) / 1000);
+  if (left <= 0) {
+    btn.disabled = false;
+    btn.textContent = 'Resend email';
+    return;
+  }
+  btn.disabled = true;
+  btn.textContent = 'Resend in ' + left + 's';
+  setTimeout(() => hrsResendCooldownTick(btn), 1000);
+}
+
 window.hrsResendVerification = async function () {
   const msg = document.getElementById('verify-msg');
   const btn = document.getElementById('verify-resend');
   if (!auth || !auth.currentUser) return;
+  const now = Date.now();
+  if (now < hrsResendLockUntil) {
+    const sec = Math.ceil((hrsResendLockUntil - now) / 1000);
+    if (msg) {
+      msg.textContent = 'Please wait ' + sec + ' seconds before requesting another email.';
+      msg.className = 'hrs-verify-msg err';
+    }
+    return;
+  }
   if (msg) { msg.textContent = ''; msg.className = 'hrs-verify-msg'; }
   if (btn) btn.disabled = true;
   try {
     await hrsSendVerification(auth.currentUser);
+    hrsResendLockUntil = Date.now() + 60000;
+    hrsResendCooldownTick(btn);
     if (msg) {
-      msg.textContent = 'Verification email resent. Check inbox and spam.';
+      msg.textContent = 'A new message was sent. Check your inbox and spam folder.';
       msg.className = 'hrs-verify-msg ok';
     }
   } catch (err) {
     console.error(err);
+    if (btn) btn.disabled = false;
     if (msg) {
       msg.textContent = hrsAuthErrorMessage(err);
       msg.className = 'hrs-verify-msg err';
     }
-  } finally {
-    if (btn) btn.disabled = false;
   }
 };
 
@@ -2077,7 +2185,7 @@ window.hrsCheckVerified = async function () {
     await auth.currentUser.getIdToken(true);
     if (!auth.currentUser.emailVerified) {
       if (msg) {
-        msg.textContent = 'Not verified yet. Open the link in your email, then try again.';
+        msg.textContent = 'Your email is not confirmed yet. Open the link in your inbox, then try again.';
         msg.className = 'hrs-verify-msg err';
       }
       return;
@@ -2093,15 +2201,15 @@ window.hrsCheckVerified = async function () {
   } finally {
     if (btn) {
       btn.disabled = false;
-      btn.textContent = "I've verified — Continue";
+      btn.textContent = 'Continue';
     }
   }
 };
 
 window.hrsEmailAuth = async function (event) {
   event.preventDefault();
-  if (!auth) { alert('Sign-in is not configured yet.'); return; }
   const errEl = document.getElementById('auth-err');
+  if (!auth) { if (errEl) errEl.textContent = 'Sign-in is temporarily unavailable. Please try again later.'; return; }
   const btn = document.getElementById('auth-submit');
   const name = (document.getElementById('auth-name').value || '').trim();
   const email = (document.getElementById('auth-email').value || '').trim();
@@ -2153,7 +2261,7 @@ window.hrsSignInGoogle = function () {
       return;
     }
   }
-  if (!auth) { alert('Sign-in is not configured yet. Check back soon.'); return; }
+  if (!auth) { hrsToast('Sign-in is temporarily unavailable. Please try again later.', true); return; }
   const provider = new GoogleAuthProvider();
   signInWithPopup(auth, provider).catch(err => {
     console.error(err);
@@ -2229,7 +2337,7 @@ function attachPortalListeners(user) {
   }, err => {
     console.error(err);
     const el = document.getElementById('hrs-sub-list');
-    if (el) el.innerHTML = '<div class="gal-note">Could not load submissions: ' + escapeHtml(err.message || '') + '</div>';
+    if (el) el.innerHTML = '<div class="gal-note">Could not load submissions. Please try again.</div>';
   }));
 
   const lbQ = query(collection(db, 'users'), orderBy('points', 'desc'), limit(50));
@@ -2264,8 +2372,8 @@ function attachPortalListeners(user) {
   hrsUnsubs.push(onSnapshot(annQ, renderAnnouncements, err => {
     console.error(err);
     const msg = (err && err.code === 'failed-precondition')
-      ? 'Announcements query failed. Open the index link in the browser console if shown, then refresh.'
-      : ((err && err.message) || 'Could not load announcements.');
+      ? 'Announcements could not load. Please refresh and try again.'
+      : 'Could not load announcements. Please try again.';
     ['hrs-ann-list', 'hrs-ann-preview'].forEach(aid => {
       const el = document.getElementById(aid);
       if (el) el.innerHTML = '<div class="gal-note">' + escapeHtml(msg) + '</div>';
@@ -2289,7 +2397,7 @@ function attachPortalListeners(user) {
     }, err => {
       console.error(err);
       const el = document.getElementById('hrs-queue');
-      if (el) el.innerHTML = '<div class="gal-note">Could not load hour queue: ' + escapeHtml(err.message || '') + '</div>';
+      if (el) el.innerHTML = '<div class="gal-note">Could not load the hour queue. Please try again.</div>';
     }));
 
     // One users listener drives both roster + pending queue
@@ -2301,7 +2409,7 @@ function attachPortalListeners(user) {
       console.error(err);
       const rosterEl = document.getElementById('hrs-member-roster');
       const queueEl = document.getElementById('hrs-member-queue');
-      const msg = '<div class="gal-note">Could not load members: ' + escapeHtml(err.message || '') + '</div>';
+      const msg = '<div class="gal-note">Could not load members. Please try again.</div>';
       if (rosterEl) rosterEl.innerHTML = msg;
       if (queueEl) queueEl.innerHTML = msg;
     }));
@@ -2457,11 +2565,7 @@ async function hrsEnterVerifiedHub(user) {
     profile = await hrsLoadUserProfile(user, email, emailLower);
   } catch (err) {
     console.error('Failed to sync user profile', err);
-    const tip =
-      /offline|unavailable/i.test(String(err && err.message || ''))
-        ? '\n\nAlso confirm Firestore is created for this Firebase project:\nConsole → Build → Firestore Database → Create database (if you have not yet).\nThen Publish your firestore.rules.'
-        : '';
-    alert('Could not load your profile: ' + err.message + tip);
+    hrsToast('Could not load your profile. Please try again.', true);
     return;
   }
 
@@ -2500,7 +2604,7 @@ window.hrsRefreshMembership = async function () {
     }
   } catch (err) {
     if (msg) {
-      msg.textContent = err.message || 'Could not refresh status.';
+      msg.textContent = 'Could not refresh status. Please try again.';
       msg.className = 'hrs-verify-msg err';
     }
   }
@@ -2564,10 +2668,10 @@ window.hrsCompleteOnboarding = async function (event) {
     await hrsEnterVerifiedHub(hrsUser);
   } catch (err) {
     console.error(err);
-    msg.innerHTML = '<div class="hrs-sub-note">Could not save profile: ' + escapeHtml(err.message) + '</div>';
+    msg.innerHTML = '<div class="hrs-sub-note">Could not save profile. Please try again.</div>';
   } finally {
     btn.disabled = false;
-    btn.textContent = 'Submit for Chapter Approval →';
+    btn.textContent = 'Submit for chapter approval';
   }
 };
 
@@ -2789,8 +2893,8 @@ window.hrsConfirmRemoveMember = async function () {
     hrsCloseRemoveModal();
   } catch (err) {
     console.error(err);
-    if (msg) msg.textContent = 'Remove failed: ' + (err.message || 'unknown error');
-    hrsToast('Could not remove member: ' + (err.message || ''), true);
+    if (msg) msg.textContent = 'Could not remove this member. Please try again.';
+    hrsToast('Could not remove member. Please try again.', true);
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = 'Remove permanently'; }
   }
@@ -2807,7 +2911,7 @@ window.hrsApproveMember = async function (uid) {
     });
   } catch (err) {
     console.error(err);
-    alert('Approve failed: ' + err.message);
+    hrsToast('Could not approve. Please try again.', true);
   }
 };
 
@@ -2823,7 +2927,7 @@ window.hrsRejectMember = async function (uid) {
     });
   } catch (err) {
     console.error(err);
-    alert('Reject failed: ' + err.message);
+    hrsToast('Could not reject. Please try again.', true);
   }
 };
 
@@ -2859,12 +2963,11 @@ window.hrsCreateAnnouncement = async function (event) {
     hrsToast('Announcement published');
   } catch (err) {
     console.error(err);
-    let friendly = err.message || 'Could not publish';
+    let friendly = 'Could not publish. Please try again.';
     if (err.code === 'permission-denied') {
-      friendly = 'Permission denied — your email needs a Firestore admins/' +
-        String(hrsUser.email || '').toLowerCase() + ' document before you can publish.';
+      friendly = 'You do not have permission to publish. Ask the adviser or webmaster to enable staff access.';
     } else if (err.code === 'failed-precondition') {
-      friendly = 'Firestore needs a composite index (often status + createdAt). Open the link in the browser console error to create it, then try again.';
+      friendly = 'Could not publish right now. Please wait a moment and try again.';
     }
     if (msg) msg.innerHTML = '<div class="hrs-sub-note">' + escapeHtml(friendly) + '</div>';
   } finally {
@@ -2883,7 +2986,7 @@ window.hrsArchiveAnnouncement = async function (id) {
     hrsToast('Announcement archived.');
   } catch (err) {
     console.error(err);
-    hrsToast('Could not archive: ' + err.message, true);
+    hrsToast('Could not archive. Please try again.', true);
   }
 };
 
@@ -2895,7 +2998,7 @@ window.hrsDeleteAnnouncement = async function (id) {
     hrsToast('Announcement deleted.');
   } catch (err) {
     console.error(err);
-    hrsToast('Could not delete: ' + err.message, true);
+    hrsToast('Could not delete. Please try again.', true);
   }
 };
 
@@ -3132,9 +3235,9 @@ window.hrsCreateEvent = async function (event) {
     hubTab('events', document.querySelector('[data-hub="events"]'));
   } catch (err) {
     console.error(err);
-    let friendly = err.message || 'Could not publish';
+    let friendly = 'Could not publish. Please try again.';
     if (err.code === 'permission-denied') {
-      friendly = 'Permission denied — confirm your admins/{email} doc and that eventType is set.';
+      friendly = 'You do not have permission to publish this event.';
     }
     msg.innerHTML = '<div class="hrs-sub-note">' + escapeHtml(friendly) + '</div>';
   } finally {
@@ -3179,7 +3282,7 @@ window.hrsSignup = async function (eventId) {
     await batch.commit();
   } catch (err) {
     console.error(err);
-    alert('Sign-up failed: ' + err.message);
+    hrsToast('Could not sign up. Please try again.', true);
   }
 };
 
@@ -3194,7 +3297,7 @@ window.hrsCancelSignup = async function (eventId) {
     await batch.commit();
   } catch (err) {
     console.error(err);
-    alert('Could not cancel: ' + err.message);
+    hrsToast('Could not cancel. Please try again.', true);
   }
 };
 
@@ -3206,7 +3309,7 @@ window.hrsCloseEvent = async function (eventId) {
     hrsToast('Event closed.');
   } catch (err) {
     console.error(err);
-    hrsToast('Could not close event: ' + err.message, true);
+    hrsToast('Could not close event. Please try again.', true);
   }
 };
 
@@ -3235,7 +3338,7 @@ window.hrsDeleteEvent = async function (eventId) {
     hrsToast('Event deleted.');
   } catch (err) {
     console.error(err);
-    hrsToast('Could not delete event: ' + err.message, true);
+    hrsToast('Could not delete event. Please try again.', true);
   }
 };
 
@@ -3296,9 +3399,9 @@ window.hrsOpenAttendance = async function (eventId) {
     console.error(err);
     if (!list) return;
     if (err.code === 'failed-precondition') {
-      list.innerHTML = '<div class="gal-note">Attendance needs a Firestore index on eventSignups.eventId (console link). Or refresh after creating it.</div>';
+      list.innerHTML = '<div class="gal-note">Attendance could not load. Please refresh and try again.</div>';
     } else {
-      list.innerHTML = '<div class="gal-note">Could not load attendance: ' + escapeHtml(err.message || '') + '</div>';
+      list.innerHTML = '<div class="gal-note">Could not load attendance. Please try again.</div>';
     }
   }
 };
@@ -3327,7 +3430,7 @@ window.hrsSetAttendance = async function (signupId, value) {
     hrsToast('Marked ' + value);
   } catch (err) {
     console.error(err);
-    hrsToast('Attendance update failed: ' + (err.message || ''), true);
+    hrsToast('Could not update attendance. Please try again.', true);
   }
 };
 
@@ -3349,7 +3452,7 @@ window.hrsApprove = async function (id, hours, uid) {
     });
     await batch.commit();
     hrsToast('Hours approved.');
-  } catch (err) { console.error(err); hrsToast('Approval failed: ' + err.message, true); }
+  } catch (err) { console.error(err); hrsToast('Could not approve. Please try again.', true); }
 };
 
 window.hrsReject = async function (id) {
@@ -3361,7 +3464,7 @@ window.hrsReject = async function (id) {
       status: 'rejected', points: null, reviewedAt: serverTimestamp(), reviewedBy: hrsUser.email, reviewNote: note
     });
     hrsToast('Submission rejected.');
-  } catch (err) { console.error(err); hrsToast('Reject failed: ' + err.message, true); }
+  } catch (err) { console.error(err); hrsToast('Could not reject. Please try again.', true); }
 };
 
 window.hrsSubmit = async function (event) {
@@ -3402,7 +3505,7 @@ window.hrsSubmit = async function (event) {
     msg.innerHTML = '<div class="sbadge"><span class="sdot"></span>Submitted — pending officer review</div>';
   } catch (err) {
     console.error(err);
-    msg.innerHTML = '<div class="hrs-sub-note">Submission failed: ' + escapeHtml(err.message) + '</div>';
+    msg.innerHTML = '<div class="hrs-sub-note">Submission failed. Please try again.</div>';
   } finally {
     btn.disabled = false;
     btn.textContent = 'Submit for Review';
