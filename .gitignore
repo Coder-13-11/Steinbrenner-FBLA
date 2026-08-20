@@ -1,0 +1,6 @@
+.DS_Store
+.cursor/
+.claude/
+.plan-tmp/
+.tmp-scrape/
+*.log

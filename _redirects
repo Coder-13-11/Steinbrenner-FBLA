@@ -1,0 +1,4 @@
+# Shareable Member Hub URL (SPA-style rewrite — keeps /memberhub in the address bar)
+/memberhub    /index.html   200
+/memberhub/   /index.html   200
+/memberhub/*  /index.html   200

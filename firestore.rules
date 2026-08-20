@@ -1,0 +1,295 @@
+rules_version = '2';
+
+// Steinbrenner FBLA — Member Hub
+// Roles + membership approval + announcements
+// Paste into Firebase Console > Firestore Database > Rules, then Publish.
+//
+// Staff roster (console-only):
+//   Collection: admins
+//   Document ID: lowercase email (e.g. advisor@gmail.com)
+//   Fields: { "role": "advisor" } or { "role": "officer" }
+//   Empty docs still count as staff (treated as advisor for back-compat).
+//
+// === Member Hub deploy / verify checklist ===
+// 1) Publish THESE firestore.rules (Console → Firestore → Rules → Publish).
+// 2) Publish storage.rules if proof uploads are used (Console → Storage → Rules).
+// 3) Composite indexes are optional for most hub feeds now (client-side sort).
+//    Still create if the console shows a link for:
+//    - eventSignups: eventId + status (attendance)
+//    - eventSignups: uid + status (my RSVPs)
+//    - chapterEvents: startAt (if events list fails)
+// 4) Netlify: redeploy so index.html + _redirects ship.
+//    Share link (standalone app): https://steinbrennerfbla.netlify.app/memberhub
+// 5) Manual tests:
+//    - Non-staff member: Home / Events / Hours; secondary news/board/activity; no Staff composers
+//    - Staff (admins/{email}): post announcement (News + Staff forms), create event with type+date+time
+//    - Attendance panel: mark present/absent/excused on a signup
+//    - Remove member: confirm email, RSVPs cancelled, users doc deleted, roster refreshes
+//    - Failed announce without admins doc → permission-denied message
+//    - Missing index → failed-precondition message with console link hint
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email_verified == true;
+    }
+
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function staffPath() {
+      return /databases/$(database)/documents/admins/$(request.auth.token.email.lower());
+    }
+
+    function isStaff() {
+      return isSignedIn() && exists(staffPath());
+    }
+
+    // Back-compat: missing role on admin doc ⇒ advisor
+    function staffRole() {
+      return isStaff()
+        ? (get(staffPath()).data.keys().hasAny(['role'])
+            ? get(staffPath()).data.role
+            : 'advisor')
+        : '';
+    }
+
+    function isAdvisor() {
+      return isStaff() && staffRole() == 'advisor';
+    }
+
+    function isOfficer() {
+      return isStaff() && staffRole() == 'officer';
+    }
+
+    function userPath(uid) {
+      return /databases/$(database)/documents/users/$(uid);
+    }
+
+    function isApprovedMember() {
+      return isSignedIn() && (
+        isStaff()
+        || (
+          exists(userPath(request.auth.uid))
+          && get(userPath(request.auth.uid)).data.membershipStatus == 'approved'
+        )
+      );
+    }
+
+    // Console-managed staff roster. Clients may only GET their own doc.
+    match /admins/{email} {
+      allow get: if isSignedIn()
+        && email == request.auth.token.email.lower();
+      allow list, write: if false;
+    }
+
+    match /users/{uid} {
+      allow get: if isSignedIn() && (isSelf(uid) || isStaff());
+      // Leaderboard + pending-member queues
+      allow list: if isSignedIn() && (isApprovedMember() || isStaff());
+
+      allow create: if isSelf(uid)
+        && request.resource.data.uid == uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.emailLower == request.auth.token.email.lower()
+        && request.resource.data.approvedHours == 0
+        && request.resource.data.points == 0
+        && request.resource.data.onboardingComplete == false
+        && request.resource.data.role == 'member'
+        && request.resource.data.membershipStatus == 'pending';
+
+      allow update: if isSignedIn() && (
+        (
+          // Self: profile / onboarding only — never role or membership gates
+          isSelf(uid) &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly([
+              'displayName', 'photoURL', 'lastLogin',
+              'onboardingComplete', 'grade', 'instagram', 'interests', 'phone'
+            ]) &&
+          request.resource.data.approvedHours == resource.data.approvedHours &&
+          request.resource.data.points == resource.data.points &&
+          request.resource.data.uid == resource.data.uid &&
+          request.resource.data.email == resource.data.email &&
+          request.resource.data.role == resource.data.role &&
+          request.resource.data.membershipStatus == resource.data.membershipStatus
+        )
+        ||
+        (
+          // One-time migration for profiles created before membership gates
+          isSelf(uid) &&
+          !resource.data.keys().hasAny(['membershipStatus']) &&
+          request.resource.data.role == 'member' &&
+          (
+            (resource.data.onboardingComplete == true
+              && request.resource.data.membershipStatus == 'approved')
+            ||
+            (resource.data.onboardingComplete != true
+              && request.resource.data.membershipStatus == 'pending')
+          ) &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['membershipStatus', 'role', 'photoURL', 'lastLogin', 'displayName'])
+        )
+        ||
+        (
+          // Staff: approve/reject membership + optional note
+          isStaff() &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly([
+              'membershipStatus', 'membershipReviewedBy',
+              'membershipReviewedAt', 'membershipNote'
+            ]) &&
+          request.resource.data.membershipStatus in ['approved', 'rejected', 'pending']
+        )
+        ||
+        (
+          // Advisors only: assign chapter role on the user profile
+          isAdvisor() &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['role']) &&
+          request.resource.data.role in ['member', 'officer', 'advisor']
+        )
+        ||
+        (
+          // Staff: bump hour/point totals after approving submissions
+          isStaff() &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['approvedHours', 'points']) &&
+          request.resource.data.approvedHours >= resource.data.approvedHours &&
+          request.resource.data.points == request.resource.data.approvedHours * 10
+        )
+        ||
+        (
+          // Staff syncing their own role badge from admins roster
+          isSelf(uid) && isStaff() &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['role', 'membershipStatus', 'photoURL', 'lastLogin', 'displayName']) &&
+          request.resource.data.membershipStatus == 'approved' &&
+          request.resource.data.role in ['officer', 'advisor']
+        )
+      );
+
+      allow delete: if isStaff();
+    }
+
+    match /hourSubmissions/{id} {
+      allow read: if isApprovedMember()
+        && (resource.data.uid == request.auth.uid || isStaff());
+
+      allow create: if isApprovedMember()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'pending'
+        && request.resource.data.points == null
+        && request.resource.data.hours is number
+        && request.resource.data.hours > 0
+        && request.resource.data.reviewedBy == null;
+
+      allow update: if isSignedIn() && (
+        (
+          isStaff() &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['status', 'points', 'reviewedAt', 'reviewedBy', 'reviewNote']) &&
+          (
+            (request.resource.data.status == 'approved'
+              && request.resource.data.points == resource.data.hours * 10)
+            ||
+            (request.resource.data.status == 'rejected'
+              && request.resource.data.points == null)
+          )
+        )
+        ||
+        (
+          isApprovedMember()
+          && resource.data.uid == request.auth.uid
+          && resource.data.status == 'pending'
+          && request.resource.data.status == 'pending'
+          && request.resource.data.uid == request.auth.uid
+        )
+      );
+
+      allow delete: if isApprovedMember()
+        && resource.data.uid == request.auth.uid
+        && resource.data.status == 'pending';
+    }
+
+    match /chapterEvents/{eventId} {
+      allow read: if isApprovedMember() || isStaff();
+
+      allow create: if isStaff()
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.status == 'open'
+        && request.resource.data.signupCount == 0
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.eventType in ['meeting', 'service', 'other'];
+
+      allow update: if isStaff()
+        && request.resource.data.createdBy == resource.data.createdBy;
+
+      allow update: if isApprovedMember()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['signupCount'])
+        && (
+          request.resource.data.signupCount == resource.data.signupCount + 1
+          || request.resource.data.signupCount == resource.data.signupCount - 1
+        )
+        && request.resource.data.signupCount >= 0;
+
+      allow delete: if isStaff();
+    }
+
+    match /eventSignups/{signupId} {
+      allow read: if isApprovedMember()
+        && (resource.data.uid == request.auth.uid || isStaff());
+
+      allow create: if isApprovedMember()
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.status == 'signed_up'
+        && request.resource.data.eventId is string;
+
+      allow update: if isSignedIn() && (
+        (
+          // Member RSVP cancel / re-open own signup
+          isApprovedMember()
+          && resource.data.uid == request.auth.uid
+          && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status'])
+          && (request.resource.data.status == 'cancelled'
+              || request.resource.data.status == 'signed_up')
+        )
+        ||
+        (
+          // Staff: cancel any signup (member removal) or set attendance
+          isStaff()
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['status', 'attendance', 'attendanceAt', 'attendanceBy'])
+        )
+      );
+
+      allow delete: if false;
+    }
+
+    match /announcements/{id} {
+      allow read: if isApprovedMember() || isStaff();
+
+      allow create: if isStaff()
+        && request.resource.data.title is string
+        && request.resource.data.title.size() > 0
+        && request.resource.data.body is string
+        && request.resource.data.status == 'published'
+        && request.resource.data.createdBy == request.auth.uid
+        && request.resource.data.createdByEmail == request.auth.token.email;
+
+      // Any staff may edit/archive chapter announcements
+      allow update: if isStaff()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['title', 'body', 'pinned', 'status', 'updatedAt']);
+
+      allow delete: if isStaff();
+    }
+  }
+}

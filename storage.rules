@@ -1,0 +1,41 @@
+rules_version = '2';
+
+// Steinbrenner FBLA — optional proof-of-hours uploads
+// Paste into Firebase Console > Storage > Rules, then Publish.
+
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isSignedIn() {
+      return request.auth != null
+        && request.auth.token.email != null
+        && request.auth.token.email_verified == true;
+    }
+
+    function isStaff() {
+      return isSignedIn()
+        && firestore.exists(/databases/(default)/documents/admins/$(request.auth.token.email.lower()));
+    }
+
+    function isApprovedMember() {
+      return isSignedIn() && (
+        isStaff()
+        || (
+          firestore.exists(/databases/(default)/documents/users/$(request.auth.uid))
+          && firestore.get(/databases/(default)/documents/users/$(request.auth.uid)).data.membershipStatus == 'approved'
+        )
+      );
+    }
+
+    match /proof/{uid}/{submissionId}/{fileName} {
+      allow read: if isApprovedMember() && (request.auth.uid == uid || isStaff());
+
+      allow create: if isApprovedMember()
+        && request.auth.uid == uid
+        && request.resource.size < 10 * 1024 * 1024
+        && request.resource.contentType.matches('image/.*|application/pdf');
+
+      allow update, delete: if false;
+    }
+  }
+}
