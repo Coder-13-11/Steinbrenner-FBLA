@@ -1427,7 +1427,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
 
           <div class="hub-admin-section">
             <h3>Pending membership</h3>
-            <div id="hrs-member-queue"><div class="gal-note">No pending members.</div></div>
+            <div id="hrs-member-queue"><div class="gal-note">Loading pending members…</div></div>
           </div>
 
           <div class="hub-admin-section">
@@ -1438,7 +1438,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
 
           <div class="hub-admin-section">
             <h3>Pending hour approvals</h3>
-            <div class="hrs-sub-list" id="hrs-queue"><div class="gal-note">No pending submissions.</div></div>
+            <div class="hrs-sub-list" id="hrs-queue"><div class="gal-note">Loading hour submissions…</div></div>
           </div>
 
           <div class="hub-admin-section">
@@ -2113,6 +2113,9 @@ let hrsProjectorUnsub = null;
 let hrsRosterDocs = [];
 let hrsQueueCount = 0;
 let hrsPendingMemberCount = 0;
+let hrsPendingLoaded = false;
+let hrsHoursLoaded = false;
+let hrsRosterLoaded = false;
 
 try {
   const u = new URL(location.href);
@@ -2605,6 +2608,7 @@ window.hrsCalToday = function () {
 
 function hrsEventsOnDay(ymd) {
   return Object.keys(hrsEventsCache).map(id => ({ id, e: hrsEventsCache[id] })).filter(x => {
+    if (!x.e) return false;
     const d = hrsEventStartDate(x.e);
     return d && hrsYmd(d) === ymd;
   }).sort((a, b) => {
@@ -2703,7 +2707,7 @@ window.hrsCalCreateOnDay = function (ymd) {
 function hrsNextOpenEvent() {
   const now = Date.now() - 30 * 60 * 1000;
   const list = Object.keys(hrsEventsCache).map(id => ({ id, e: hrsEventsCache[id] }))
-    .filter(x => x.e.status === 'open')
+    .filter(x => x.e && x.e.status === 'open')
     .map(x => ({ ...x, t: x.e.startAt && x.e.startAt.toMillis ? x.e.startAt.toMillis() : 0 }))
     .filter(x => x.t >= now)
     .sort((a, b) => a.t - b.t);
@@ -2716,15 +2720,15 @@ function hrsUpdateCommand() {
   const un = document.getElementById('cmd-unpaid');
   const nx = document.getElementById('cmd-next-present');
   const nl = document.getElementById('cmd-next-label');
-  if (pm) pm.textContent = String(hrsPendingMemberCount || 0);
-  if (ph) ph.textContent = String(hrsQueueCount || 0);
+  if (pm) pm.textContent = hrsPendingLoaded ? String(hrsPendingMemberCount || 0) : '—';
+  if (ph) ph.textContent = hrsHoursLoaded ? String(hrsQueueCount || 0) : '—';
   const unpaid = (hrsRosterDocs || []).filter(d => {
     const u = d.data();
     const st = u.membershipStatus || 'approved';
     if (st !== 'approved') return false;
     return (u.duesStatus || 'unpaid') !== 'paid';
   }).length;
-  if (un) un.textContent = String(unpaid);
+  if (un) un.textContent = hrsRosterLoaded ? String(unpaid) : '—';
   const next = hrsNextOpenEvent();
   if (nx && nl) {
     if (!next) {
@@ -3066,10 +3070,62 @@ window.hrsCreditPresentHours = async function (eventId) {
   }
 };
 
+function hrsFeedNote(text, retry) {
+  const btn = retry
+    ? '<button type="button" class="btn-gh" style="margin-top:.75rem" onclick="hrsRetryStaffFeeds()">Try again</button>'
+    : '';
+  return '<div class="gal-note">' + escapeHtml(text) + btn + '</div>';
+}
+
+function hrsListenQuery(q, onSnap, onErr) {
+  let stopped = false;
+  let unsub = null;
+  let attempt = 0;
+
+  const start = () => {
+    if (stopped) return;
+    try { if (unsub) unsub(); } catch (_) {}
+    unsub = onSnapshot(q, (snap) => {
+      attempt = 0;
+      onSnap(snap);
+    }, async (err) => {
+      console.error(err);
+      if (onErr) onErr(err);
+      try {
+        await enableNetwork(db);
+        const pathSegs = q && q.path ? String(q.path).split('/').filter(Boolean).length : 0;
+        const once = pathSegs && pathSegs % 2 === 0 ? await getDoc(q) : await getDocs(q);
+        onSnap(once);
+      } catch (e2) {
+        console.error(e2);
+      }
+      attempt += 1;
+      const wait = Math.min(8000, 700 * Math.pow(2, Math.min(attempt, 4)));
+      setTimeout(start, wait);
+    });
+  };
+
+  start();
+  const stop = () => {
+    stopped = true;
+    try { if (unsub) unsub(); } catch (_) {}
+  };
+  hrsUnsubs.push(stop);
+}
+
+window.hrsRetryStaffFeeds = async function () {
+  if (!hrsUser || !hrsUser.email) return;
+  try { await enableNetwork(db); } catch (_) {}
+  await hrsResolveStaff(hrsUser.email.toLowerCase());
+  setStaffUI(hrsIsStaff);
+  hrsDetachListeners();
+  attachPortalListeners(hrsUser);
+};
+
 function attachPortalListeners(user) {
   const userRef = doc(db, 'users', user.uid);
 
-  hrsUnsubs.push(onSnapshot(userRef, (s) => {
+  hrsListenQuery(userRef, (s) => {
     const data = s.data() || {};
     renderTierProgress(data);
     if (data.displayName) {
@@ -3077,105 +3133,111 @@ function attachPortalListeners(user) {
       if (nameEl) nameEl.textContent = data.displayName;
     }
     if (data.role) hrsSetRoleBadge(data.role);
-    // Live kick-out if membership revoked
     if (data.membershipStatus && data.membershipStatus !== 'approved' && !hrsIsStaff) {
       hrsDetachListeners();
       setStaffUI(false);
       hrsShowMembershipPending(user, data);
     }
-  }));
+  });
 
   const mySubsQ = query(
     collection(db, 'hourSubmissions'),
     where('uid', '==', user.uid),
     limit(80)
   );
-  hrsUnsubs.push(onSnapshot(mySubsQ, (snap) => {
+  hrsListenQuery(mySubsQ, (snap) => {
     const docs = (snap.docs || []).slice().sort((a, b) => {
       const at = a.data().submittedAt && a.data().submittedAt.toMillis ? a.data().submittedAt.toMillis() : 0;
       const bt = b.data().submittedAt && b.data().submittedAt.toMillis ? b.data().submittedAt.toMillis() : 0;
       return bt - at;
     });
     renderMySubmissions({ docs, empty: !docs.length });
-  }, err => {
-    console.error(err);
+  }, () => {
     const el = document.getElementById('hrs-sub-list');
-    if (el) el.innerHTML = '<div class="gal-note">Could not load submissions. Please try again.</div>';
-  }));
+    if (el) el.innerHTML = hrsFeedNote('Could not load submissions.', true);
+  });
 
   const lbQ = query(collection(db, 'users'), orderBy('points', 'desc'), limit(50));
-  hrsUnsubs.push(onSnapshot(lbQ, (snap) => {
-    // Only show approved members on the board
+  hrsListenQuery(lbQ, (snap) => {
     const docs = snap.docs.filter(d => {
       const u = d.data();
       return !u.membershipStatus || u.membershipStatus === 'approved';
     });
     renderLeaderboard({ docs, empty: !docs.length });
-  }, err => console.error(err)));
+  });
 
   const eventsQ = query(collection(db, 'chapterEvents'), orderBy('startAt', 'asc'), limit(80));
-  hrsUnsubs.push(onSnapshot(eventsQ, renderEvents, err => console.error(err)));
+  hrsListenQuery(eventsQ, renderEvents, () => {
+    const list = document.getElementById('hrs-events-list');
+    if (list) list.innerHTML = hrsFeedNote('Could not load events.', true);
+  });
 
   const myRsvpQ = query(
     collection(db, 'eventSignups'),
     where('uid', '==', user.uid),
     limit(80)
   );
-  hrsUnsubs.push(onSnapshot(myRsvpQ, (snap) => {
+  hrsListenQuery(myRsvpQ, (snap) => {
     const docs = (snap.docs || []).filter(d => d.data().status === 'signed_up');
     renderMyRsvps({ docs, empty: !docs.length });
-  }, err => console.error(err)));
+  });
 
-  // Equality-only query (no composite index). Sort pinned + date on the client.
   const annQ = query(
     collection(db, 'announcements'),
     where('status', '==', 'published'),
     limit(60)
   );
-  hrsUnsubs.push(onSnapshot(annQ, renderAnnouncements, err => {
-    console.error(err);
+  hrsListenQuery(annQ, renderAnnouncements, (err) => {
     const msg = (err && err.code === 'failed-precondition')
       ? 'Announcements could not load. Please refresh and try again.'
-      : 'Could not load announcements. Please try again.';
+      : 'Could not load announcements.';
     ['hrs-ann-list', 'hrs-ann-preview'].forEach(aid => {
       const el = document.getElementById(aid);
-      if (el) el.innerHTML = '<div class="gal-note">' + escapeHtml(msg) + '</div>';
+      if (el) el.innerHTML = hrsFeedNote(msg, true);
     });
-  }));
+  });
 
   if (hrsIsStaff) {
-    // Equality-only — avoids composite index so pending hours always appear for staff
     const queueQ = query(
       collection(db, 'hourSubmissions'),
       where('status', '==', 'pending'),
       limit(80)
     );
-    hrsUnsubs.push(onSnapshot(queueQ, (snap) => {
+    hrsListenQuery(queueQ, (snap) => {
       const docs = (snap.docs || []).slice().sort((a, b) => {
         const at = a.data().submittedAt && a.data().submittedAt.toMillis ? a.data().submittedAt.toMillis() : 0;
         const bt = b.data().submittedAt && b.data().submittedAt.toMillis ? b.data().submittedAt.toMillis() : 0;
         return at - bt;
       });
+      hrsHoursLoaded = true;
       renderQueue({ docs, empty: !docs.length });
-    }, err => {
-      console.error(err);
+    }, () => {
       const el = document.getElementById('hrs-queue');
-      if (el) el.innerHTML = '<div class="gal-note">Could not load the hour queue. Please try again.</div>';
-    }));
+      if (el) el.innerHTML = hrsFeedNote('Could not load the hour queue.', true);
+    });
 
-    // One users listener drives both roster + pending queue
-    const rosterQ = query(collection(db, 'users'), orderBy('points', 'desc'), limit(100));
-    hrsUnsubs.push(onSnapshot(rosterQ, (snap) => {
-      renderMemberRoster(snap);
+    const pendingQ = query(
+      collection(db, 'users'),
+      where('membershipStatus', '==', 'pending'),
+      limit(80)
+    );
+    hrsListenQuery(pendingQ, (snap) => {
+      hrsPendingLoaded = true;
       renderMemberQueueFromDocs(snap.docs || []);
-    }, err => {
-      console.error(err);
-      const rosterEl = document.getElementById('hrs-member-roster');
-      const queueEl = document.getElementById('hrs-member-queue');
-      const msg = '<div class="gal-note">Could not load members. Please try again.</div>';
-      if (rosterEl) rosterEl.innerHTML = msg;
-      if (queueEl) queueEl.innerHTML = msg;
-    }));
+    }, () => {
+      const el = document.getElementById('hrs-member-queue');
+      if (el) el.innerHTML = hrsFeedNote('Could not load pending members.', true);
+    });
+
+    const rosterQ = query(collection(db, 'users'), limit(250));
+    hrsListenQuery(rosterQ, (snap) => {
+      const docs = (snap.docs || []).slice().sort((a, b) => (b.data().points || 0) - (a.data().points || 0));
+      hrsRosterLoaded = true;
+      renderMemberRoster({ docs });
+    }, () => {
+      const el = document.getElementById('hrs-member-roster');
+      if (el) el.innerHTML = hrsFeedNote('Could not load members.', true);
+    });
   }
 }
 
@@ -3902,6 +3964,7 @@ function renderQueue(snap) {
 }
 
 function eventCardHtml(id, e, opts) {
+  if (!e) return '';
   const signed = !!hrsMySignups[id];
   const cap = e.capacity || 0;
   const count = e.signupCount || 0;
@@ -3958,7 +4021,8 @@ function renderEvents(snap) {
   const rest = [];
 
   snap.docs.forEach(d => {
-    const e = d.data();
+    const e = typeof d.data === 'function' ? d.data() : null;
+    if (!e) return;
     hrsEventsCache[d.id] = e;
     const t = e.startAt && e.startAt.toMillis ? e.startAt.toMillis() : 0;
     if (e.status === 'open' && t >= now - 6 * 3600000) openUpcoming.push({ id: d.id, e, t });
@@ -4028,12 +4092,11 @@ function renderMyRsvps(snap) {
 
   // Refresh event cards so Sign Up / Cancel stays in sync with RSVP state
   if (Object.keys(hrsEventsCache).length) {
-    renderEvents({
-      docs: Object.keys(hrsEventsCache).map(id => ({
-        id,
-        data: () => hrsEventsCache[id]
-      }))
+    const frozen = Object.keys(hrsEventsCache).map(id => {
+      const copy = hrsEventsCache[id];
+      return { id, data: () => copy };
     });
+    renderEvents({ docs: frozen });
   } else {
     paintMyRsvps();
   }
