@@ -457,6 +457,63 @@ textarea.hrs-input{resize:vertical;min-height:90px}
 #page-hours .hub-onboard{padding:2rem 1.75rem}
 #page-hours .hrs-form-card,#page-hours .hrs-tier-card,#page-hours .hrs-lb{padding:1.6rem 1.55rem}
 
+/* Calendar */
+#page-hours .cal-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;margin-bottom:1.15rem;flex-wrap:wrap}
+#page-hours .cal-head h3{margin:0;font-family:'Outfit',sans-serif;font-size:1.35rem;font-weight:700;color:var(--hub-text)}
+#page-hours .cal-nav{display:flex;gap:.45rem;align-items:center}
+#page-hours .cal-weekdays,#page-hours .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+#page-hours .cal-weekdays span{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--hub-faint);text-align:center;padding:.4rem 0}
+#page-hours .cal-cell{min-height:72px;border:1px solid var(--hub-line);border-radius:10px;background:var(--hub-panel-2);padding:.4rem .35rem .5rem;cursor:pointer;text-align:left;font-family:inherit;color:var(--hub-text)}
+#page-hours .cal-cell:hover{border-color:rgba(212,160,23,.4)}
+#page-hours .cal-cell.muted{opacity:.38}
+#page-hours .cal-cell.today{box-shadow:inset 0 0 0 2px var(--hub-gold)}
+#page-hours .cal-cell.selected{background:var(--hub-accent-soft);border-color:rgba(212,160,23,.45)}
+#page-hours .cal-num{display:block;font-size:.82rem;font-weight:700;margin-bottom:.25rem}
+#page-hours .cal-dots{display:flex;flex-wrap:wrap;gap:3px}
+#page-hours .cal-dot{width:7px;height:7px;border-radius:50%;background:var(--hub-gold)}
+#page-hours .cal-dot.service{background:#4ade80}
+#page-hours .cal-dot.other{background:#60a5fa}
+#page-hours .cal-day-panel{margin-top:1.25rem}
+#page-hours .beta-badge{display:inline-block;margin-left:.4rem;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--hub-gold);border:1px solid rgba(212,160,23,.4);background:var(--hub-accent-soft);border-radius:6px;padding:.15rem .4rem;vertical-align:middle}
+
+/* Command */
+#page-hours .cmd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.25rem}
+#page-hours .cmd-card{background:var(--hub-panel);border:1px solid var(--hub-line);border-radius:14px;padding:1.1rem 1.15rem;box-shadow:var(--hub-shadow)}
+#page-hours .cmd-n{font-family:'Outfit',sans-serif;font-size:1.85rem;font-weight:700;color:var(--hub-gold);line-height:1.1}
+#page-hours .cmd-l{font-size:.82rem;color:var(--hub-muted);margin-top:.35rem;font-weight:600}
+#page-hours .cmd-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:1.75rem}
+
+/* Check-in sheet + projector */
+#page-hours .ci-sheet{max-width:440px;margin:0 auto;text-align:center}
+#page-hours .ci-code-input{text-align:center;letter-spacing:.28em;text-transform:uppercase;font-size:1.35rem;font-weight:700}
+#hub-projector{display:none}
+body.hub-projector #hub-projector{display:flex;position:fixed;inset:0;z-index:12000;background:#05102a;color:#fff;flex-direction:column;padding:1.5rem 2rem 2rem}
+body.hub-projector > *:not(#hub-projector){visibility:hidden}
+body[data-hub-theme="light"].hub-projector #hub-projector{background:#eef1f6;color:#182033}
+.proj-top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap}
+.proj-brand{font-size:.8rem;letter-spacing:.16em;text-transform:uppercase;color:#f0c040;font-weight:700}
+.proj-title{font-family:'Outfit',sans-serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;margin:.35rem 0 .2rem}
+.proj-meta{opacity:.7;font-size:1.05rem}
+.proj-stage{flex:1;display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:center;min-height:0;padding:1rem 0}
+.proj-qr{background:#fff;border-radius:20px;padding:1.25rem;display:flex;align-items:center;justify-content:center;max-width:380px}
+.proj-qr canvas,.proj-qr img{width:100%;height:auto;display:block}
+.proj-code{font-family:'Outfit',sans-serif;font-size:clamp(2.8rem,8vw,5.2rem);font-weight:800;letter-spacing:.18em;line-height:1}
+.proj-hint{margin-top:.75rem;opacity:.65;font-size:1.05rem;max-width:28rem}
+.proj-live{margin-top:auto;border-top:1px solid rgba(255,255,255,.12);padding-top:1rem;max-height:28vh;overflow:auto}
+body[data-hub-theme="light"].hub-projector .proj-live{border-top-color:rgba(24,32,51,.12)}
+.proj-live h4{margin:0 0 .5rem;font-size:1rem}
+.proj-present{display:flex;flex-wrap:wrap;gap:.4rem}
+.proj-chip{background:rgba(212,160,23,.16);border:1px solid rgba(212,160,23,.35);border-radius:100px;padding:.3rem .75rem;font-size:.85rem;font-weight:600}
+@media(max-width:800px){
+  #page-hours .cmd-grid{grid-template-columns:1fr 1fr}
+  .proj-stage{grid-template-columns:1fr}
+  #page-hours .cal-cell{min-height:56px}
+}
+@media(max-width:520px){
+  #page-hours .cmd-grid{grid-template-columns:1fr 1fr}
+  #page-hours .cal-weekdays span{font-size:.6rem}
+}
+
 /* Standalone Member Hub (/memberhub) — no marketing chrome */
 body.hub-standalone #navbar,
 body.hub-standalone footer,
@@ -1136,7 +1193,9 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
 
       <div class="hub-tabs reveal" role="tablist">
         <button class="hub-tab active" data-hub="overview" onclick="hubTab('overview',this)">Home</button>
+        <button class="hub-tab" data-hub="calendar" onclick="hubTab('calendar',this)">Calendar</button>
         <button class="hub-tab" data-hub="events" onclick="hubTab('events',this)">Events</button>
+        <button class="hub-tab" data-hub="checkin" onclick="hubTab('checkin',this)">Check in <span class="beta-badge">Beta</span></button>
         <button class="hub-tab" data-hub="log" onclick="hubTab('log',this)">Hours</button>
         <button class="hub-tab admin-only" id="hub-tab-admin" data-hub="admin" onclick="hubTab('admin',this)">Staff</button>
       </div>
@@ -1161,6 +1220,8 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
             <h3>Leaderboard</h3>
             <div id="hrs-leaderboard-mini"><div class="hrs-lb-empty">Loading…</div></div>
             <div class="hub-sec-links">
+              <button type="button" class="hub-link" onclick="hubTab('calendar')">Calendar</button>
+              <button type="button" class="hub-link" onclick="hubTab('checkin')">Check in <span class="beta-badge">Beta</span></button>
               <button type="button" class="hub-link" onclick="hubTab('board')">Full leaderboard</button>
               <button type="button" class="hub-link" onclick="hubTab('activity')">My activity</button>
               <button type="button" class="hub-link" onclick="hubTab('news')">All announcements</button>
@@ -1174,6 +1235,42 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
         <div class="hrs-form-card reveal" style="margin-top:1.25rem">
           <h3>Upcoming</h3>
           <div id="hrs-events-preview" class="evt-list"><div class="gal-note">Loading events…</div></div>
+        </div>
+      </div>
+
+      <!-- Calendar -->
+      <div class="hub-panel" id="hub-calendar">
+        <div class="hrs-form-card reveal">
+          <div class="cal-head">
+            <h3 id="cal-title">Calendar</h3>
+            <div class="cal-nav">
+              <button type="button" class="btn-gh" onclick="hrsCalShift(-1)">Previous</button>
+              <button type="button" class="btn-gh" onclick="hrsCalToday()">Today</button>
+              <button type="button" class="btn-gh" onclick="hrsCalShift(1)">Next</button>
+            </div>
+          </div>
+          <p class="hub-muted-copy" style="margin:-.25rem 0 1rem">Meetings, service, and chapter events. Officers plan dates here; members RSVP from the day list.</p>
+          <div class="cal-weekdays" aria-hidden="true"><span>Sun</span><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span></div>
+          <div class="cal-grid" id="cal-grid"></div>
+          <div class="cal-day-panel" id="cal-day-panel"><div class="gal-note">Select a day to see events.</div></div>
+        </div>
+      </div>
+
+      <!-- Check-in (beta) -->
+      <div class="hub-panel" id="hub-checkin">
+        <div class="hrs-form-card ci-sheet reveal">
+          <div class="kicker">Check in <span class="beta-badge">Beta</span></div>
+          <h3 style="margin-top:.35rem">Mark yourself present</h3>
+          <p class="hub-muted-copy">Scan the QR at the meeting, or type the 6-character room code. Check-in is open from 30 minutes before the event until 2 hours after it starts.</p>
+          <form id="hrs-checkin-form" onsubmit="hrsMemberCheckin(event)" style="margin-top:1.25rem;text-align:left">
+            <div class="hrs-field">
+              <label class="hrs-label">Room code</label>
+              <input class="hrs-input ci-code-input" id="ci-code" maxlength="8" autocomplete="off" placeholder="A7K2MP" required oninput="this.value=this.value.toUpperCase()">
+            </div>
+            <button class="btn-g" type="submit" id="ci-submit" style="width:100%">Check in</button>
+            <div class="hrs-submit-msg" id="ci-msg"></div>
+          </form>
+          <p class="hub-muted-copy" style="margin-top:1.25rem;font-size:.9rem">If the event lists suggested hours, staff credits them after the meeting. You cannot award yourself hours.</p>
         </div>
       </div>
 
@@ -1233,7 +1330,11 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
         <div class="hub-panel" id="hub-attendance" style="margin-top:1.5rem">
           <div class="hrs-form-card">
             <h3 id="att-title">Attendance</h3>
-            <p id="att-sub" style="color:rgba(255,255,255,.45);font-size:.88rem;margin:-.5rem 0 1rem"></p>
+            <p id="att-sub" class="hub-muted-copy" style="margin:-.5rem 0 1rem"></p>
+            <div class="hub-sec-links" style="margin:0 0 1rem">
+              <button type="button" class="btn-g" onclick="hrsCreditPresentHours()">Credit suggested hours for all present</button>
+              <button type="button" class="btn-gh" onclick="hrsProjectorFromAttendance()">Open projector <span class="beta-badge">Beta</span></button>
+            </div>
             <div id="att-list"></div>
             <button type="button" class="btn-gh" style="margin-top:1rem" onclick="hrsCloseAttendance()">Close attendance</button>
           </div>
@@ -1292,12 +1393,28 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
           <div id="hrs-staff-gate-hint" class="staff-hint" style="display:none"></div>
 
           <div class="hub-admin-section">
+            <h3>Command</h3>
+            <div class="cmd-grid">
+              <div class="cmd-card"><div class="cmd-n" id="cmd-pending-members">0</div><div class="cmd-l">Pending membership</div></div>
+              <div class="cmd-card"><div class="cmd-n" id="cmd-pending-hours">0</div><div class="cmd-l">Hours to review</div></div>
+              <div class="cmd-card"><div class="cmd-n" id="cmd-unpaid">0</div><div class="cmd-l">Unpaid dues</div></div>
+              <div class="cmd-card"><div class="cmd-n" id="cmd-next-present">—</div><div class="cmd-l" id="cmd-next-label">Next meeting</div></div>
+            </div>
+            <div class="cmd-actions">
+              <button type="button" class="btn-g" onclick="hubTab('calendar')">Open calendar</button>
+              <button type="button" class="btn-gh" onclick="hrsOpenNextCheckin()">Open check-in projector <span class="beta-badge">Beta</span></button>
+              <button type="button" class="btn-gh" onclick="hrsExportRosterCsv()">Export CSV</button>
+            </div>
+          </div>
+
+          <div class="hub-admin-section">
             <h3>Pending membership</h3>
             <div id="hrs-member-queue"><div class="gal-note">No pending members.</div></div>
           </div>
 
           <div class="hub-admin-section">
             <h3>Chapter members</h3>
+            <p class="hub-muted-copy" style="margin:-.4rem 0 1rem">Mark local/state/national dues paid here. Export includes name, email, grade, dues, hours, and points.</p>
             <div id="hrs-member-roster"><div class="gal-note">Loading…</div></div>
           </div>
 
@@ -1337,6 +1454,34 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
       </div>
     </div>
 
+  </div>
+</div>
+
+<!-- Check-in projector (beta) -->
+<div id="hub-projector" aria-hidden="true">
+  <div class="proj-top">
+    <div>
+      <div class="proj-brand">Steinbrenner FBLA · Check-in <span class="beta-badge">Beta</span></div>
+      <div class="proj-title" id="proj-title">Meeting</div>
+      <div class="proj-meta" id="proj-meta"></div>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+      <button type="button" class="btn-gh" onclick="hrsRotateCheckin()">Rotate code</button>
+      <button type="button" class="btn-g" onclick="hrsCreditPresentHours()">Credit hours for present</button>
+      <button type="button" class="btn-gh" onclick="hrsEndCheckin()">End check-in</button>
+      <button type="button" class="btn-gh" onclick="hrsCloseProjector()">Close projector</button>
+    </div>
+  </div>
+  <div class="proj-stage">
+    <div class="proj-qr" id="proj-qr"><div class="gal-note" style="color:#182033">Enable check-in to show a QR code.</div></div>
+    <div>
+      <div class="proj-code" id="proj-code">————</div>
+      <p class="proj-hint">Members scan this QR or type the code in Member Hub → Check in. Open from 30 minutes before start until 2 hours after.</p>
+    </div>
+  </div>
+  <div class="proj-live">
+    <h4>Present now · <span id="proj-present-count">0</span></h4>
+    <div class="proj-present" id="proj-present-list"></div>
   </div>
 </div>
 
@@ -1919,6 +2064,19 @@ let hrsMySignups = {};
 let hrsPendingDisplayName = null;
 let hrsRemoveTarget = null; // { uid, email, name }
 let hrsAttendanceEventId = null;
+let hrsCalCursor = new Date();
+let hrsCalSelected = '';
+let hrsProjectorEventId = null;
+let hrsProjectorUnsub = null;
+let hrsRosterDocs = [];
+let hrsQueueCount = 0;
+let hrsPendingMemberCount = 0;
+
+try {
+  const u = new URL(location.href);
+  const code = (u.searchParams.get('checkin') || '').trim().toUpperCase();
+  if (code) sessionStorage.setItem('fbla-checkin-code', code);
+} catch (_) {}
 
 function hrsToast(message, isErr) {
   let el = document.getElementById('hub-toast');
@@ -1972,6 +2130,10 @@ function hrsShowDomainWarn() {
 function hrsDetachListeners() {
   hrsUnsubs.forEach(u => { try { u(); } catch (_) {} });
   hrsUnsubs = [];
+  if (hrsProjectorUnsub) {
+    try { hrsProjectorUnsub(); } catch (_) {}
+    hrsProjectorUnsub = null;
+  }
   hrsEventsCache = {};
   hrsMySignups = {};
 }
@@ -2054,7 +2216,7 @@ function hrsShowMembershipPending(user, profile) {
 }
 
 window.hubTab = function (id, btn) {
-  const primary = { overview: 1, events: 1, log: 1, admin: 1 };
+  const primary = { overview: 1, calendar: 1, events: 1, checkin: 1, log: 1, admin: 1 };
   document.querySelectorAll('.hub-tab').forEach(t => t.classList.remove('active'));
   document.querySelectorAll('.hub-panel').forEach(p => {
     if (p.id === 'hub-attendance') return;
@@ -2072,6 +2234,7 @@ window.hubTab = function (id, btn) {
   if (id !== 'events' && typeof window.hrsCloseAttendance === 'function') {
     window.hrsCloseAttendance();
   }
+  if (id === 'calendar') hrsRenderCalendar();
 };
 
 let hrsAuthModeState = 'signin';
@@ -2302,6 +2465,534 @@ function formatEventWhen(ts) {
     hour: 'numeric', minute: '2-digit'
   });
 }
+
+function hrsYmd(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
+}
+
+function hrsEventStartDate(ev) {
+  if (!ev || !ev.startAt) return null;
+  return ev.startAt.toDate ? ev.startAt.toDate() : new Date(ev.startAt);
+}
+
+function hrsMakeCheckinCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let out = '';
+  for (let i = 0; i < 6; i++) out += chars[Math.floor(Math.random() * chars.length)];
+  return out;
+}
+
+function hrsCheckinWindowOpen(ev) {
+  if (!ev || !ev.checkinEnabled || !ev.checkinCode) return false;
+  const start = ev.startAt && ev.startAt.toMillis ? ev.startAt.toMillis() : 0;
+  if (!start) return false;
+  const now = Date.now();
+  return now >= start - 30 * 60 * 1000 && now <= start + 2 * 60 * 60 * 1000;
+}
+
+function hrsEventByCheckinCode(code) {
+  const c = String(code || '').trim().toUpperCase();
+  if (!c) return null;
+  let found = null;
+  Object.keys(hrsEventsCache).forEach(id => {
+    const e = hrsEventsCache[id];
+    if (e && e.checkinEnabled && String(e.checkinCode || '').toUpperCase() === c) {
+      found = { id, e };
+    }
+  });
+  return found;
+}
+
+function hrsCheckinUrl(code) {
+  const origin = location.origin && location.origin.indexOf('http') === 0
+    ? location.origin
+    : 'https://steinbrennerfbla.com';
+  return origin + '/memberhub?checkin=' + encodeURIComponent(code);
+}
+
+function hrsStripCheckinQuery() {
+  try {
+    if (location.search && location.search.indexOf('checkin=') >= 0) {
+      history.replaceState({ page: 'hours' }, '', '/memberhub');
+    }
+    sessionStorage.removeItem('fbla-checkin-code');
+  } catch (_) {}
+}
+
+let hrsPendingAutoCheckin = false;
+function hrsResumePendingCheckin() {
+  let code = '';
+  try { code = sessionStorage.getItem('fbla-checkin-code') || ''; } catch (_) {}
+  if (!code) return;
+  const input = document.getElementById('ci-code');
+  if (input) input.value = code;
+  hubTab('checkin');
+  if (Object.keys(hrsEventsCache).length) {
+    hrsMemberCheckin({ preventDefault() {} }, true);
+  } else {
+    hrsPendingAutoCheckin = true;
+  }
+}
+
+window.hrsCalShift = function (delta) {
+  hrsCalCursor = new Date(hrsCalCursor.getFullYear(), hrsCalCursor.getMonth() + delta, 1);
+  hrsRenderCalendar();
+};
+window.hrsCalToday = function () {
+  const n = new Date();
+  hrsCalCursor = new Date(n.getFullYear(), n.getMonth(), 1);
+  hrsCalSelected = hrsYmd(n);
+  hrsRenderCalendar();
+};
+
+function hrsEventsOnDay(ymd) {
+  return Object.keys(hrsEventsCache).map(id => ({ id, e: hrsEventsCache[id] })).filter(x => {
+    const d = hrsEventStartDate(x.e);
+    return d && hrsYmd(d) === ymd;
+  }).sort((a, b) => {
+    const at = a.e.startAt && a.e.startAt.toMillis ? a.e.startAt.toMillis() : 0;
+    const bt = b.e.startAt && b.e.startAt.toMillis ? b.e.startAt.toMillis() : 0;
+    return at - bt;
+  });
+}
+
+function hrsRenderCalendar() {
+  const grid = document.getElementById('cal-grid');
+  const title = document.getElementById('cal-title');
+  if (!grid) return;
+  const year = hrsCalCursor.getFullYear();
+  const month = hrsCalCursor.getMonth();
+  if (title) {
+    title.textContent = hrsCalCursor.toLocaleString(undefined, { month: 'long', year: 'numeric' });
+  }
+  const first = new Date(year, month, 1);
+  const startPad = first.getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const today = hrsYmd(new Date());
+  if (!hrsCalSelected) hrsCalSelected = today;
+  let html = '';
+  for (let i = 0; i < startPad; i++) {
+    const d = new Date(year, month, 1 - (startPad - i));
+    html += `<button type="button" class="cal-cell muted" onclick="hrsSelectCalDay('${hrsYmd(d)}')"><span class="cal-num">${d.getDate()}</span></button>`;
+  }
+  for (let day = 1; day <= daysInMonth; day++) {
+    const ymd = hrsYmd(new Date(year, month, day));
+    const items = hrsEventsOnDay(ymd);
+    const dots = items.slice(0, 4).map(x => {
+      const t = x.e.eventType || 'other';
+      return `<span class="cal-dot ${t === 'service' ? 'service' : t === 'other' ? 'other' : ''}"></span>`;
+    }).join('');
+    const cls = ['cal-cell'];
+    if (ymd === today) cls.push('today');
+    if (ymd === hrsCalSelected) cls.push('selected');
+    html += `<button type="button" class="${cls.join(' ')}" onclick="hrsSelectCalDay('${ymd}')"><span class="cal-num">${day}</span><span class="cal-dots">${dots}</span></button>`;
+  }
+  grid.innerHTML = html;
+  const monthHas = Object.keys(hrsEventsCache).some(id => {
+    const d = hrsEventStartDate(hrsEventsCache[id]);
+    return d && d.getFullYear() === year && d.getMonth() === month;
+  });
+  hrsRenderCalDay();
+  const panel = document.getElementById('cal-day-panel');
+  if (panel && !monthHas) {
+    const note = document.createElement('div');
+    note.className = 'gal-note';
+    note.style.marginBottom = '1rem';
+    note.textContent = 'No meeting this month.';
+    panel.prepend(note);
+  }
+}
+
+window.hrsSelectCalDay = function (ymd) {
+  hrsCalSelected = ymd;
+  const d = new Date(ymd + 'T12:00:00');
+  hrsCalCursor = new Date(d.getFullYear(), d.getMonth(), 1);
+  hrsRenderCalendar();
+};
+
+function hrsRenderCalDay() {
+  const panel = document.getElementById('cal-day-panel');
+  if (!panel) return;
+  const ymd = hrsCalSelected;
+  if (!ymd) {
+    panel.innerHTML = '<div class="gal-note">Select a day to see events.</div>';
+    return;
+  }
+  const items = hrsEventsOnDay(ymd);
+  const label = new Date(ymd + 'T12:00:00').toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+  let staffBtn = '';
+  if (hrsIsStaff) {
+    staffBtn = `<button type="button" class="btn-g" onclick="hrsCalCreateOnDay('${ymd}')">Add event this day</button>`;
+  }
+  if (!items.length) {
+    panel.innerHTML = `<h3 class="hub-section-title">${escapeHtml(label)}</h3><div class="gal-note">No events this day.</div><div class="hub-sec-links" style="margin-top:1rem">${staffBtn}</div>`;
+    return;
+  }
+  panel.innerHTML = `<h3 class="hub-section-title">${escapeHtml(label)}</h3>` +
+    items.map(x => eventCardHtml(x.id, x.e)).join('') +
+    `<div class="hub-sec-links">${staffBtn}</div>`;
+}
+
+window.hrsCalCreateOnDay = function (ymd) {
+  if (!hrsIsStaff) return;
+  hubTab('events', document.querySelector('[data-hub="events"]'));
+  const dateEl = document.getElementById('ev-date');
+  if (dateEl) dateEl.value = ymd;
+  const wrap = document.getElementById('hrs-event-create-wrap');
+  if (wrap) try { wrap.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (_) {}
+};
+
+function hrsNextOpenEvent() {
+  const now = Date.now() - 30 * 60 * 1000;
+  const list = Object.keys(hrsEventsCache).map(id => ({ id, e: hrsEventsCache[id] }))
+    .filter(x => x.e.status === 'open')
+    .map(x => ({ ...x, t: x.e.startAt && x.e.startAt.toMillis ? x.e.startAt.toMillis() : 0 }))
+    .filter(x => x.t >= now)
+    .sort((a, b) => a.t - b.t);
+  return list[0] || null;
+}
+
+function hrsUpdateCommand() {
+  const pm = document.getElementById('cmd-pending-members');
+  const ph = document.getElementById('cmd-pending-hours');
+  const un = document.getElementById('cmd-unpaid');
+  const nx = document.getElementById('cmd-next-present');
+  const nl = document.getElementById('cmd-next-label');
+  if (pm) pm.textContent = String(hrsPendingMemberCount || 0);
+  if (ph) ph.textContent = String(hrsQueueCount || 0);
+  const unpaid = (hrsRosterDocs || []).filter(d => {
+    const u = d.data();
+    const st = u.membershipStatus || 'approved';
+    if (st !== 'approved') return false;
+    return (u.duesStatus || 'unpaid') !== 'paid';
+  }).length;
+  if (un) un.textContent = String(unpaid);
+  const next = hrsNextOpenEvent();
+  if (nx && nl) {
+    if (!next) {
+      nx.textContent = '—';
+      nl.textContent = 'Next meeting';
+    } else {
+      const rsvp = next.e.signupCount || 0;
+      nx.textContent = String(rsvp);
+      nl.textContent = (next.e.title || 'Next meeting') + ' · ' + formatEventWhen(next.e.startAt) + ' · RSVPs';
+    }
+  }
+}
+
+window.hrsExportRosterCsv = function () {
+  if (!hrsIsStaff) return;
+  const rows = [['Name', 'Email', 'Grade', 'Dues', 'Hours', 'Points', 'Role', 'Status']];
+  (hrsRosterDocs || []).forEach(d => {
+    const u = d.data();
+    rows.push([
+      u.displayName || '',
+      u.email || '',
+      u.grade != null ? String(u.grade) : '',
+      u.duesStatus === 'paid' ? 'paid' : 'unpaid',
+      String(u.approvedHours || 0),
+      String(u.points || 0),
+      u.role || 'member',
+      u.membershipStatus || 'approved'
+    ]);
+  });
+  const csv = rows.map(r => r.map(cell => {
+    const s = String(cell == null ? '' : cell);
+    return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s;
+  }).join(',')).join('\n');
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'steinbrenner-fbla-roster.csv';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+};
+
+window.hrsSetDues = async function (uid, status) {
+  if (!hrsIsStaff || !uid) return;
+  if (status !== 'paid' && status !== 'unpaid') return;
+  try {
+    await updateDoc(doc(db, 'users', uid), { duesStatus: status, duesNote: '' });
+    hrsToast(status === 'paid' ? 'Marked dues paid.' : 'Marked dues unpaid.');
+  } catch (err) {
+    console.error(err);
+    hrsToast('Could not update dues. Please try again.', true);
+  }
+};
+
+async function hrsDrawQr(el, url) {
+  if (!el) return;
+  el.innerHTML = '';
+  try {
+    const mod = await import('https://cdn.jsdelivr.net/npm/qrcode@1.5.4/+esm');
+    const qr = mod.default || mod;
+    const canvas = document.createElement('canvas');
+    await qr.toCanvas(canvas, url, { width: 360, margin: 1, color: { dark: '#05102a', light: '#ffffff' } });
+    el.appendChild(canvas);
+  } catch (err) {
+    console.error(err);
+    el.innerHTML = '<p class="proj-hint" style="color:#182033">Could not draw the QR code. Members can still type the room code.</p>';
+  }
+}
+
+function hrsPaintProjectorPresent(docs) {
+  const list = document.getElementById('proj-present-list');
+  const count = document.getElementById('proj-present-count');
+  const present = (docs || []).filter(d => d.data().attendance === 'present' && d.data().status !== 'cancelled');
+  if (count) count.textContent = String(present.length);
+  if (!list) return;
+  if (!present.length) {
+    list.innerHTML = '<span class="hub-muted-copy">No one has checked in yet.</span>';
+    return;
+  }
+  list.innerHTML = present.map(d => {
+    const s = d.data();
+    return `<span class="proj-chip">${escapeHtml(s.displayName || s.email || 'Member')}</span>`;
+  }).join('');
+}
+
+async function hrsSubscribeProjector(eventId) {
+  if (hrsProjectorUnsub) {
+    try { hrsProjectorUnsub(); } catch (_) {}
+    hrsProjectorUnsub = null;
+  }
+  hrsProjectorUnsub = onSnapshot(query(
+    collection(db, 'eventSignups'),
+    where('eventId', '==', eventId),
+    limit(120)
+  ), snap => {
+    hrsPaintProjectorPresent(snap.docs || []);
+  }, err => console.error(err));
+}
+
+window.hrsOpenCheckinProjector = async function (eventId) {
+  if (!hrsIsStaff || !eventId) return;
+  const ev = hrsEventsCache[eventId];
+  if (!ev) return;
+  hrsProjectorEventId = eventId;
+  let code = ev.checkinCode;
+  if (!ev.checkinEnabled || !code) {
+    code = hrsMakeCheckinCode();
+    try {
+      await updateDoc(doc(db, 'chapterEvents', eventId), {
+        checkinEnabled: true,
+        checkinCode: code,
+        checkinRotatedAt: serverTimestamp()
+      });
+      hrsEventsCache[eventId] = Object.assign({}, ev, { checkinEnabled: true, checkinCode: code });
+    } catch (err) {
+      console.error(err);
+      hrsToast('Could not start check-in. Please try again.', true);
+      return;
+    }
+  }
+  document.body.classList.add('hub-projector');
+  const proj = document.getElementById('hub-projector');
+  if (proj) proj.setAttribute('aria-hidden', 'false');
+  const title = document.getElementById('proj-title');
+  const meta = document.getElementById('proj-meta');
+  const codeEl = document.getElementById('proj-code');
+  if (title) title.textContent = ev.title || 'Meeting';
+  if (meta) meta.textContent = formatEventWhen(ev.startAt) + (ev.location ? ' · ' + ev.location : '');
+  if (codeEl) codeEl.textContent = code;
+  await hrsDrawQr(document.getElementById('proj-qr'), hrsCheckinUrl(code));
+  await hrsSubscribeProjector(eventId);
+};
+
+window.hrsOpenNextCheckin = function () {
+  const next = hrsNextOpenEvent();
+  if (!next) {
+    hrsToast('No upcoming event. Add one on the calendar first.', true);
+    hubTab('calendar');
+    return;
+  }
+  hrsOpenCheckinProjector(next.id);
+};
+
+window.hrsProjectorFromAttendance = function () {
+  if (hrsAttendanceEventId) hrsOpenCheckinProjector(hrsAttendanceEventId);
+};
+
+window.hrsRotateCheckin = async function () {
+  if (!hrsIsStaff || !hrsProjectorEventId) return;
+  const code = hrsMakeCheckinCode();
+  try {
+    await updateDoc(doc(db, 'chapterEvents', hrsProjectorEventId), {
+      checkinEnabled: true,
+      checkinCode: code,
+      checkinRotatedAt: serverTimestamp()
+    });
+    if (hrsEventsCache[hrsProjectorEventId]) {
+      hrsEventsCache[hrsProjectorEventId].checkinCode = code;
+      hrsEventsCache[hrsProjectorEventId].checkinEnabled = true;
+    }
+    const codeEl = document.getElementById('proj-code');
+    if (codeEl) codeEl.textContent = code;
+    await hrsDrawQr(document.getElementById('proj-qr'), hrsCheckinUrl(code));
+    hrsToast('Code rotated. Old QR codes no longer work.');
+  } catch (err) {
+    console.error(err);
+    hrsToast('Could not rotate the code.', true);
+  }
+};
+
+window.hrsEndCheckin = async function () {
+  if (!hrsIsStaff || !hrsProjectorEventId) return;
+  try {
+    await updateDoc(doc(db, 'chapterEvents', hrsProjectorEventId), { checkinEnabled: false });
+    if (hrsEventsCache[hrsProjectorEventId]) hrsEventsCache[hrsProjectorEventId].checkinEnabled = false;
+    hrsToast('Check-in ended.');
+    hrsCloseProjector();
+  } catch (err) {
+    console.error(err);
+    hrsToast('Could not end check-in.', true);
+  }
+};
+
+window.hrsCloseProjector = function () {
+  document.body.classList.remove('hub-projector');
+  const proj = document.getElementById('hub-projector');
+  if (proj) proj.setAttribute('aria-hidden', 'true');
+  if (hrsProjectorUnsub) {
+    try { hrsProjectorUnsub(); } catch (_) {}
+    hrsProjectorUnsub = null;
+  }
+};
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && document.body.classList.contains('hub-projector')) {
+    hrsCloseProjector();
+  }
+});
+
+window.hrsMemberCheckin = async function (event, silent) {
+  if (event && event.preventDefault) event.preventDefault();
+  if (!hrsUser) return;
+  const input = document.getElementById('ci-code');
+  const msg = document.getElementById('ci-msg');
+  const btn = document.getElementById('ci-submit');
+  const code = String((input && input.value) || '').trim().toUpperCase();
+  const setMsg = (text, ok) => {
+    if (!msg) return;
+    msg.innerHTML = text
+      ? '<div class="' + (ok ? 'sbadge' : 'hrs-sub-note') + '">' + escapeHtml(text) + '</div>'
+      : '';
+  };
+  if (!code) {
+    setMsg('Enter the room code from the meeting.', false);
+    return;
+  }
+  const found = hrsEventByCheckinCode(code);
+  if (!found) {
+    setMsg('That code is not active. Ask an officer for the current code.', false);
+    return;
+  }
+  if (!hrsCheckinWindowOpen(found.e)) {
+    setMsg('Check-in is only open from 30 minutes before the event until 2 hours after it starts.', false);
+    return;
+  }
+  const eventId = found.id;
+  const signupId = eventId + '_' + hrsUser.uid;
+  const signupRef = doc(db, 'eventSignups', signupId);
+  const eventRef = doc(db, 'chapterEvents', eventId);
+  if (btn) { btn.disabled = true; btn.textContent = 'Checking in…'; }
+  try {
+    const existing = await getDoc(signupRef);
+    const data = existing.exists() ? existing.data() : null;
+    if (data && data.attendance === 'present') {
+      setMsg('You are already marked present for ' + (found.e.title || 'this event') + '.', true);
+      hrsStripCheckinQuery();
+      return;
+    }
+    const payload = {
+      attendance: 'present',
+      attendanceAt: serverTimestamp(),
+      attendanceBy: 'self',
+      lastCheckinCode: code,
+      status: 'signed_up'
+    };
+    const batch = writeBatch(db);
+    if (existing.exists()) {
+      batch.update(signupRef, payload);
+      if (data.status === 'cancelled') {
+        batch.update(eventRef, { signupCount: increment(1) });
+      }
+    } else {
+      batch.set(signupRef, {
+        eventId,
+        uid: hrsUser.uid,
+        email: hrsUser.email,
+        displayName: hrsUser.displayName || hrsUser.email,
+        status: 'signed_up',
+        signedUpAt: serverTimestamp(),
+        attendance: 'present',
+        attendanceAt: serverTimestamp(),
+        attendanceBy: 'self',
+        lastCheckinCode: code
+      });
+      batch.update(eventRef, { signupCount: increment(1) });
+    }
+    await batch.commit();
+    hrsMySignups[eventId] = signupId;
+    setMsg('You are marked present' + (found.e.title ? ' for ' + found.e.title : '') + '.', true);
+    hrsStripCheckinQuery();
+    if (found.e.hoursCredit > 0) {
+      hrsToast('You are present. Hours are credited after the meeting.');
+    } else {
+      hrsToast('You are marked present.');
+    }
+  } catch (err) {
+    console.error(err);
+    if (!silent) setMsg('Could not check in. Confirm you are an approved member and the meeting is open.', false);
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Check in'; }
+  }
+};
+
+window.hrsCreditPresentHours = async function (eventId) {
+  const id = eventId || hrsProjectorEventId || hrsAttendanceEventId;
+  if (!hrsIsStaff || !id) return;
+  const ev = hrsEventsCache[id];
+  const hours = ev && Number(ev.hoursCredit) > 0 ? Number(ev.hoursCredit) : 0;
+  if (!hours) {
+    hrsToast('This event has no suggested hours to credit.', true);
+    return;
+  }
+  try {
+    const snap = await getDocs(query(
+      collection(db, 'eventSignups'),
+      where('eventId', '==', id),
+      limit(120)
+    ));
+    const present = (snap.docs || []).filter(d => {
+      const s = d.data();
+      return s.status !== 'cancelled' && s.attendance === 'present' && !s.hoursCredited;
+    });
+    if (!present.length) {
+      hrsToast('No present members left to credit.');
+      return;
+    }
+    if (!confirm('Credit ' + hours + ' hour(s) to ' + present.length + ' present member(s)?')) return;
+    const chunk = present.slice(0, 200);
+    const batch = writeBatch(db);
+    chunk.forEach(d => {
+      const s = d.data();
+      batch.update(d.ref, { hoursCredited: true });
+      batch.update(doc(db, 'users', s.uid), {
+        approvedHours: increment(hours),
+        points: increment(hours * 10)
+      });
+    });
+    await batch.commit();
+    hrsToast('Credited ' + hours + ' hour(s) to ' + chunk.length + ' member(s).');
+  } catch (err) {
+    console.error(err);
+    hrsToast('Could not credit hours. Please try again.', true);
+  }
+};
 
 function attachPortalListeners(user) {
   const userRef = doc(db, 'users', user.uid);
@@ -2589,6 +3280,7 @@ async function hrsEnterVerifiedHub(user) {
   setStaffUI(hrsIsStaff);
   hubTab('overview');
   attachPortalListeners(user);
+  hrsResumePendingCheckin();
 }
 
 window.hrsRefreshMembership = async function () {
@@ -2760,6 +3452,8 @@ function renderMemberQueueFromDocs(docs) {
   const el = document.getElementById('hrs-member-queue');
   if (!el) return;
   const pending = (docs || []).filter(d => (d.data().membershipStatus || '') === 'pending');
+  hrsPendingMemberCount = pending.length;
+  hrsUpdateCommand();
   pending.sort((a, b) => {
     const at = a.data().createdAt && a.data().createdAt.toMillis ? a.data().createdAt.toMillis() : 0;
     const bt = b.data().createdAt && b.data().createdAt.toMillis ? b.data().createdAt.toMillis() : 0;
@@ -2791,6 +3485,8 @@ function renderMemberQueueFromDocs(docs) {
 
 function renderMemberRoster(snap) {
   const el = document.getElementById('hrs-member-roster');
+  hrsRosterDocs = snap && snap.docs ? snap.docs.slice() : [];
+  hrsUpdateCommand();
   if (!el) return;
   const docs = (snap.docs || []).filter(d => {
     const st = d.data().membershipStatus || 'approved';
@@ -2817,17 +3513,25 @@ function renderMemberRoster(snap) {
     } else if (isSelf) {
       actions = '<span style="color:rgba(255,255,255,.35);font-size:.75rem">You</span>';
     }
+    const dues = (u.duesStatus || 'unpaid') === 'paid' ? 'paid' : 'unpaid';
+    let duesCell = escapeHtml(dues);
+    if (hrsIsStaff && status === 'approved') {
+      duesCell = dues === 'paid'
+        ? `paid · <button type="button" class="btn-gh" style="padding:.35rem .6rem;font-size:.7rem;min-height:0;margin-left:.35rem" onclick="hrsSetDues('${uid}','unpaid')">Unpaid</button>`
+        : `unpaid · <button type="button" class="btn-g" style="padding:.35rem .6rem;font-size:.7rem;min-height:0;margin-left:.35rem" onclick="hrsSetDues('${uid}','paid')">Paid</button>`;
+    }
     return `<tr>
       <td>${escapeHtml(u.displayName || '—')}</td>
       <td>${escapeHtml(u.email || '')}</td>
       <td>${u.grade != null && u.grade !== '' ? escapeHtml(String(u.grade)) : '—'}</td>
       <td>${escapeHtml(status)}</td>
+      <td>${duesCell}</td>
       <td>${escapeHtml(role)}</td>
       <td>${actions}</td>
     </tr>`;
   }).join('');
   el.innerHTML = `<div class="roster-wrap"><table class="roster-table">
-    <thead><tr><th>Name</th><th>Email</th><th>Grade</th><th>Status</th><th>Role</th><th></th></tr></thead>
+    <thead><tr><th>Name</th><th>Email</th><th>Grade</th><th>Status</th><th>Dues</th><th>Role</th><th></th></tr></thead>
     <tbody>${rows}</tbody>
   </table></div>`;
 }
@@ -3032,8 +3736,10 @@ function renderMySubmissions(snap) {
 
 function renderQueue(snap) {
   const el = document.getElementById('hrs-queue');
-  if (!el) return;
   const docs = snap.docs || [];
+  hrsQueueCount = docs.length;
+  hrsUpdateCommand();
+  if (!el) return;
   if (!docs.length) { el.innerHTML = '<div class="gal-note">No pending submissions.</div>'; return; }
   el.innerHTML = docs.map(d => {
     const s = d.data();
@@ -3096,15 +3802,18 @@ function eventCardHtml(id, e, opts) {
   const adminAtt = (hrsIsStaff && !(opts && opts.mine))
     ? `<button class="btn-gh" style="padding:.55rem .8rem;font-size:.7rem" onclick="hrsOpenAttendance('${id}')">Attendance</button>`
     : '';
+  const adminCi = (hrsIsStaff && !(opts && opts.mine) && e.status === 'open')
+    ? `<button class="btn-g" style="padding:.55rem .8rem;font-size:.7rem" onclick="hrsOpenCheckinProjector('${id}')">Check-in <span class="beta-badge">Beta</span></button>`
+    : '';
 
   return `<div class="evt-card${full || closed ? ' evt-full' : ''}">
     <div>
       <span class="evt-type">${escapeHtml(typeLabel)}</span>
       <h4>${escapeHtml(e.title)}</h4>
-      <div class="evt-meta">${formatEventWhen(e.startAt)} · ${escapeHtml(e.location || 'TBD')}${hoursNote}<br>${count}${cap ? '/' + cap : ''} signed up</div>
+      <div class="evt-meta">${formatEventWhen(e.startAt)} · ${escapeHtml(e.location || 'TBD')}${hoursNote}<br>${count}${cap ? '/' + cap : ''} signed up${e.checkinEnabled ? ' · check-in open' : ''}</div>
       <div class="evt-desc">${escapeHtml(e.description || '')}</div>
     </div>
-    <div class="evt-actions">${action}${adminAtt}${adminClose}${adminDel}</div>
+    <div class="evt-actions">${action}${adminCi}${adminAtt}${adminClose}${adminDel}</div>
   </div>`;
 }
 
@@ -3150,6 +3859,12 @@ function renderEvents(snap) {
   }
 
   paintMyRsvps();
+  hrsRenderCalendar();
+  hrsUpdateCommand();
+  if (hrsPendingAutoCheckin) {
+    hrsPendingAutoCheckin = false;
+    hrsMemberCheckin({ preventDefault() {} }, true);
+  }
 }
 
 function paintMyRsvps() {

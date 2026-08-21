@@ -21,8 +21,10 @@ rules_version = '2';
 // 4) Vercel: redeploy so index.html + vercel.json rewrites ship.
 //    Share link (standalone app): https://steinbrennerfbla.com/memberhub
 // 5) Manual tests:
-//    - Non-staff member: Home / Events / Hours; secondary news/board/activity; no Staff composers
-//    - Staff (admins/{email}): post announcement (News + Staff forms), create event with type+date+time
+//    - Non-staff member: Home / Calendar / Events / Check in / Hours
+//    - Staff: Command counts, dues Paid/Unpaid, CSV export
+//    - Check-in (beta): projector QR + room code; member ?checkin=CODE or type code
+//    - Credit suggested hours for present (once; hoursCredited guard)
 //    - Attendance panel: mark present/absent/excused on a signup
 //    - Remove member: confirm email, RSVPs cancelled, users doc deleted, roster refreshes
 //    - Failed announce without admins doc → permission-denied message
@@ -78,6 +80,21 @@ service cloud.firestore {
           && get(userPath(request.auth.uid)).data.membershipStatus == 'approved'
         )
       );
+    }
+
+    function eventPath(eventId) {
+      return /databases/$(database)/documents/chapterEvents/$(eventId);
+    }
+
+    function checkinWindowOpen(eventId) {
+      let ev = get(eventPath(eventId)).data;
+      return ev.checkinEnabled == true
+        && ev.checkinCode is string
+        && ev.checkinCode.size() >= 4
+        && ev.checkinCode.size() <= 8
+        && ev.startAt is timestamp
+        && request.time >= ev.startAt - duration.value(30, 'm')
+        && request.time <= ev.startAt + duration.value(2, 'h');
     }
 
     // Console-managed staff roster. Clients may only GET their own doc.
@@ -164,6 +181,14 @@ service cloud.firestore {
         )
         ||
         (
+          // Staff: dues Paid / Unpaid
+          isStaff() &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['duesStatus', 'duesNote']) &&
+          request.resource.data.duesStatus in ['unpaid', 'paid']
+        )
+        ||
+        (
           // Staff syncing their own role badge from admins roster
           isSelf(uid) && isStaff() &&
           request.resource.data.diff(resource.data).affectedKeys()
@@ -228,6 +253,8 @@ service cloud.firestore {
         && request.resource.data.createdBy == request.auth.uid
         && request.resource.data.eventType in ['meeting', 'service', 'other'];
 
+      // Staff may add check-in fields (checkinEnabled, checkinCode, checkinRotatedAt, endAt)
+      // as long as createdBy is not reassigned.
       allow update: if isStaff()
         && request.resource.data.createdBy == resource.data.createdBy;
 
@@ -250,7 +277,15 @@ service cloud.firestore {
         && request.resource.data.uid == request.auth.uid
         && request.resource.data.email == request.auth.token.email
         && request.resource.data.status == 'signed_up'
-        && request.resource.data.eventId is string;
+        && request.resource.data.eventId is string
+        && (
+          !request.resource.data.keys().hasAny(['attendance'])
+          || (
+            request.resource.data.attendance == 'present'
+            && request.resource.data.lastCheckinCode == get(eventPath(request.resource.data.eventId)).data.checkinCode
+            && checkinWindowOpen(request.resource.data.eventId)
+          )
+        );
 
       allow update: if isSignedIn() && (
         (
@@ -263,10 +298,22 @@ service cloud.firestore {
         )
         ||
         (
-          // Staff: cancel any signup (member removal) or set attendance
+          // Member self check-in (QR or room code) during the meeting window
+          isApprovedMember()
+          && resource.data.uid == request.auth.uid
+          && request.resource.data.status == 'signed_up'
+          && request.resource.data.attendance == 'present'
+          && request.resource.data.lastCheckinCode == get(eventPath(resource.data.eventId)).data.checkinCode
+          && checkinWindowOpen(resource.data.eventId)
+          && request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['attendance', 'attendanceAt', 'attendanceBy', 'lastCheckinCode', 'status'])
+        )
+        ||
+        (
+          // Staff: cancel signup, set attendance, or mark hours credited
           isStaff()
           && request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['status', 'attendance', 'attendanceAt', 'attendanceBy'])
+            .hasOnly(['status', 'attendance', 'attendanceAt', 'attendanceBy', 'hoursCredited'])
         )
       );
 
