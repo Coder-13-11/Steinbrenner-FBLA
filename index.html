@@ -1071,6 +1071,7 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
         <div class="kicker">Member Hub</div>
         <h2>Opening your hub…</h2>
         <p>Checking for a saved sign-in.</p>
+        <button type="button" class="btn-gh" style="margin-top:1.25rem" onclick="hrsLeaveBootToSignIn()">Continue to sign in</button>
       </div>
     </div>
 
@@ -2025,6 +2026,30 @@ function initReveal(){
   els.forEach(el=>obs.observe(el));
 }
 initReveal();
+
+window.hrsLeaveBootToSignIn = function () {
+  const inn = document.getElementById('hrs-signedin');
+  const pend = document.getElementById('hrs-pending');
+  const ver = document.getElementById('hrs-verify');
+  const onb = document.getElementById('hrs-onboarding');
+  if (inn && inn.style.display !== 'none') return;
+  if (pend && pend.style.display !== 'none') return;
+  if (ver && ver.style.display !== 'none') return;
+  if (onb && onb.style.display !== 'none') return;
+  if (typeof hrsShow === 'function') {
+    hrsShow('out');
+    return;
+  }
+  const boot = document.getElementById('hrs-auth-boot');
+  const out = document.getElementById('hrs-signedout');
+  if (boot) boot.style.display = 'none';
+  if (out) out.style.display = '';
+};
+
+(function hrsBootWatchdog() {
+  if (typeof isMemberHubPath !== 'function' || !isMemberHubPath()) return;
+  setTimeout(function () { window.hrsLeaveBootToSignIn(); }, 5000);
+})();
 </script>
 
 <script type="module">
@@ -3304,6 +3329,7 @@ async function hrsEnterVerifiedHub(user) {
   } catch (err) {
     console.error('Failed to sync user profile', err);
     hrsToast('Could not load your profile. Please try again.', true);
+    hrsShow('out');
     return;
   }
 
@@ -3392,10 +3418,8 @@ function hrsSyncPublicHubLink(signedIn) {
 if (auth) {
   hrsShowDomainWarn();
   if (typeof isMemberHubPath === 'function' && isMemberHubPath()) hrsShow('boot');
-  const startAuth = async () => {
-    try { await setPersistence(auth, browserLocalPersistence); } catch (_) {}
-    try { if (auth.authStateReady) await auth.authStateReady(); } catch (_) {}
-    onAuthStateChanged(auth, async (user) => {
+  try { setPersistence(auth, browserLocalPersistence).catch(function () {}); } catch (_) {}
+  onAuthStateChanged(auth, async (user) => {
     hrsDetachListeners();
     setStaffUI(false);
     hrsSyncPublicHubLink(!!user);
@@ -3426,8 +3450,8 @@ if (auth) {
 
     await hrsEnterVerifiedHub(user);
   });
-  };
-  startAuth();
+} else if (typeof isMemberHubPath === 'function' && isMemberHubPath()) {
+  hrsLeaveBootToSignIn();
 }
 
 window.hrsCompleteOnboarding = async function (event) {
