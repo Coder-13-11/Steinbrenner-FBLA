@@ -1065,8 +1065,17 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
   <section class="pb"><div class="pb-bg"></div><h1>Member <span>Hub</span></h1><p class="sub">Approved members · chapter announcements · events · hours · leaderboard.</p><div class="gl"></div></section>
   <div class="hrs-body">
 
+    <!-- Auth restore (avoid flashing Sign In for a saved session) -->
+    <div id="hrs-auth-boot">
+      <div class="hrs-pending-card reveal">
+        <div class="kicker">Member Hub</div>
+        <h2>Opening your hub…</h2>
+        <p>Checking for a saved sign-in.</p>
+      </div>
+    </div>
+
     <!-- Signed out -->
-    <div id="hrs-signedout">
+    <div id="hrs-signedout" style="display:none">
       <div class="hrs-pitch reveal">
         <div class="kicker">Member Portal</div>
         <h2 class="big-h" style="font-size:clamp(2.5rem,5vw,4.5rem)">Chapter tools <span class="dim">in one login</span></h2>
@@ -1171,6 +1180,14 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
         <div class="hrs-verify-actions">
           <button class="btn-g" type="button" onclick="hrsRefreshMembership()">Check status</button>
           <button class="btn-gh" type="button" onclick="hrsSignOut()">Sign out</button>
+        </div>
+        <div id="pending-reapply-wrap" style="display:none;margin-top:1.5rem;text-align:left">
+          <p class="hub-muted-copy">This is not a permanent ban. Tell officers what changed, then they can review you again.</p>
+          <div class="hrs-field">
+            <label class="hrs-label">Message to officers</label>
+            <textarea class="hrs-input" id="pending-reapply-note" maxlength="500" placeholder="Why should the officer team review your membership again?"></textarea>
+          </div>
+          <button class="btn-g" type="button" id="pending-reapply-btn" onclick="hrsReapplyMembership()">Ask officers to review again</button>
         </div>
         <div class="hrs-verify-msg" id="pending-msg"></div>
       </div>
@@ -2016,12 +2033,12 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/fireba
 import {
   getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged,
   createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile,
-  sendEmailVerification
+  sendEmailVerification, setPersistence, browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
 import {
   initializeFirestore, doc, getDoc, getDocFromServer, setDoc, updateDoc, addDoc, deleteDoc, collection,
   query, where, orderBy, limit, onSnapshot, getDocs, serverTimestamp, writeBatch, increment, Timestamp,
-  enableNetwork
+  enableNetwork, deleteField
 } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
 import {
   getStorage, ref, uploadBytes, getDownloadURL
@@ -2180,11 +2197,13 @@ function hrsSetRoleBadge(role) {
 }
 
 function hrsShow(view) {
+  const boot = document.getElementById('hrs-auth-boot');
   const out = document.getElementById('hrs-signedout');
   const ver = document.getElementById('hrs-verify');
   const onb = document.getElementById('hrs-onboarding');
   const pend = document.getElementById('hrs-pending');
   const inn = document.getElementById('hrs-signedin');
+  if (boot) boot.style.display = view === 'boot' ? '' : 'none';
   if (out) out.style.display = view === 'out' ? '' : 'none';
   if (ver) ver.style.display = view === 'verify' ? '' : 'none';
   if (onb) onb.style.display = view === 'onboard' ? '' : 'none';
@@ -2196,22 +2215,33 @@ function hrsShow(view) {
 function hrsShowMembershipPending(user, profile) {
   const status = (profile && profile.membershipStatus) || 'pending';
   const rejected = status === 'rejected';
+  const appeal = !rejected && !!(profile && profile.membershipAppealAt);
   const title = document.getElementById('pending-title');
   const copy = document.getElementById('pending-copy');
   const kicker = document.getElementById('pending-kicker');
   const emailEl = document.getElementById('pending-email');
   const msg = document.getElementById('pending-msg');
-  if (kicker) kicker.textContent = rejected ? 'Not approved' : 'Membership';
-  if (title) title.textContent = rejected ? 'Membership not approved' : 'Awaiting adviser approval';
+  if (kicker) kicker.textContent = rejected ? 'Not approved' : (appeal ? 'Review again' : 'Membership');
+  if (title) {
+    title.textContent = rejected
+      ? 'Membership not approved'
+      : (appeal ? 'Officers are reviewing again' : 'Awaiting adviser approval');
+  }
   if (copy) {
-    copy.textContent = rejected
-      ? ((profile && profile.membershipNote)
-          ? ('Note from staff: ' + profile.membershipNote)
-          : 'Your request was not approved. Contact an adviser if you think this is a mistake.')
-      : 'Your profile has been submitted. An adviser or officer will review your request. After approval, you can use announcements, events, and hour logging.';
+    if (rejected) {
+      copy.textContent = (profile && profile.membershipNote)
+        ? ('Note from staff: ' + profile.membershipNote + ' This is not a permanent ban — you can ask officers to review you again.')
+        : 'Your request was not approved. This is not a permanent ban — you can ask officers to review you again.';
+    } else if (appeal) {
+      copy.textContent = 'Your note was sent to the officer team. After they review, you will be able to use Member Hub. This is not a ban.';
+    } else {
+      copy.textContent = 'Your profile has been submitted. An adviser or officer will review your request. After approval, you can use announcements, events, and hour logging.';
+    }
   }
   if (emailEl) emailEl.textContent = (user && user.email) || '';
   if (msg) { msg.textContent = ''; msg.className = 'hrs-verify-msg'; }
+  const reapply = document.getElementById('pending-reapply-wrap');
+  if (reapply) reapply.style.display = rejected ? '' : 'none';
   hrsShow('pending');
 }
 
@@ -2900,7 +2930,16 @@ window.hrsMemberCheckin = async function (event, silent) {
   const eventRef = doc(db, 'chapterEvents', eventId);
   if (btn) { btn.disabled = true; btn.textContent = 'Checking in…'; }
   try {
-    const existing = await getDoc(signupRef);
+    let existing;
+    try {
+      existing = await getDoc(signupRef);
+    } catch (getErr) {
+      if (getErr && getErr.code === 'permission-denied') {
+        existing = { exists: () => false, data: () => null };
+      } else {
+        throw getErr;
+      }
+    }
     const data = existing.exists() ? existing.data() : null;
     if (data && data.attendance === 'present') {
       setMsg('You are already marked present for ' + (found.e.title || 'this event') + '.', true);
@@ -2914,28 +2953,30 @@ window.hrsMemberCheckin = async function (event, silent) {
       lastCheckinCode: code,
       status: 'signed_up'
     };
-    const batch = writeBatch(db);
-    if (existing.exists()) {
-      batch.update(signupRef, payload);
-      if (data.status === 'cancelled') {
-        batch.update(eventRef, { signupCount: increment(1) });
+    const createPayload = {
+      eventId,
+      uid: hrsUser.uid,
+      email: hrsUser.email,
+      displayName: hrsUser.displayName || hrsUser.email,
+      status: 'signed_up',
+      signedUpAt: serverTimestamp(),
+      attendance: 'present',
+      attendanceAt: serverTimestamp(),
+      attendanceBy: 'self',
+      lastCheckinCode: code
+    };
+    const wasCancelled = !!(data && data.status === 'cancelled');
+    try {
+      await updateDoc(signupRef, payload);
+      if (wasCancelled) {
+        try { await updateDoc(eventRef, { signupCount: increment(1) }); } catch (_) {}
       }
-    } else {
-      batch.set(signupRef, {
-        eventId,
-        uid: hrsUser.uid,
-        email: hrsUser.email,
-        displayName: hrsUser.displayName || hrsUser.email,
-        status: 'signed_up',
-        signedUpAt: serverTimestamp(),
-        attendance: 'present',
-        attendanceAt: serverTimestamp(),
-        attendanceBy: 'self',
-        lastCheckinCode: code
-      });
-      batch.update(eventRef, { signupCount: increment(1) });
+    } catch (writeErr) {
+      const wcode = writeErr && writeErr.code;
+      if (wcode !== 'not-found' && wcode !== 'permission-denied') throw writeErr;
+      await setDoc(signupRef, createPayload);
+      try { await updateDoc(eventRef, { signupCount: increment(1) }); } catch (_) {}
     }
-    await batch.commit();
     hrsMySignups[eventId] = signupId;
     setMsg('You are marked present' + (found.e.title ? ' for ' + found.e.title : '') + '.', true);
     hrsStripCheckinQuery();
@@ -2946,7 +2987,13 @@ window.hrsMemberCheckin = async function (event, silent) {
     }
   } catch (err) {
     console.error(err);
-    if (!silent) setMsg('Could not check in. Confirm you are an approved member and the meeting is open.', false);
+    if (!silent) {
+      const errCode = err && err.code;
+      const detail = errCode === 'permission-denied'
+        ? 'Check-in was blocked for this account. Confirm you are an approved member and that check-in is still open, then try again.'
+        : 'Could not check in. Confirm you are an approved member and the meeting is open.';
+      setMsg(detail, false);
+    }
   } finally {
     if (btn) { btn.disabled = false; btn.textContent = 'Check in'; }
   }
@@ -3302,17 +3349,62 @@ window.hrsRefreshMembership = async function () {
   }
 };
 
+window.hrsReapplyMembership = async function () {
+  if (!hrsUser || !db) return;
+  const noteEl = document.getElementById('pending-reapply-note');
+  const btn = document.getElementById('pending-reapply-btn');
+  const msg = document.getElementById('pending-msg');
+  const note = (noteEl && noteEl.value ? noteEl.value : '').trim();
+  if (note.length < 10) {
+    if (msg) {
+      msg.textContent = 'Write a short note for officers (at least a sentence).';
+      msg.className = 'hrs-verify-msg err';
+    }
+    return;
+  }
+  if (btn) { btn.disabled = true; btn.textContent = 'Sending…'; }
+  try {
+    await updateDoc(doc(db, 'users', hrsUser.uid), {
+      membershipStatus: 'pending',
+      membershipNote: note.slice(0, 500),
+      membershipAppealAt: serverTimestamp()
+    });
+    hrsToast('Officers will see your request again.');
+    await hrsEnterVerifiedHub(hrsUser);
+  } catch (err) {
+    console.error(err);
+    if (msg) {
+      msg.textContent = 'Could not resubmit. Please try again.';
+      msg.className = 'hrs-verify-msg err';
+    }
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Ask officers to review again'; }
+  }
+};
+
+function hrsSyncPublicHubLink(signedIn) {
+  const label = signedIn ? 'Open Hub' : 'Member Hub';
+  document.querySelectorAll('a[href="/memberhub"]').forEach(a => {
+    a.textContent = label;
+  });
+}
+
 if (auth) {
   hrsShowDomainWarn();
-  onAuthStateChanged(auth, async (user) => {
+  if (typeof isMemberHubPath === 'function' && isMemberHubPath()) hrsShow('boot');
+  const startAuth = async () => {
+    try { await setPersistence(auth, browserLocalPersistence); } catch (_) {}
+    try { if (auth.authStateReady) await auth.authStateReady(); } catch (_) {}
+    onAuthStateChanged(auth, async (user) => {
     hrsDetachListeners();
     setStaffUI(false);
+    hrsSyncPublicHubLink(!!user);
 
     if (!user) {
       hrsUser = null;
       hrsIsStaff = false;
       hrsStaffRole = '';
-      hrsShow('out');
+      if (typeof isMemberHubPath === 'function' && isMemberHubPath()) hrsShow('out');
       return;
     }
 
@@ -3323,12 +3415,19 @@ if (auth) {
     }
 
     if (!user.emailVerified) {
-      hrsShowVerifyPending(user);
+      if (typeof isMemberHubPath === 'function' && isMemberHubPath()) hrsShowVerifyPending(user);
+      return;
+    }
+
+    if (typeof isMemberHubPath === 'function' && !isMemberHubPath()) {
+      hrsUser = user;
       return;
     }
 
     await hrsEnterVerifiedHub(user);
   });
+  };
+  startAuth();
 }
 
 window.hrsCompleteOnboarding = async function (event) {
@@ -3455,6 +3554,9 @@ function renderMemberQueueFromDocs(docs) {
   hrsPendingMemberCount = pending.length;
   hrsUpdateCommand();
   pending.sort((a, b) => {
+    const aAppeal = a.data().membershipAppealAt ? 1 : 0;
+    const bAppeal = b.data().membershipAppealAt ? 1 : 0;
+    if (aAppeal !== bAppeal) return bAppeal - aAppeal;
     const at = a.data().createdAt && a.data().createdAt.toMillis ? a.data().createdAt.toMillis() : 0;
     const bt = b.data().createdAt && b.data().createdAt.toMillis ? b.data().createdAt.toMillis() : 0;
     return at - bt;
@@ -3466,13 +3568,15 @@ function renderMemberQueueFromDocs(docs) {
   el.innerHTML = pending.map(d => {
     const u = d.data();
     const id = d.id;
+    const appeal = !!u.membershipAppealAt;
     const interests = (u.interests || []).join(', ');
     return `<div class="member-queue-row">
       <div class="member-queue-top">
         <div>
-          <div class="hrs-queue-name">${escapeHtml(u.displayName || u.email || 'Member')}</div>
+          <div class="hrs-queue-name">${escapeHtml(u.displayName || u.email || 'Member')}${appeal ? ' <span class="beta-badge">Review again</span>' : ''}</div>
           <div class="hrs-queue-meta">${escapeHtml(u.email || '')}${u.grade ? ' · Grade ' + escapeHtml(String(u.grade)) : ''}${u.instagram ? ' · @' + escapeHtml(u.instagram) : ''}</div>
           ${interests ? `<div class="hrs-queue-meta" style="margin-top:.35rem">Interests: ${escapeHtml(interests)}</div>` : ''}
+          ${u.membershipNote ? `<div class="hrs-queue-meta" style="margin-top:.35rem">${appeal ? 'Message from member: ' : 'Note: '}${escapeHtml(u.membershipNote)}</div>` : ''}
         </div>
       </div>
       <div class="member-queue-actions">
@@ -3611,7 +3715,8 @@ window.hrsApproveMember = async function (uid) {
       membershipStatus: 'approved',
       membershipReviewedBy: hrsUser.email,
       membershipReviewedAt: serverTimestamp(),
-      membershipNote: ''
+      membershipNote: '',
+      membershipAppealAt: deleteField()
     });
   } catch (err) {
     console.error(err);
@@ -3621,13 +3726,18 @@ window.hrsApproveMember = async function (uid) {
 
 window.hrsRejectMember = async function (uid) {
   if (!hrsIsStaff) return;
-  const note = prompt('Optional note for the applicant:') || '';
+  const note = (prompt('Write a short note for the applicant. They can ask to be reviewed again — this is not a permanent ban.') || '').trim();
+  if (note.length < 8) {
+    hrsToast('Add a short note so they know what to fix.', true);
+    return;
+  }
   try {
     await updateDoc(doc(db, 'users', uid), {
       membershipStatus: 'rejected',
       membershipReviewedBy: hrsUser.email,
       membershipReviewedAt: serverTimestamp(),
-      membershipNote: note
+      membershipNote: note.slice(0, 500),
+      membershipAppealAt: deleteField()
     });
   } catch (err) {
     console.error(err);

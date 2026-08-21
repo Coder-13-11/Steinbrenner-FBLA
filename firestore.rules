@@ -137,6 +137,18 @@ service cloud.firestore {
         )
         ||
         (
+          // Rejected member may request another review — never self-approve
+          isSelf(uid) &&
+          resource.data.membershipStatus == 'rejected' &&
+          request.resource.data.membershipStatus == 'pending' &&
+          request.resource.data.diff(resource.data).affectedKeys()
+            .hasOnly(['membershipStatus', 'membershipNote', 'membershipAppealAt']) &&
+          request.resource.data.membershipNote is string &&
+          request.resource.data.membershipNote.size() > 8 &&
+          request.resource.data.membershipNote.size() <= 500
+        )
+        ||
+        (
           // One-time migration for profiles created before membership gates
           isSelf(uid) &&
           !resource.data.keys().hasAny(['membershipStatus']) &&
@@ -158,7 +170,7 @@ service cloud.firestore {
           request.resource.data.diff(resource.data).affectedKeys()
             .hasOnly([
               'membershipStatus', 'membershipReviewedBy',
-              'membershipReviewedAt', 'membershipNote'
+              'membershipReviewedAt', 'membershipNote', 'membershipAppealAt'
             ]) &&
           request.resource.data.membershipStatus in ['approved', 'rejected', 'pending']
         )
@@ -270,12 +282,19 @@ service cloud.firestore {
     }
 
     match /eventSignups/{signupId} {
-      allow read: if isApprovedMember()
+      // Missing docs must be readable so walk-in check-in can getDoc() before create.
+      // Accessing resource.data on a missing doc denies the read for non-staff.
+      allow get: if isApprovedMember() && (
+        !exists(/databases/$(database)/documents/eventSignups/$(signupId))
+        || resource.data.uid == request.auth.uid
+        || isStaff()
+      );
+      allow list: if isApprovedMember()
         && (resource.data.uid == request.auth.uid || isStaff());
 
       allow create: if isApprovedMember()
         && request.resource.data.uid == request.auth.uid
-        && request.resource.data.email == request.auth.token.email
+        && request.resource.data.email.lower() == request.auth.token.email.lower()
         && request.resource.data.status == 'signed_up'
         && request.resource.data.eventId is string
         && (
