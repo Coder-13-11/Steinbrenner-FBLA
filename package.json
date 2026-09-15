@@ -9,7 +9,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "lint": "eslint src --ext .ts,.tsx",
-    "test": "vitest run"
+    "test": "vitest run",
+    "test:rules": "firebase emulators:exec --only firestore --project rules-test \"vitest run --config vitest.rules.config.ts\""
   },
   "dependencies": {
     "firebase": "^10.14.1",
@@ -21,6 +22,7 @@
     "react-router-dom": "^6.27.0"
   },
   "devDependencies": {
+    "@firebase/rules-unit-testing": "^3.0.4",
     "@types/node": "^22.7.9",
     "@types/qrcode": "^1.5.5",
     "@types/react": "^18.3.12",
@@ -32,6 +34,7 @@
     "eslint": "^8.57.1",
     "eslint-plugin-react-hooks": "^4.6.2",
     "eslint-plugin-react-refresh": "^0.4.14",
+    "firebase-tools": "^13.35.1",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
     "typescript": "^5.6.3",
