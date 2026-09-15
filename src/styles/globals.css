@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ------------------------------------------------------------------
+   Design tokens. Values are space-separated RGB so Tailwind can apply
+   alpha (see tailwind.config.ts). Dark is the brand default; the hub
+   may switch <html data-theme="light">.
+   ------------------------------------------------------------------ */
+:root,
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: 5 16 42;          /* navy */
+  --panel: 255 255 255;   /* used with low alpha on dark */
+  --panel2: 8 18 40;
+  --line: 255 255 255;
+  --ink: 255 255 255;
+  --muted: 255 255 255;
+  --faint: 255 255 255;
+  --input: 0 0 0;
+  --gold-ink: 240 192 64;
+  --ok: 95 211 154;
+  --warn: 240 192 64;
+  --info: 138 180 255;
+  --danger: 232 140 140;
+  /* alpha presets used by components */
+  --panel-a: 0.045;
+  --panel2-a: 0.94;
+  --line-a: 0.12;
+  --muted-a: 0.6;
+  --faint-a: 0.4;
+  --input-a: 0.28;
+}
+
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: 238 241 246;
+  --panel: 255 255 255;
+  --panel2: 243 245 249;
+  --line: 24 32 51;
+  --ink: 24 32 51;
+  --muted: 24 32 51;
+  --faint: 24 32 51;
+  --input: 255 255 255;
+  --gold-ink: 154 114 9;
+  --ok: 26 127 75;
+  --warn: 138 101 8;
+  --info: 45 91 209;
+  --danger: 180 35 24;
+  --panel-a: 1;
+  --panel2-a: 1;
+  --line-a: 0.12;
+  --muted-a: 0.64;
+  --faint-a: 0.46;
+  --input-a: 1;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  @apply font-sans antialiased;
+  background: rgb(var(--bg));
+  color: rgb(var(--ink));
+  overflow-x: hidden;
+}
+*:focus-visible { outline: 2px solid #f0c040; outline-offset: 2px; }
+::selection { background: rgb(212 160 23 / 0.35); }
+
+@layer components {
+  /* Surfaces */
+  .surface { background: rgb(var(--panel) / var(--panel-a)); border: 1px solid rgb(var(--line) / var(--line-a)); }
+  .surface-2 { background: rgb(var(--panel2) / var(--panel2-a)); border: 1px solid rgb(var(--line) / var(--line-a)); }
+  .hairline { border-color: rgb(var(--line) / var(--line-a)); }
+  .text-muted { color: rgb(var(--muted) / var(--muted-a)); }
+  .text-faint { color: rgb(var(--faint) / var(--faint-a)); }
+  .field-bg { background: rgb(var(--input) / var(--input-a)); }
+
+  /* Typography */
+  .kicker { @apply text-[0.68rem] tracking-[0.28em] uppercase font-semibold text-gold-2; }
+  .display { @apply font-display tracking-[0.03em] leading-[0.95]; }
+  .prose-muted { color: rgb(var(--muted) / var(--muted-a)); @apply leading-relaxed; }
+
+  /* Buttons */
+  .btn { @apply inline-flex items-center justify-center gap-2 rounded-[10px] font-semibold text-[0.86rem] leading-none whitespace-nowrap select-none transition disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] px-5 py-3; }
+  .btn-gold { @apply btn bg-gradient-to-br from-gold to-gold-2 text-navy hover:shadow-gold; }
+  .btn-ghost { @apply btn border bg-transparent hover:border-gold-2 hover:text-gold-2; border-color: rgb(var(--line) / 0.2); color: rgb(var(--ink) / 0.85); }
+  .btn-danger { @apply btn text-white bg-[#c0392b] hover:brightness-110; }
+  .btn-reject { @apply btn border bg-transparent; color: rgb(var(--danger)); border-color: rgb(var(--danger) / 0.4); }
+  .btn-reject:hover { border-color: rgb(var(--danger)); }
+  .btn-sm { @apply min-h-[36px] px-3.5 py-2 text-[0.8rem] rounded-[9px]; }
+  .btn-xs { @apply min-h-[30px] px-3 py-1.5 text-[0.74rem] rounded-lg; }
+
+  /* Inputs */
+  .input { @apply w-full rounded-[10px] px-3.5 py-3 text-[0.95rem] leading-snug transition field-bg; border: 1px solid rgb(var(--line) / 0.18); color: rgb(var(--ink)); }
+  .input::placeholder { color: rgb(var(--faint) / var(--faint-a)); }
+  .input:focus { outline: none; border-color: rgb(212 160 23 / 0.55); box-shadow: 0 0 0 3px rgb(212 160 23 / 0.16); }
+  .label { @apply block text-[0.72rem] tracking-[0.1em] uppercase font-medium mb-2; color: rgb(var(--muted) / var(--muted-a)); }
+
+  /* Pills */
+  .pill { @apply inline-flex items-center gap-1.5 h-[26px] px-2.5 rounded-full text-[0.74rem] font-bold leading-none whitespace-nowrap; background: rgb(var(--panel) / 0.06); border: 1px solid rgb(var(--line) / var(--line-a)); color: rgb(var(--muted) / var(--muted-a)); }
+  .pill::before { content: ''; width: 6px; height: 6px; border-radius: 9999px; background: currentColor; opacity: .85; }
+  .pill.plain::before { display: none; }
+  .pill-ok { background: rgb(var(--ok) / 0.14); border-color: transparent; color: rgb(var(--ok)); }
+  .pill-warn { background: rgb(var(--warn) / 0.14); border-color: transparent; color: rgb(var(--warn)); }
+  .pill-info { background: rgb(var(--info) / 0.14); border-color: transparent; color: rgb(var(--info)); }
+  .pill-danger { background: rgb(var(--danger) / 0.12); border-color: transparent; color: rgb(var(--danger)); }
+  .pill-gold { background: rgb(212 160 23 / 0.16); border-color: transparent; color: rgb(var(--gold-ink)); }
+
+  /* Segmented control */
+  .seg { @apply inline-flex p-[3px] rounded-[10px] gap-[2px] field-bg; border: 1px solid rgb(var(--line) / var(--line-a)); }
+  .seg > button { @apply border-0 bg-transparent text-[0.78rem] font-semibold px-3 py-2 rounded-lg min-h-[32px] leading-none whitespace-nowrap transition disabled:opacity-40 disabled:cursor-not-allowed; color: rgb(var(--muted) / var(--muted-a)); }
+  .seg > button:hover { color: rgb(var(--ink)); }
+  .seg > button.active { background: rgb(var(--panel) / var(--panel-a)); color: rgb(var(--ink)); box-shadow: 0 6px 18px rgb(0 0 0 / 0.18); }
+  [data-theme='light'] .seg > button.active { background: #fff; }
+
+  /* Cards */
+  .card { @apply surface rounded-xl2 shadow-panel; }
+  .card-2 { @apply surface-2 rounded-xl2; }
+
+  /* Marketing page banner glow */
+  .page-banner { @apply relative overflow-hidden text-center pt-36 pb-12 px-6; }
+  .page-banner::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgb(12 32 96 / 0.55), transparent 62%); pointer-events: none; }
+
+  /* Hub tables */
+  .table { @apply w-full border-collapse text-[0.94rem]; }
+  .table th { @apply text-left text-[0.72rem] tracking-[0.06em] uppercase font-bold px-4 py-3 whitespace-nowrap; color: rgb(var(--faint) / var(--faint-a)); background: rgb(var(--panel2) / var(--panel2-a)); border-bottom: 1px solid rgb(var(--line) / var(--line-a)); }
+  .table td { @apply px-4 py-3 align-middle; color: rgb(var(--muted) / var(--muted-a)); border-bottom: 1px solid rgb(var(--line) / var(--line-a)); }
+  .table tbody tr:last-child td { border-bottom: none; }
+  .table tbody tr:hover td { background: rgb(var(--panel) / 0.04); }
+  [data-theme='light'] .table tbody tr:hover td { background: rgb(24 32 51 / 0.03); }
+}
+
+/* Scrollbar (webkit) — subtle */
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-thumb { background: rgb(var(--line) / 0.18); border-radius: 999px; border: 2px solid transparent; background-clip: padding-box; }
+*::-webkit-scrollbar-track { background: transparent; }
+
+/* Reduce motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}

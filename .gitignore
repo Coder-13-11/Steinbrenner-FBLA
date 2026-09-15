@@ -4,3 +4,6 @@
 .plan-tmp/
 .tmp-scrape/
 *.log
+node_modules/
+dist/
+.vercel/
