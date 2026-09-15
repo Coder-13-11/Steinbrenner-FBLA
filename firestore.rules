@@ -4,11 +4,15 @@ rules_version = '2';
 // Roles + membership approval + announcements
 // Paste into Firebase Console > Firestore Database > Rules, then Publish.
 //
-// Staff roster (console-only):
+// Staff roster:
 //   Collection: admins
 //   Document ID: lowercase email (e.g. advisor@gmail.com)
 //   Fields: { "role": "advisor" } or { "role": "officer" }
 //   Empty docs still count as staff (treated as advisor for back-compat).
+//   Bootstrap the FIRST adviser from the console. After that, advisers can
+//   grant/revoke officer + adviser access from Staff → Members → Manage
+//   (typed-sentence confirmation in the UI; enforced here: advisers only,
+//   never their own doc, role must be officer|advisor).
 //
 // === Member Hub deploy / verify checklist ===
 // 1) Publish THESE firestore.rules (Console → Firestore → Rules → Publish).
@@ -27,6 +31,9 @@ rules_version = '2';
 //    - Credit suggested hours for present (once; hoursCredited guard)
 //    - Attendance panel: mark present/absent/excused on a signup
 //    - Remove member: confirm email, RSVPs cancelled, users doc deleted, roster refreshes
+//    - Adviser: Manage member → Officer/Adviser → typed sentence → admins doc created
+//    - Officer: role controls disabled; direct write to admins/* is denied
+//    - Attendance: live list, walk-in add from roster, mark unmarked absent
 //    - Failed announce without admins doc → permission-denied message
 //    - Missing index → failed-precondition message with console link hint
 
@@ -97,11 +104,24 @@ service cloud.firestore {
         && request.time <= ev.startAt + duration.value(2, 'h');
     }
 
-    // Console-managed staff roster. Clients may only GET their own doc.
+    // Staff roster. Everyone may GET their own doc (role lookup on sign-in).
+    // Advisers may read the whole roster and grant/revoke access — but never
+    // touch their own doc, so an adviser cannot lock themselves out or
+    // self-escalate. Officers cannot write here at all.
     match /admins/{email} {
       allow get: if isSignedIn()
-        && email == request.auth.token.email.lower();
-      allow list, write: if false;
+        && (email == request.auth.token.email.lower() || isAdvisor());
+      allow list: if isAdvisor();
+
+      allow create, update: if isAdvisor()
+        && email != request.auth.token.email.lower()
+        && email == email.lower()
+        && request.resource.data.role in ['officer', 'advisor']
+        && request.resource.data.email == email
+        && request.resource.data.grantedBy == request.auth.uid;
+
+      allow delete: if isAdvisor()
+        && email != request.auth.token.email.lower();
     }
 
     match /users/{uid} {
@@ -176,10 +196,11 @@ service cloud.firestore {
         )
         ||
         (
-          // Advisors only: assign chapter role on the user profile
+          // Advisors only: assign chapter role on the user profile (+ audit)
           isAdvisor() &&
+          uid != request.auth.uid &&
           request.resource.data.diff(resource.data).affectedKeys()
-            .hasOnly(['role']) &&
+            .hasOnly(['role', 'roleChangedBy', 'roleChangedAt']) &&
           request.resource.data.role in ['member', 'officer', 'advisor']
         )
         ||
@@ -292,19 +313,37 @@ service cloud.firestore {
       allow list: if isApprovedMember()
         && (resource.data.uid == request.auth.uid || isStaff());
 
-      allow create: if isApprovedMember()
-        && request.resource.data.uid == request.auth.uid
-        && request.resource.data.email.lower() == request.auth.token.email.lower()
-        && request.resource.data.status == 'signed_up'
-        && request.resource.data.eventId is string
-        && (
-          !request.resource.data.keys().hasAny(['attendance'])
-          || (
-            request.resource.data.attendance == 'present'
-            && request.resource.data.lastCheckinCode == get(eventPath(request.resource.data.eventId)).data.checkinCode
-            && checkinWindowOpen(request.resource.data.eventId)
+      allow create: if isSignedIn() && (
+        (
+          // Member RSVP, or member walk-in check-in during the window
+          isApprovedMember()
+          && request.resource.data.uid == request.auth.uid
+          && request.resource.data.email.lower() == request.auth.token.email.lower()
+          && request.resource.data.status == 'signed_up'
+          && request.resource.data.eventId is string
+          && (
+            !request.resource.data.keys().hasAny(['attendance'])
+            || (
+              request.resource.data.attendance == 'present'
+              && request.resource.data.lastCheckinCode == get(eventPath(request.resource.data.eventId)).data.checkinCode
+              && checkinWindowOpen(request.resource.data.eventId)
+            )
           )
-        );
+        )
+        ||
+        (
+          // Staff walk-in: mark a roster member present without an RSVP
+          isStaff()
+          && request.resource.data.status == 'signed_up'
+          && request.resource.data.eventId is string
+          && request.resource.data.uid is string
+          && signupId == request.resource.data.eventId + '_' + request.resource.data.uid
+          && request.resource.data.walkIn == true
+          && request.resource.data.addedBy == request.auth.uid
+          && request.resource.data.attendance in ['present', 'absent', 'excused']
+          && exists(userPath(request.resource.data.uid))
+        )
+      );
 
       allow update: if isSignedIn() && (
         (

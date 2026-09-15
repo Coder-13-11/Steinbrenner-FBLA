@@ -428,9 +428,6 @@ textarea.hrs-input{resize:vertical;min-height:90px}
 #page-hours .hub-modal-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
 #page-hours .att-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.85rem 0;border-bottom:1px solid var(--hub-line)}
 #page-hours .att-row:last-child{border-bottom:none}
-#page-hours .att-actions{display:flex;gap:.4rem;flex-wrap:wrap}
-#page-hours .att-actions button{min-height:40px;padding:.45rem .8rem;font-size:.85rem;border-radius:9px;border:1px solid var(--hub-line);background:transparent;color:var(--hub-muted);cursor:pointer;font-family:inherit}
-#page-hours .att-actions button.active{background:var(--hub-accent-soft);border-color:rgba(212,160,23,.45);color:var(--hub-gold)}
 #page-hours .staff-hint{font-size:.95rem;color:var(--hub-muted);line-height:1.6;margin:0 0 1rem;padding:.95rem 1.1rem;border:1px solid var(--hub-line);border-radius:12px;background:var(--hub-panel-2)}
 #page-hours .hub-admin-section{margin-bottom:2.25rem}
 #page-hours .roster-wrap{overflow-x:auto;border:1px solid var(--hub-line);border-radius:14px;background:var(--hub-panel-2)}
@@ -440,8 +437,6 @@ textarea.hrs-input{resize:vertical;min-height:90px}
 #page-hours .roster-table tr:last-child td{border-bottom:none}
 #page-hours .roster-table td:first-child{color:var(--hub-text);font-weight:600}
 #page-hours .evt-type{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--hub-gold);background:var(--hub-accent-soft);border:1px solid rgba(212,160,23,.3);border-radius:6px;padding:.25rem .5rem;margin:0 .4rem .4rem 0}
-#page-hours #hub-attendance.hub-panel{display:none}
-#page-hours #hub-attendance.hub-panel.att-open{display:block}
 #page-hours .hub-chip{background:var(--hub-chip-bg);border-color:var(--hub-line);color:var(--hub-muted);font-size:.92rem}
 #page-hours .hub-chip:has(input:checked){border-color:rgba(212,160,23,.45);background:var(--hub-accent-soft);color:var(--hub-gold)}
 #page-hours .hrs-auth-modes{background:var(--hub-panel-2)}
@@ -477,14 +472,208 @@ textarea.hrs-input{resize:vertical;min-height:90px}
 #page-hours .beta-badge{display:inline-block;margin-left:.4rem;font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--hub-gold);border:1px solid rgba(212,160,23,.4);background:var(--hub-accent-soft);border-radius:6px;padding:.15rem .4rem;vertical-align:middle}
 
 /* Command */
-#page-hours .cmd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1.25rem}
+#page-hours .cmd-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;margin-bottom:1.25rem}
 #page-hours .cmd-card{background:var(--hub-panel);border:1px solid var(--hub-line);border-radius:14px;padding:1.1rem 1.15rem;box-shadow:var(--hub-shadow)}
 #page-hours .cmd-n{font-family:'Outfit',sans-serif;font-size:1.85rem;font-weight:700;color:var(--hub-gold);line-height:1.1}
 #page-hours .cmd-l{font-size:.82rem;color:var(--hub-muted);margin-top:.35rem;font-weight:600}
 #page-hours .cmd-actions{display:flex;flex-wrap:wrap;gap:.55rem;margin-bottom:1.75rem}
 
+/* ============================================================
+   HUB DESIGN SYSTEM — shared primitives for member + staff views
+   Tokens live on #page-hours (--hub-*). Every rule below is
+   theme-safe (dark default, light via data-hub-theme).
+   ============================================================ */
+#page-hours{--hub-ok:#5fd39a;--hub-ok-soft:rgba(95,211,154,.14);--hub-warn:#f0c040;--hub-warn-soft:rgba(240,192,64,.14);--hub-info:#8ab4ff;--hub-info-soft:rgba(138,180,255,.14);--hub-danger-soft:rgba(232,120,120,.12)}
+body[data-hub-theme="light"] #page-hours{--hub-ok:#1a7f4b;--hub-ok-soft:rgba(26,127,75,.12);--hub-warn:#8a6508;--hub-warn-soft:rgba(184,134,11,.14);--hub-info:#2d5bd1;--hub-info-soft:rgba(45,91,209,.12);--hub-danger-soft:rgba(180,35,24,.08)}
+
+/* Button size scale — one scale, no inline padding hacks */
+#page-hours .btn-g,#page-hours .btn-gh,#page-hours .btn-reject{font-family:'Outfit',sans-serif;min-height:44px;padding:.75rem 1.35rem;font-size:.86rem;letter-spacing:.03em;text-transform:none;font-weight:600;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;gap:.4rem;line-height:1;white-space:nowrap}
+#page-hours .btn-g:hover,#page-hours .btn-gh:hover,#page-hours .btn-reject:hover{transform:none}
+#page-hours .btn-g:hover{box-shadow:0 6px 18px rgba(212,160,23,.35)}
+#page-hours .btn-sm{min-height:36px;padding:.5rem .9rem;font-size:.8rem;border-radius:9px}
+#page-hours .btn-xs{min-height:30px;padding:.35rem .7rem;font-size:.74rem;border-radius:8px}
+#page-hours button:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+#page-hours .btn-danger{background:var(--hub-danger);color:#fff;border:none}
+body[data-hub-theme="light"] #page-hours .btn-danger{background:#b42318}
+#page-hours .btn-danger:hover{filter:brightness(1.08)}
+
+/* Section card: header row (title · count · actions) + body */
+#page-hours .sec{background:var(--hub-panel);border:1px solid var(--hub-line);border-radius:18px;box-shadow:var(--hub-shadow);margin-bottom:1.25rem;overflow:hidden}
+#page-hours .sec-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:1.1rem 1.35rem;border-bottom:1px solid var(--hub-line);flex-wrap:wrap}
+#page-hours .sec-title{display:flex;align-items:center;gap:.6rem;min-width:0}
+#page-hours .sec-title h3{margin:0;font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;color:var(--hub-text);letter-spacing:-.01em}
+#page-hours .sec-sub{font-size:.88rem;color:var(--hub-muted);margin-top:.2rem;line-height:1.5}
+#page-hours .sec-actions{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-left:auto}
+#page-hours .sec-body{padding:1.25rem 1.35rem}
+#page-hours .sec-body.flush{padding:0}
+#page-hours .sec-body .gal-note{margin:0}
+
+/* Count badge next to a title */
+#page-hours .count{display:inline-flex;align-items:center;justify-content:center;min-width:24px;height:24px;padding:0 .5rem;border-radius:100px;font-size:.74rem;font-weight:700;background:var(--hub-chip-bg);border:1px solid var(--hub-line);color:var(--hub-muted)}
+#page-hours .count.hot{background:var(--hub-accent-soft);border-color:rgba(212,160,23,.4);color:var(--hub-gold)}
+
+/* Status pills */
+#page-hours .pill{display:inline-flex;align-items:center;gap:.35rem;height:26px;padding:0 .65rem;border-radius:100px;font-size:.74rem;font-weight:700;letter-spacing:.02em;border:1px solid var(--hub-line);background:var(--hub-chip-bg);color:var(--hub-muted);white-space:nowrap;line-height:1}
+#page-hours .pill::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor;opacity:.85}
+#page-hours .pill.ok{background:var(--hub-ok-soft);border-color:transparent;color:var(--hub-ok)}
+#page-hours .pill.warn{background:var(--hub-warn-soft);border-color:transparent;color:var(--hub-warn)}
+#page-hours .pill.info{background:var(--hub-info-soft);border-color:transparent;color:var(--hub-info)}
+#page-hours .pill.danger{background:var(--hub-danger-soft);border-color:transparent;color:var(--hub-danger)}
+#page-hours .pill.gold{background:var(--hub-accent-soft);border-color:transparent;color:var(--hub-gold)}
+#page-hours .pill.plain::before{display:none}
+#page-hours button.pill{cursor:pointer;font-family:inherit;transition:filter .15s,border-color .15s}
+#page-hours button.pill:hover{filter:brightness(1.12);border-color:rgba(212,160,23,.45)}
+
+/* Segmented control */
+#page-hours .seg{display:inline-flex;padding:3px;border-radius:10px;background:var(--hub-input-bg);border:1px solid var(--hub-line);gap:2px}
+#page-hours .seg button{border:none;background:transparent;color:var(--hub-muted);font-family:inherit;font-size:.78rem;font-weight:600;padding:.45rem .8rem;border-radius:8px;cursor:pointer;min-height:32px;line-height:1;transition:background .15s,color .15s;white-space:nowrap}
+#page-hours .seg button:hover{color:var(--hub-text)}
+#page-hours .seg button.active{background:var(--hub-panel);color:var(--hub-text);box-shadow:var(--hub-shadow)}
+#page-hours .seg button.active[data-v="present"]{color:var(--hub-ok)}
+#page-hours .seg button.active[data-v="absent"]{color:var(--hub-danger)}
+#page-hours .seg button.active[data-v="excused"]{color:var(--hub-info)}
+#page-hours .seg button:disabled{opacity:.45;cursor:not-allowed}
+
+/* Form footer — controls on the left, primary action on the right */
+#page-hours .form-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-top:.25rem}
+#page-hours .form-foot .hub-chip{margin:0}
+#page-hours .form-foot .btn-g{margin-left:auto}
+#page-hours .hrs-field:last-of-type{margin-bottom:1.1rem}
+
+/* Toolbar (search + filters) */
+#page-hours .toolbar{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;padding:.9rem 1.35rem;border-bottom:1px solid var(--hub-line);background:var(--hub-panel-2)}
+#page-hours .toolbar .hrs-input{width:auto;flex:1 1 200px;min-width:160px;padding:.6rem .85rem;font-size:.92rem;border-radius:9px;min-height:38px}
+#page-hours .toolbar .seg{margin-left:auto}
+
+/* Stat strip */
+#page-hours .stat-strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.6rem;padding:1rem 1.35rem;border-bottom:1px solid var(--hub-line)}
+#page-hours .stat{padding:.75rem .9rem;border-radius:12px;background:var(--hub-panel-2);border:1px solid var(--hub-line)}
+#page-hours .stat b{display:block;font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:700;color:var(--hub-text);line-height:1.1}
+#page-hours .stat span{display:block;font-size:.76rem;color:var(--hub-muted);margin-top:.25rem;font-weight:600}
+#page-hours .stat.ok b{color:var(--hub-ok)}
+#page-hours .stat.danger b{color:var(--hub-danger)}
+#page-hours .stat.info b{color:var(--hub-info)}
+#page-hours .stat.gold b{color:var(--hub-gold)}
+
+/* Command cards — refine */
+#page-hours .cmd-card{display:flex;flex-direction:column;justify-content:space-between;min-height:104px;min-width:0;cursor:pointer;transition:border-color .15s,transform .15s}
+#page-hours .cmd-card:hover{border-color:rgba(212,160,23,.45);transform:translateY(-1px)}
+#page-hours .cmd-card.static{cursor:default}
+#page-hours .cmd-card.static:hover{border-color:var(--hub-line);transform:none}
+#page-hours .cmd-l{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-hours .cmd-actions{margin-bottom:0}
+#page-hours .staff-head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.25rem}
+#page-hours .staff-head h2{margin:0;font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:700;letter-spacing:-.02em;color:var(--hub-text)}
+#page-hours .staff-head p{margin:.25rem 0 0;color:var(--hub-muted);font-size:.95rem}
+#page-hours .staff-nav{position:sticky;top:0;z-index:5;display:flex;gap:.3rem;flex-wrap:wrap;padding:.4rem;margin-bottom:1.25rem;background:var(--hub-panel-2);border:1px solid var(--hub-line);border-radius:12px;backdrop-filter:blur(12px)}
+body.hub-standalone #page-hours .staff-nav{top:76px}
+#page-hours .staff-nav button{border:none;background:transparent;color:var(--hub-muted);font-family:inherit;font-size:.84rem;font-weight:600;padding:.5rem .85rem;border-radius:8px;cursor:pointer;display:inline-flex;align-items:center;gap:.4rem}
+#page-hours .staff-nav button:hover{color:var(--hub-text)}
+#page-hours .staff-nav button.active{background:var(--hub-panel);color:var(--hub-gold);box-shadow:var(--hub-shadow)}
+#page-hours .hub-admin-section{scroll-margin-top:140px;margin-bottom:0}
+
+/* Roster table — aligned columns, one action column */
+#page-hours .roster-wrap{border:none;border-radius:0;background:transparent}
+#page-hours .roster-table{min-width:760px;font-size:.94rem}
+#page-hours .roster-table th,#page-hours .roster-table td{padding:.8rem 1rem;vertical-align:middle}
+#page-hours .roster-table th{font-size:.72rem;letter-spacing:.06em;white-space:nowrap;background:var(--hub-panel-2)}
+#page-hours .roster-table td.num{text-align:right;font-variant-numeric:tabular-nums}
+#page-hours .roster-table th.num{text-align:right}
+#page-hours .roster-table td.act,#page-hours .roster-table th.act{text-align:right;white-space:nowrap;width:1%}
+#page-hours .roster-table td.act .btn-xs{margin-left:.35rem}
+#page-hours .roster-table tr.is-self td:first-child{box-shadow:inset 3px 0 0 var(--hub-gold)}
+#page-hours .roster-table tbody tr:hover td{background:var(--hub-chip-bg)}
+#page-hours .roster-name{display:flex;flex-direction:column;gap:.15rem;min-width:0}
+#page-hours .roster-name b{font-weight:600;color:var(--hub-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+#page-hours .roster-name small{font-size:.8rem;color:var(--hub-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:260px}
+#page-hours .roster-table td:first-child{font-weight:400}
+
+/* Queue rows (pending members / hours) — tidy */
+#page-hours .member-queue-row{margin:0;border-radius:0;border:none;border-bottom:1px solid var(--hub-line);background:transparent;padding:1.1rem 1.35rem;display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center}
+#page-hours .member-queue-row:last-child{border-bottom:none}
+#page-hours .member-queue-actions{margin:0;justify-content:flex-end}
+#page-hours .hrs-sub-list{border:none;border-radius:0;background:transparent}
+#page-hours .hrs-queue-row{background:transparent;padding:1.1rem 1.35rem}
+#page-hours .hrs-queue-row:last-child{border-bottom:none}
+#page-hours .hrs-queue-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+
+/* Attendance view (staff) */
+#page-hours .att-row{display:grid;grid-template-columns:1fr auto;gap:1rem;align-items:center;padding:.8rem 1.35rem;border-bottom:1px solid var(--hub-line)}
+#page-hours .att-row:last-child{border-bottom:none}
+#page-hours .att-who{min-width:0}
+#page-hours .att-who b{display:block;font-weight:600;color:var(--hub-text);font-size:.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#page-hours .att-who small{display:flex;flex-wrap:wrap;gap:.35rem .6rem;align-items:center;margin-top:.25rem;font-size:.8rem;color:var(--hub-faint)}
+#page-hours .att-row.is-hidden{display:none}
+#page-hours .att-foot{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1rem 1.35rem;border-top:1px solid var(--hub-line);background:var(--hub-panel-2)}
+#page-hours .att-walkin{display:flex;gap:.5rem;align-items:center;flex-wrap:wrap}
+#page-hours .att-walkin select{width:auto;min-width:220px;max-width:320px;padding:.55rem .8rem;min-height:38px;font-size:.9rem;border-radius:9px}
+#page-hours .back-link{display:inline-flex;align-items:center;gap:.4rem;background:none;border:none;color:var(--hub-muted);font-family:inherit;font-size:.9rem;font-weight:600;cursor:pointer;padding:0;margin-bottom:1rem}
+#page-hours .back-link:hover{color:var(--hub-gold)}
+
+/* Member check-in */
+#page-hours .ci-live{display:flex;align-items:center;gap:1rem;text-align:left;padding:1rem 1.1rem;border-radius:14px;border:1px solid rgba(95,211,154,.4);background:var(--hub-ok-soft);margin-bottom:1.25rem}
+#page-hours .ci-live .dot{width:10px;height:10px;border-radius:50%;background:var(--hub-ok);box-shadow:0 0 0 0 rgba(95,211,154,.6);animation:ciPulse 1.6s infinite;flex-shrink:0}
+@keyframes ciPulse{0%{box-shadow:0 0 0 0 rgba(95,211,154,.55)}70%{box-shadow:0 0 0 10px rgba(95,211,154,0)}100%{box-shadow:0 0 0 0 rgba(95,211,154,0)}}
+#page-hours .ci-live b{display:block;color:var(--hub-text);font-weight:700}
+#page-hours .ci-live span{display:block;font-size:.85rem;color:var(--hub-muted);margin-top:.15rem}
+#page-hours .ci-idle{padding:1rem 1.1rem;border-radius:14px;border:1px dashed var(--hub-line);background:var(--hub-panel-2);color:var(--hub-muted);font-size:.92rem;margin-bottom:1.25rem;text-align:left;line-height:1.55}
+#page-hours .ci-idle b{color:var(--hub-text)}
+#page-hours .att-hist{margin-top:1.5rem;text-align:left}
+#page-hours .att-hist .sec-body{padding:0}
+#page-hours .hist-row{display:grid;grid-template-columns:1fr auto;gap:.75rem;align-items:center;padding:.85rem 1.35rem;border-bottom:1px solid var(--hub-line)}
+#page-hours .hist-row:last-child{border-bottom:none}
+#page-hours .hist-row b{display:block;color:var(--hub-text);font-weight:600;font-size:.95rem}
+#page-hours .hist-row small{display:block;color:var(--hub-faint);font-size:.8rem;margin-top:.15rem}
+#page-hours .hist-right{display:flex;gap:.4rem;align-items:center}
+#page-hours .hist-stats{display:flex;gap:.5rem;flex-wrap:wrap;padding:.9rem 1.35rem;border-bottom:1px solid var(--hub-line);background:var(--hub-panel-2)}
+
+/* Event cards — member action first, staff tools as a compact row */
+#page-hours .evt-card{grid-template-columns:1fr auto;padding:1.25rem 1.35rem}
+#page-hours .evt-actions{min-width:0;flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:.4rem;align-self:start}
+#page-hours .evt-staff{grid-column:1/-1;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;padding-top:.85rem;margin-top:.25rem;border-top:1px dashed var(--hub-line)}
+#page-hours .evt-staff .lbl{font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--hub-faint);margin-right:.25rem}
+#page-hours .evt-meta .pill{vertical-align:middle;margin-left:.35rem}
+
+/* Modal — shared confirm + member manage */
+#page-hours .hub-modal{width:min(520px,100%);padding:1.5rem 1.6rem 1.4rem;max-height:calc(100vh - 2.5rem);overflow:auto}
+#page-hours .hub-modal.wide{width:min(620px,100%)}
+#page-hours .hub-modal .m-kicker{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;color:var(--hub-gold);font-weight:700;margin-bottom:.35rem}
+#page-hours .hub-modal .m-kicker.danger{color:var(--hub-danger)}
+#page-hours .hub-modal .m-note{padding:.85rem 1rem;border-radius:12px;background:var(--hub-panel-2);border:1px solid var(--hub-line);font-size:.9rem;color:var(--hub-muted);line-height:1.6;margin-bottom:1rem}
+#page-hours .hub-modal .m-note.danger{background:var(--hub-danger-soft);border-color:var(--hub-danger-line);color:var(--hub-text)}
+#page-hours .hub-modal .m-note ul{margin:.4rem 0 0 1.1rem;padding:0}
+#page-hours .hub-modal .m-note li{margin:.2rem 0}
+#page-hours .hub-modal code.phrase{display:block;user-select:all;margin:.4rem 0 .75rem;padding:.6rem .8rem;border-radius:10px;background:var(--hub-input-bg);border:1px dashed rgba(212,160,23,.45);color:var(--hub-gold);font-family:'Outfit',sans-serif;font-weight:700;font-size:.95rem;letter-spacing:.01em}
+#page-hours .hub-modal-actions{justify-content:flex-end;margin-top:1.25rem}
+#page-hours .hub-modal .hrs-verify-msg{margin-top:.6rem}
+#page-hours .m-person{display:flex;align-items:center;gap:.9rem;margin-bottom:1.1rem}
+#page-hours .m-avatar{width:44px;height:44px;border-radius:50%;background:var(--hub-accent-soft);color:var(--hub-gold);display:flex;align-items:center;justify-content:center;font-weight:700;flex-shrink:0;border:1px solid rgba(212,160,23,.3)}
+#page-hours .m-person b{display:block;font-size:1.1rem;color:var(--hub-text);font-weight:700}
+#page-hours .m-person small{display:block;color:var(--hub-muted);font-size:.86rem}
+#page-hours .m-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.1rem}
+#page-hours .m-grid .stat{padding:.6rem .75rem}
+#page-hours .m-grid .stat b{font-size:1.15rem}
+#page-hours .m-block{padding:.95rem 0;border-top:1px solid var(--hub-line);display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+#page-hours .m-block:last-of-type{padding-bottom:0}
+#page-hours .m-block .lbl{font-size:.92rem;font-weight:700;color:var(--hub-text)}
+#page-hours .m-block .hint{display:block;font-size:.8rem;color:var(--hub-faint);margin-top:.2rem;font-weight:500;max-width:300px;line-height:1.45}
+#page-hours .m-block.danger .lbl{color:var(--hub-danger)}
+#page-hours .m-close{position:absolute;top:.9rem;right:.9rem;width:32px;height:32px;border-radius:8px;border:1px solid var(--hub-line);background:transparent;color:var(--hub-muted);cursor:pointer;font-size:1rem;line-height:1}
+#page-hours .hub-modal{position:relative}
+
+@media(max-width:720px){
+  #page-hours .staff-nav,body.hub-standalone #page-hours .staff-nav{position:static}
+  #page-hours .att-row,#page-hours .member-queue-row,#page-hours .hist-row{grid-template-columns:1fr}
+  #page-hours .member-queue-actions{justify-content:flex-start}
+  #page-hours .m-grid{grid-template-columns:1fr 1fr 1fr}
+  #page-hours .toolbar .seg{margin-left:0}
+  #page-hours .evt-actions{justify-content:flex-start;grid-column:1/-1}
+  #page-hours .evt-card{grid-template-columns:1fr}
+  #page-hours .form-foot .btn-g{margin-left:0;width:100%}
+}
+
 /* Check-in sheet + projector */
-#page-hours .ci-sheet{max-width:440px;margin:0 auto;text-align:center}
+#page-hours .ci-sheet{max-width:520px;margin:0 auto 1.25rem;text-align:center}
 #page-hours .ci-code-input{text-align:center;letter-spacing:.28em;text-transform:uppercase;font-size:1.35rem;font-weight:700}
 #hub-projector{display:none}
 body.hub-projector #hub-projector{display:flex;position:fixed;inset:0;z-index:12000;background:#05102a;color:#fff;flex-direction:column;padding:1.5rem 2rem 2rem}
@@ -505,12 +694,12 @@ body[data-hub-theme="light"].hub-projector .proj-live{border-top-color:rgba(24,3
 .proj-present{display:flex;flex-wrap:wrap;gap:.4rem}
 .proj-chip{background:rgba(212,160,23,.16);border:1px solid rgba(212,160,23,.35);border-radius:100px;padding:.3rem .75rem;font-size:.85rem;font-weight:600}
 @media(max-width:800px){
-  #page-hours .cmd-grid{grid-template-columns:1fr 1fr}
+  #page-hours .cmd-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   .proj-stage{grid-template-columns:1fr}
   #page-hours .cal-cell{min-height:56px}
 }
 @media(max-width:520px){
-  #page-hours .cmd-grid{grid-template-columns:1fr 1fr}
+  #page-hours .cmd-grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
   #page-hours .cal-weekdays span{font-size:.6rem}
 }
 
@@ -1274,21 +1463,28 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
         </div>
       </div>
 
-      <!-- Check-in (beta) -->
+      <!-- Check-in -->
       <div class="hub-panel" id="hub-checkin">
         <div class="hrs-form-card ci-sheet reveal">
           <div class="kicker">Check in <span class="beta-badge">Beta</span></div>
           <h3 style="margin-top:.35rem">Mark yourself present</h3>
-          <p class="hub-muted-copy">Scan the QR at the meeting, or type the 6-character room code. Check-in is open from 30 minutes before the event until 2 hours after it starts.</p>
-          <form id="hrs-checkin-form" onsubmit="hrsMemberCheckin(event)" style="margin-top:1.25rem;text-align:left">
+          <div id="ci-live" class="ci-idle"><b>No meeting is open for check-in right now.</b><br>When an officer starts check-in, the live meeting will show here.</div>
+          <form id="hrs-checkin-form" onsubmit="hrsMemberCheckin(event)" style="text-align:left">
             <div class="hrs-field">
-              <label class="hrs-label">Room code</label>
-              <input class="hrs-input ci-code-input" id="ci-code" maxlength="8" autocomplete="off" placeholder="A7K2MP" required oninput="this.value=this.value.toUpperCase()">
+              <label class="hrs-label" for="ci-code">Room code</label>
+              <input class="hrs-input ci-code-input" id="ci-code" maxlength="8" autocomplete="off" inputmode="latin" placeholder="A7K2MP" required oninput="this.value=this.value.toUpperCase()">
             </div>
             <button class="btn-g" type="submit" id="ci-submit" style="width:100%">Check in</button>
             <div class="hrs-submit-msg" id="ci-msg"></div>
           </form>
-          <p class="hub-muted-copy" style="margin-top:1.25rem;font-size:.9rem">If the event lists suggested hours, staff credits them after the meeting. You cannot award yourself hours.</p>
+          <p class="hub-muted-copy" style="margin-top:1.1rem;font-size:.88rem">Scan the QR on the projector or type the 6-character code. Check-in opens 30 minutes before a meeting and closes 2 hours after it starts. Suggested hours are credited by staff afterward.</p>
+        </div>
+        <div class="sec att-hist reveal" style="max-width:520px;margin:0 auto">
+          <div class="sec-head">
+            <div class="sec-title"><h3>My attendance</h3><span class="count" id="hist-count">0</span></div>
+          </div>
+          <div class="hist-stats" id="hist-stats"></div>
+          <div class="sec-body" id="hist-list"><div class="gal-note">No meetings recorded yet. Check in at your first meeting and it will appear here.</div></div>
         </div>
       </div>
 
@@ -1345,16 +1541,40 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
         <div class="reveal" style="margin-top:1.25rem">
           <div id="hrs-events-list" class="evt-list"><div class="gal-note">Loading…</div></div>
         </div>
-        <div class="hub-panel" id="hub-attendance" style="margin-top:1.5rem">
-          <div class="hrs-form-card">
-            <h3 id="att-title">Attendance</h3>
-            <p id="att-sub" class="hub-muted-copy" style="margin:-.5rem 0 1rem"></p>
-            <div class="hub-sec-links" style="margin:0 0 1rem">
-              <button type="button" class="btn-g" onclick="hrsCreditPresentHours()">Credit suggested hours for all present</button>
-              <button type="button" class="btn-gh" onclick="hrsProjectorFromAttendance()">Open projector <span class="beta-badge">Beta</span></button>
+      </div>
+
+      <!-- Attendance (staff, secondary) -->
+      <div class="hub-panel" id="hub-attendance">
+        <button type="button" class="back-link" onclick="hubTab('admin')">← Back to Staff</button>
+        <div class="sec reveal">
+          <div class="sec-head">
+            <div class="sec-title" style="flex-direction:column;align-items:flex-start;gap:.1rem">
+              <h3 id="att-title">Attendance</h3>
+              <div class="sec-sub" id="att-sub"></div>
             </div>
-            <div id="att-list"></div>
-            <button type="button" class="btn-gh" style="margin-top:1rem" onclick="hrsCloseAttendance()">Close attendance</button>
+            <div class="sec-actions">
+              <span class="pill" id="att-live-pill">Loading</span>
+              <button type="button" class="btn-gh btn-sm" onclick="hrsProjectorFromAttendance()">Projector</button>
+              <button type="button" class="btn-g btn-sm" id="att-credit-btn" onclick="hrsCreditPresentHours()">Credit hours</button>
+            </div>
+          </div>
+          <div class="stat-strip" id="att-stats"></div>
+          <div class="toolbar">
+            <input class="hrs-input" id="att-search" placeholder="Search name or email" oninput="hrsFilterAttendance()">
+            <div class="seg" id="att-filter">
+              <button type="button" class="active" data-f="all" onclick="hrsSetAttFilter('all',this)">All</button>
+              <button type="button" data-f="present" onclick="hrsSetAttFilter('present',this)">Present</button>
+              <button type="button" data-f="unmarked" onclick="hrsSetAttFilter('unmarked',this)">Unmarked</button>
+              <button type="button" data-f="absent" onclick="hrsSetAttFilter('absent',this)">Absent</button>
+            </div>
+          </div>
+          <div class="sec-body flush" id="att-list"><div class="gal-note">Loading…</div></div>
+          <div class="att-foot">
+            <div class="att-walkin">
+              <select class="hrs-input" id="att-walkin-select"><option value="">Add walk-in from roster…</option></select>
+              <button type="button" class="btn-gh btn-sm" onclick="hrsAddWalkin()">Mark present</button>
+            </div>
+            <button type="button" class="btn-gh btn-sm" onclick="hrsMarkUnmarkedAbsent()">Mark unmarked as absent</button>
           </div>
         </div>
       </div>
@@ -1407,67 +1627,160 @@ body[data-hub-theme="light"]:not(.hub-standalone) .nav-links.open{
       <!-- Staff -->
       <div class="hub-panel" id="hub-admin">
         <div class="hrs-admin reveal" style="margin-top:0;padding-top:0;border-top:none">
-          <p class="hub-muted-copy" style="margin:0 0 1.5rem">Signed in as <span id="staff-role-label">staff</span>.</p>
+          <div class="staff-head">
+            <div>
+              <h2>Staff command</h2>
+              <p>Signed in as <span id="staff-role-label">staff</span>. Changes here apply to the whole chapter.</p>
+            </div>
+            <div class="sec-actions">
+              <button type="button" class="btn-gh btn-sm" onclick="hrsExportRosterCsv()">Export CSV</button>
+              <button type="button" class="btn-g btn-sm" onclick="hrsOpenNextCheckin()">Start check-in</button>
+            </div>
+          </div>
           <div id="hrs-staff-gate-hint" class="staff-hint" style="display:none"></div>
 
-          <div class="hub-admin-section">
-            <h3>Command</h3>
-            <div class="cmd-grid">
-              <div class="cmd-card"><div class="cmd-n" id="cmd-pending-members">0</div><div class="cmd-l">Pending membership</div></div>
-              <div class="cmd-card"><div class="cmd-n" id="cmd-pending-hours">0</div><div class="cmd-l">Hours to review</div></div>
-              <div class="cmd-card"><div class="cmd-n" id="cmd-unpaid">0</div><div class="cmd-l">Unpaid dues</div></div>
-              <div class="cmd-card"><div class="cmd-n" id="cmd-next-present">—</div><div class="cmd-l" id="cmd-next-label">Next meeting</div></div>
+          <div class="cmd-grid">
+            <div class="cmd-card" role="button" tabindex="0" onclick="hrsStaffJump('sec-pending')"><div class="cmd-n" id="cmd-pending-members">0</div><div class="cmd-l">Pending members</div></div>
+            <div class="cmd-card" role="button" tabindex="0" onclick="hrsStaffJump('sec-hours')"><div class="cmd-n" id="cmd-pending-hours">0</div><div class="cmd-l">Hours to review</div></div>
+            <div class="cmd-card" role="button" tabindex="0" onclick="hrsStaffJump('sec-members')"><div class="cmd-n" id="cmd-unpaid">0</div><div class="cmd-l">Unpaid dues</div></div>
+            <div class="cmd-card" role="button" tabindex="0" onclick="hrsStaffJump('sec-meetings')"><div class="cmd-n" id="cmd-next-present">—</div><div class="cmd-l" id="cmd-next-label">Next meeting</div></div>
+          </div>
+
+          <div class="staff-nav" role="tablist" aria-label="Staff sections">
+            <button type="button" class="active" data-sec="sec-pending" onclick="hrsStaffJump('sec-pending',this)">Pending <span class="count" id="nav-pending">0</span></button>
+            <button type="button" data-sec="sec-members" onclick="hrsStaffJump('sec-members',this)">Members <span class="count" id="nav-members">0</span></button>
+            <button type="button" data-sec="sec-hours" onclick="hrsStaffJump('sec-hours',this)">Hours <span class="count" id="nav-hours">0</span></button>
+            <button type="button" data-sec="sec-meetings" onclick="hrsStaffJump('sec-meetings',this)">Meetings</button>
+            <button type="button" data-sec="sec-announce" onclick="hrsStaffJump('sec-announce',this)">Announce</button>
+          </div>
+
+          <section class="sec hub-admin-section" id="sec-pending">
+            <div class="sec-head">
+              <div class="sec-title"><h3>Pending membership</h3><span class="count" id="pending-count">0</span></div>
+              <div class="sec-sub">Approve to unlock the hub. Reject sends a note; they can ask for another review.</div>
             </div>
-            <div class="cmd-actions">
-              <button type="button" class="btn-g" onclick="hubTab('calendar')">Open calendar</button>
-              <button type="button" class="btn-gh" onclick="hrsOpenNextCheckin()">Open check-in projector <span class="beta-badge">Beta</span></button>
-              <button type="button" class="btn-gh" onclick="hrsExportRosterCsv()">Export CSV</button>
+            <div class="sec-body flush" id="hrs-member-queue"><div class="gal-note">Loading pending members…</div></div>
+          </section>
+
+          <section class="sec hub-admin-section" id="sec-members">
+            <div class="sec-head">
+              <div class="sec-title"><h3>Chapter members</h3><span class="count" id="members-count">0</span></div>
+              <div class="sec-actions">
+                <span class="pill plain" id="members-unpaid-pill">0 unpaid</span>
+              </div>
             </div>
-          </div>
+            <div class="toolbar">
+              <input class="hrs-input" id="roster-search" placeholder="Search name or email" oninput="hrsRenderRosterView()">
+              <div class="seg" id="roster-filter">
+                <button type="button" class="active" data-f="all" onclick="hrsSetRosterFilter('all',this)">All</button>
+                <button type="button" data-f="unpaid" onclick="hrsSetRosterFilter('unpaid',this)">Unpaid</button>
+                <button type="button" data-f="staff" onclick="hrsSetRosterFilter('staff',this)">Staff</button>
+              </div>
+            </div>
+            <div class="sec-body flush" id="hrs-member-roster"><div class="gal-note">Loading…</div></div>
+          </section>
 
-          <div class="hub-admin-section">
-            <h3>Pending membership</h3>
-            <div id="hrs-member-queue"><div class="gal-note">Loading pending members…</div></div>
-          </div>
+          <section class="sec hub-admin-section" id="sec-hours">
+            <div class="sec-head">
+              <div class="sec-title"><h3>Hour approvals</h3><span class="count" id="hours-count">0</span></div>
+              <div class="sec-sub">Approving adds hours and points to the member instantly.</div>
+            </div>
+            <div class="sec-body flush hrs-sub-list" id="hrs-queue"><div class="gal-note">Loading hour submissions…</div></div>
+          </section>
 
-          <div class="hub-admin-section">
-            <h3>Chapter members</h3>
-            <p class="hub-muted-copy" style="margin:-.4rem 0 1rem">Mark local/state/national dues paid here. Export includes name, email, grade, dues, hours, and points.</p>
-            <div id="hrs-member-roster"><div class="gal-note">Loading…</div></div>
-          </div>
+          <section class="sec hub-admin-section" id="sec-meetings">
+            <div class="sec-head">
+              <div class="sec-title"><h3>Meetings &amp; attendance</h3></div>
+              <div class="sec-actions">
+                <button type="button" class="btn-gh btn-sm" onclick="hubTab('calendar')">Calendar</button>
+                <button type="button" class="btn-gh btn-sm" onclick="hubTab('events')">New event</button>
+              </div>
+            </div>
+            <div class="sec-body flush" id="staff-meetings"><div class="gal-note">Loading events…</div></div>
+          </section>
 
-          <div class="hub-admin-section">
-            <h3>Pending hour approvals</h3>
-            <div class="hrs-sub-list" id="hrs-queue"><div class="gal-note">Loading hour submissions…</div></div>
-          </div>
-
-          <div class="hub-admin-section">
-            <h3>Post announcement</h3>
-            <div class="hrs-form-card" style="margin:0">
+          <section class="sec hub-admin-section" id="sec-announce">
+            <div class="sec-head">
+              <div class="sec-title"><h3>Post announcement</h3></div>
+              <div class="sec-sub">Members see this on Home and in Announcements.</div>
+            </div>
+            <div class="sec-body">
               <form id="hrs-ann-form-staff" onsubmit="hrsCreateAnnouncement(event)">
-                <div class="hrs-field"><label class="hrs-label">Title</label><input class="hrs-input" id="ann-title-staff" required maxlength="140"></div>
-                <div class="hrs-field"><label class="hrs-label">Message</label><textarea class="hrs-input" id="ann-body-staff" required></textarea></div>
-                <label class="hub-chip" style="margin-bottom:1rem"><input type="checkbox" id="ann-pin-staff"> Pin to top</label>
-                <button class="btn-g" type="submit" id="ann-create-btn-staff">Publish</button>
+                <div class="hrs-field"><label class="hrs-label" for="ann-title-staff">Title</label><input class="hrs-input" id="ann-title-staff" required maxlength="140" placeholder="Meeting reminder"></div>
+                <div class="hrs-field"><label class="hrs-label" for="ann-body-staff">Message</label><textarea class="hrs-input" id="ann-body-staff" required placeholder="Write the update…"></textarea></div>
+                <div class="form-foot">
+                  <label class="hub-chip"><input type="checkbox" id="ann-pin-staff"> Pin to top</label>
+                  <button class="btn-g" type="submit" id="ann-create-btn-staff">Publish</button>
+                </div>
                 <div class="hrs-submit-msg" id="ann-create-msg-staff"></div>
               </form>
             </div>
-          </div>
+          </section>
         </div>
       </div>
 
-      <!-- Remove member modal -->
-      <div id="hrs-remove-modal" class="hub-modal-backdrop" style="display:none" onclick="if(event.target===this)hrsCloseRemoveModal()">
-        <div class="hub-modal" role="dialog" aria-modal="true">
-          <h3>Remove member</h3>
-          <p>This deletes their Member Hub profile. They can sign in again and must be re-approved. Type their email to confirm.</p>
-          <p style="color:rgba(255,255,255,.7);font-size:.85rem;margin-bottom:.5rem">Member: <strong id="rm-name"></strong></p>
-          <div class="hrs-field"><label class="hrs-label">Type email to confirm</label><input class="hrs-input" id="rm-confirm-email" autocomplete="off" placeholder="member@email.com"></div>
-          <div class="hub-modal-actions">
-            <button type="button" class="btn-reject" id="rm-confirm-btn" onclick="hrsConfirmRemoveMember()">Remove permanently</button>
-            <button type="button" class="btn-gh" onclick="hrsCloseRemoveModal()">Cancel</button>
+      <!-- Shared confirm modal (typed-phrase capable) -->
+      <div id="hub-confirm-modal" class="hub-modal-backdrop" style="display:none" onclick="if(event.target===this)hubConfirmClose(false)">
+        <div class="hub-modal" role="dialog" aria-modal="true" aria-labelledby="hc-title">
+          <div class="m-kicker" id="hc-kicker"></div>
+          <h3 id="hc-title"></h3>
+          <p id="hc-body"></p>
+          <div class="m-note" id="hc-note" style="display:none"></div>
+          <div id="hc-phrase-wrap" style="display:none">
+            <label class="hrs-label" for="hc-phrase">Type this exactly to confirm</label>
+            <code class="phrase" id="hc-phrase-text"></code>
+            <input class="hrs-input" id="hc-phrase" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Type the sentence above">
           </div>
-          <div class="hrs-verify-msg err" id="rm-msg"></div>
+          <div id="hc-input-wrap" style="display:none">
+            <label class="hrs-label" for="hc-input" id="hc-input-label">Note</label>
+            <textarea class="hrs-input" id="hc-input" rows="3"></textarea>
+          </div>
+          <div class="hub-modal-actions">
+            <button type="button" class="btn-gh" onclick="hubConfirmClose(false)">Cancel</button>
+            <button type="button" class="btn-g" id="hc-ok" onclick="hubConfirmClose(true)">Confirm</button>
+          </div>
+          <div class="hrs-verify-msg err" id="hc-msg"></div>
+        </div>
+      </div>
+
+      <!-- Member drawer (staff) -->
+      <div id="hub-member-modal" class="hub-modal-backdrop" style="display:none" onclick="if(event.target===this)hrsCloseMemberModal()">
+        <div class="hub-modal wide" role="dialog" aria-modal="true" aria-labelledby="mm-name">
+          <button type="button" class="m-close" onclick="hrsCloseMemberModal()" aria-label="Close">✕</button>
+          <div class="m-kicker">Member</div>
+          <div class="m-person">
+            <div class="m-avatar" id="mm-avatar">?</div>
+            <div><b id="mm-name"></b><small id="mm-email"></small></div>
+            <span class="pill" id="mm-role-pill" style="margin-left:auto"></span>
+          </div>
+          <div class="m-grid">
+            <div class="stat"><b id="mm-hours">0</b><span>Approved hours</span></div>
+            <div class="stat gold"><b id="mm-points">0</b><span>Points</span></div>
+            <div class="stat"><b id="mm-grade">—</b><span>Grade</span></div>
+          </div>
+          <div class="m-block" id="mm-status-block">
+            <div><div class="lbl">Membership</div><span class="hint" id="mm-status-hint"></span></div>
+            <div id="mm-status-actions"></div>
+          </div>
+          <div class="m-block">
+            <div><div class="lbl">Dues</div><span class="hint">Local, state, and national dues for this year.</span></div>
+            <div class="seg" id="mm-dues">
+              <button type="button" data-v="paid" onclick="hrsMemberSetDues('paid')">Paid</button>
+              <button type="button" data-v="unpaid" onclick="hrsMemberSetDues('unpaid')">Unpaid</button>
+            </div>
+          </div>
+          <div class="m-block" id="mm-role-block">
+            <div><div class="lbl">Role &amp; admin access</div><span class="hint" id="mm-role-hint">Officers and advisers get Staff tools. Only advisers can change roles.</span></div>
+            <div class="seg" id="mm-role">
+              <button type="button" data-v="member" onclick="hrsRequestRoleChange('member')">Member</button>
+              <button type="button" data-v="officer" onclick="hrsRequestRoleChange('officer')">Officer</button>
+              <button type="button" data-v="advisor" onclick="hrsRequestRoleChange('advisor')">Adviser</button>
+            </div>
+          </div>
+          <div class="m-block danger">
+            <div><div class="lbl">Remove from chapter</div><span class="hint">Deletes their hub profile and cancels RSVPs. They can sign in again and re-apply.</span></div>
+            <button type="button" class="btn-reject btn-sm" id="mm-remove-btn" onclick="hrsOpenRemoveModal()">Remove…</button>
+          </div>
         </div>
       </div>
     </div>
@@ -2179,6 +2492,10 @@ function hrsDetachListeners() {
     try { hrsProjectorUnsub(); } catch (_) {}
     hrsProjectorUnsub = null;
   }
+  hrsAttStop();
+  hrsAttendanceEventId = null;
+  hrsAdminsMap = null;
+  hrsMyAttendanceDocs = [];
   hrsEventsCache = {};
   hrsMySignups = {};
 }
@@ -2275,24 +2592,23 @@ function hrsShowMembershipPending(user, profile) {
 
 window.hubTab = function (id, btn) {
   const primary = { overview: 1, calendar: 1, events: 1, checkin: 1, log: 1, admin: 1 };
+  const parent = { attendance: 'admin', news: 'overview', board: 'overview', activity: 'overview' };
   document.querySelectorAll('.hub-tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.hub-panel').forEach(p => {
-    if (p.id === 'hub-attendance') return;
-    p.classList.remove('active');
-  });
+  document.querySelectorAll('.hub-panel').forEach(p => p.classList.remove('active'));
   const panel = document.getElementById('hub-' + id);
   if (panel) panel.classList.add('active');
-  if (primary[id]) {
-    if (btn) btn.classList.add('active');
-    else {
-      const t = document.querySelector('.hub-tab[data-hub="' + id + '"]');
-      if (t) t.classList.add('active');
-    }
+  const tabId = primary[id] ? id : parent[id];
+  if (tabId) {
+    const t = (btn && primary[id]) ? btn : document.querySelector('.hub-tab[data-hub="' + tabId + '"]');
+    if (t) t.classList.add('active');
   }
-  if (id !== 'events' && typeof window.hrsCloseAttendance === 'function') {
+  if (id !== 'attendance' && hrsAttendanceEventId && typeof window.hrsCloseAttendance === 'function') {
     window.hrsCloseAttendance();
   }
   if (id === 'calendar') hrsRenderCalendar();
+  if (id === 'checkin') { hrsPaintCheckinLive(); hrsRenderMyAttendance(); }
+  if (id === 'admin') hrsRenderStaffMeetings();
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch (_) {}
 };
 
 let hrsAuthModeState = 'signin';
@@ -2992,7 +3308,8 @@ window.hrsMemberCheckin = async function (event, silent) {
       attendance: 'present',
       attendanceAt: serverTimestamp(),
       attendanceBy: 'self',
-      lastCheckinCode: code
+      lastCheckinCode: code,
+      walkIn: true
     };
     const wasCancelled = !!(data && data.status === 'cancelled');
     try {
@@ -3007,6 +3324,7 @@ window.hrsMemberCheckin = async function (event, silent) {
       try { await updateDoc(eventRef, { signupCount: increment(1) }); } catch (_) {}
     }
     hrsMySignups[eventId] = signupId;
+    hrsPaintCheckinLive();
     setMsg('You are marked present' + (found.e.title ? ' for ' + found.e.title : '') + '.', true);
     hrsStripCheckinQuery();
     if (found.e.hoursCredit > 0) {
@@ -3051,7 +3369,13 @@ window.hrsCreditPresentHours = async function (eventId) {
       hrsToast('No present members left to credit.');
       return;
     }
-    if (!confirm('Credit ' + hours + ' hour(s) to ' + present.length + ' present member(s)?')) return;
+    const res = await hubConfirm({
+      kicker: 'Credit hours',
+      title: 'Credit ' + hours + ' hour' + (hours === 1 ? '' : 's') + ' to ' + present.length + ' present member' + (present.length === 1 ? '' : 's') + '?',
+      body: 'Each member gets ' + hours + ' approved hour' + (hours === 1 ? '' : 's') + ' and ' + (hours * 10) + ' points. Members already credited for this event are skipped.',
+      confirmText: 'Credit hours'
+    });
+    if (!res.ok) return;
     const chunk = present.slice(0, 200);
     const batch = writeBatch(db);
     chunk.forEach(d => {
@@ -3069,6 +3393,745 @@ window.hrsCreditPresentHours = async function (eventId) {
     hrsToast('Could not credit hours. Please try again.', true);
   }
 };
+
+/* ============================================================
+   HUB PRIMITIVES — confirm modal, staff nav, roster, member
+   drawer + guarded role changes, live attendance, check-in
+   ============================================================ */
+
+let hrsAdminsMap = null;        // emailLower -> role (advisors only; null = not loaded)
+let hrsAttUnsub = null;
+let hrsAttDocs = [];
+let hrsAttFilter = 'all';
+let hrsMyAttendanceDocs = [];
+let hrsRosterFilter = 'all';
+let hrsMemberModalUid = null;
+let hubConfirmState = null;     // { resolve, phrase, input }
+
+const ROLE_LABEL = { member: 'Member', officer: 'Officer', advisor: 'Adviser' };
+const ROLE_POWERS = {
+  officer: [
+    'Approve or reject membership requests and volunteer hours',
+    'Create events, run check-in, and mark attendance',
+    'Post announcements and mark dues paid',
+    'Remove members from the chapter'
+  ],
+  advisor: [
+    'Everything an officer can do',
+    'Grant or revoke officer and adviser access for anyone',
+    'This is the highest level of access in Member Hub'
+  ]
+};
+
+function hrsNormPhrase(s) {
+  return String(s || '').toLowerCase().replace(/[‘’“”]/g, "'").replace(/\s+/g, ' ').trim();
+}
+
+function hrsInitials(name) {
+  const parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return '?';
+  return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+}
+
+function hrsFirstName(name) {
+  return String(name || '').trim().split(/\s+/)[0] || 'them';
+}
+
+function hrsTime(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' });
+}
+
+/* ---------- Shared confirm modal ----------
+   hubConfirm({ kicker, title, body, note, danger, confirmText,
+                phrase, input:{label, placeholder, minLen} })
+   → Promise<{ ok, value }>                                       */
+window.hubConfirm = function (opts) {
+  const o = opts || {};
+  const modal = document.getElementById('hub-confirm-modal');
+  if (!modal) return Promise.resolve({ ok: false });
+  if (hubConfirmState && hubConfirmState.resolve) hubConfirmState.resolve({ ok: false });
+  const kicker = document.getElementById('hc-kicker');
+  const title = document.getElementById('hc-title');
+  const body = document.getElementById('hc-body');
+  const note = document.getElementById('hc-note');
+  const pw = document.getElementById('hc-phrase-wrap');
+  const pt = document.getElementById('hc-phrase-text');
+  const pi = document.getElementById('hc-phrase');
+  const iw = document.getElementById('hc-input-wrap');
+  const il = document.getElementById('hc-input-label');
+  const ii = document.getElementById('hc-input');
+  const ok = document.getElementById('hc-ok');
+  const msg = document.getElementById('hc-msg');
+  kicker.textContent = o.kicker || 'Confirm';
+  kicker.className = 'm-kicker' + (o.danger ? ' danger' : '');
+  title.textContent = o.title || 'Are you sure?';
+  body.textContent = o.body || '';
+  body.style.display = o.body ? '' : 'none';
+  if (o.note) {
+    note.innerHTML = o.note;
+    note.className = 'm-note' + (o.danger ? ' danger' : '');
+    note.style.display = '';
+  } else {
+    note.style.display = 'none';
+    note.innerHTML = '';
+  }
+  pw.style.display = o.phrase ? '' : 'none';
+  pt.textContent = o.phrase || '';
+  pi.value = '';
+  iw.style.display = o.input ? '' : 'none';
+  if (o.input) {
+    il.textContent = o.input.label || 'Note';
+    ii.placeholder = o.input.placeholder || '';
+    ii.value = '';
+  }
+  ok.textContent = o.confirmText || 'Confirm';
+  ok.className = o.danger ? 'btn-danger btn-g' : 'btn-g';
+  ok.disabled = !!o.phrase;
+  msg.textContent = '';
+  modal.style.display = '';
+  setTimeout(() => { (o.phrase ? pi : (o.input ? ii : ok)).focus(); }, 30);
+  return new Promise(resolve => {
+    hubConfirmState = { resolve, phrase: o.phrase || '', input: o.input || null };
+  });
+};
+
+document.addEventListener('input', function (e) {
+  if (!e.target || e.target.id !== 'hc-phrase' || !hubConfirmState) return;
+  const ok = document.getElementById('hc-ok');
+  if (ok) ok.disabled = hrsNormPhrase(e.target.value) !== hrsNormPhrase(hubConfirmState.phrase);
+});
+
+document.addEventListener('keydown', function (e) {
+  if (e.key !== 'Escape') return;
+  const cm = document.getElementById('hub-confirm-modal');
+  if (cm && cm.style.display !== 'none') { hubConfirmClose(false); return; }
+  const mm = document.getElementById('hub-member-modal');
+  if (mm && mm.style.display !== 'none') hrsCloseMemberModal();
+});
+
+window.hubConfirmClose = function (accepted) {
+  const modal = document.getElementById('hub-confirm-modal');
+  const st = hubConfirmState;
+  if (!st) { if (modal) modal.style.display = 'none'; return; }
+  const msg = document.getElementById('hc-msg');
+  if (accepted) {
+    if (st.phrase) {
+      const typed = (document.getElementById('hc-phrase') || {}).value || '';
+      if (hrsNormPhrase(typed) !== hrsNormPhrase(st.phrase)) {
+        if (msg) msg.textContent = 'The sentence does not match. Type it exactly as shown.';
+        return;
+      }
+    }
+    let value = '';
+    if (st.input) {
+      value = ((document.getElementById('hc-input') || {}).value || '').trim();
+      const min = st.input.minLen || 0;
+      if (value.length < min) {
+        if (msg) msg.textContent = 'Please write at least ' + min + ' characters.';
+        return;
+      }
+    }
+    hubConfirmState = null;
+    if (modal) modal.style.display = 'none';
+    st.resolve({ ok: true, value });
+    return;
+  }
+  hubConfirmState = null;
+  if (modal) modal.style.display = 'none';
+  st.resolve({ ok: false });
+};
+
+/* ---------- Staff section nav ---------- */
+window.hrsStaffJump = function (secId, btn) {
+  hubTab('admin');
+  const sec = document.getElementById(secId);
+  document.querySelectorAll('.staff-nav button').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-sec') === secId);
+  });
+  if (sec) {
+    try { sec.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch (_) { sec.scrollIntoView(); }
+  }
+};
+
+function hrsSetCount(id, n, hot) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = String(n);
+  el.classList.toggle('hot', !!hot && n > 0);
+}
+
+/* ---------- Roster view (search + filter + one action column) ---------- */
+window.hrsSetRosterFilter = function (f, btn) {
+  hrsRosterFilter = f || 'all';
+  document.querySelectorAll('#roster-filter button').forEach(b => b.classList.toggle('active', b === btn));
+  hrsRenderRosterView();
+};
+
+function hrsEffectiveRole(u) {
+  const email = String(u.emailLower || u.email || '').toLowerCase();
+  if (hrsAdminsMap && email && hrsAdminsMap[email]) return hrsAdminsMap[email];
+  const r = u.role || 'member';
+  return (r === 'officer' || r === 'advisor') ? r : 'member';
+}
+
+function hrsRolePill(role) {
+  if (role === 'advisor') return '<span class="pill gold">Adviser</span>';
+  if (role === 'officer') return '<span class="pill info">Officer</span>';
+  return '<span class="pill">Member</span>';
+}
+
+window.hrsRenderRosterView = function () {
+  const el = document.getElementById('hrs-member-roster');
+  if (!el) return;
+  const q = hrsNormPhrase((document.getElementById('roster-search') || {}).value || '');
+  const all = (hrsRosterDocs || []).filter(d => {
+    const st = d.data().membershipStatus || 'approved';
+    return st === 'approved' || st === 'pending';
+  });
+  const approved = all.filter(d => (d.data().membershipStatus || 'approved') === 'approved');
+  const unpaid = approved.filter(d => (d.data().duesStatus || 'unpaid') !== 'paid').length;
+  hrsSetCount('members-count', approved.length);
+  hrsSetCount('nav-members', approved.length);
+  const up = document.getElementById('members-unpaid-pill');
+  if (up) { up.textContent = unpaid + ' unpaid'; up.className = 'pill plain' + (unpaid ? ' warn' : ' ok'); }
+
+  const docs = all.filter(d => {
+    const u = d.data();
+    if (hrsRosterFilter === 'unpaid' && ((u.duesStatus || 'unpaid') === 'paid' || (u.membershipStatus || 'approved') !== 'approved')) return false;
+    if (hrsRosterFilter === 'staff' && hrsEffectiveRole(u) === 'member') return false;
+    if (q) {
+      const hay = hrsNormPhrase((u.displayName || '') + ' ' + (u.email || ''));
+      if (hay.indexOf(q) < 0) return false;
+    }
+    return true;
+  }).sort((a, b) => {
+    const ua = a.data(), ub = b.data();
+    const sa = (ua.membershipStatus || 'approved') === 'pending' ? 0 : 1;
+    const sb = (ub.membershipStatus || 'approved') === 'pending' ? 0 : 1;
+    if (sa !== sb) return sa - sb;
+    return hrsNormPhrase(ua.displayName || ua.email).localeCompare(hrsNormPhrase(ub.displayName || ub.email));
+  });
+
+  if (!hrsRosterLoaded) { el.innerHTML = '<div class="gal-note">Loading…</div>'; return; }
+  if (!docs.length) {
+    el.innerHTML = '<div class="gal-note">' + (q || hrsRosterFilter !== 'all' ? 'No members match this filter.' : 'No members yet.') + '</div>';
+    return;
+  }
+  const rows = docs.map(d => {
+    const u = d.data();
+    const uid = d.id;
+    const status = u.membershipStatus || 'approved';
+    const role = hrsEffectiveRole(u);
+    const isSelf = hrsUser && uid === hrsUser.uid;
+    const dues = (u.duesStatus || 'unpaid') === 'paid';
+    const uidJs = JSON.stringify(uid);
+    let duesCell;
+    if (status !== 'approved') duesCell = '<span class="pill plain">—</span>';
+    else if (isSelf || !hrsIsStaff) duesCell = dues ? '<span class="pill ok">Paid</span>' : '<span class="pill warn">Unpaid</span>';
+    else duesCell = dues
+      ? `<button type="button" class="pill ok" title="Click to mark unpaid" onclick='hrsSetDues(${uidJs},"unpaid")'>Paid</button>`
+      : `<button type="button" class="pill warn" title="Click to mark paid" onclick='hrsSetDues(${uidJs},"paid")'>Unpaid</button>`;
+    const statusPill = status === 'pending' ? '<span class="pill warn">Pending</span>' : '<span class="pill ok">Active</span>';
+    let actions = '';
+    if (isSelf) {
+      actions = '<span class="pill plain">You</span>';
+    } else if (status === 'pending') {
+      actions = `<button type="button" class="btn-g btn-xs" onclick='hrsApproveMember(${uidJs})'>Approve</button>
+        <button type="button" class="btn-reject btn-xs" onclick='hrsRejectMember(${uidJs})'>Reject</button>`;
+    } else {
+      actions = `<button type="button" class="btn-gh btn-xs" onclick='hrsOpenMemberModal(${uidJs})'>Manage</button>`;
+    }
+    return `<tr class="${isSelf ? 'is-self' : ''}">
+      <td><div class="roster-name"><b>${escapeHtml(u.displayName || '—')}</b><small>${escapeHtml(u.email || '')}</small></div></td>
+      <td>${u.grade != null && u.grade !== '' ? escapeHtml(String(u.grade)) : '—'}</td>
+      <td>${statusPill}</td>
+      <td>${duesCell}</td>
+      <td>${hrsRolePill(role)}</td>
+      <td class="num">${Number(u.approvedHours || 0)}</td>
+      <td class="act">${actions}</td>
+    </tr>`;
+  }).join('');
+  el.innerHTML = `<div class="roster-wrap"><table class="roster-table">
+    <thead><tr><th>Member</th><th>Grade</th><th>Status</th><th>Dues</th><th>Role</th><th class="num">Hours</th><th class="act"></th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div>`;
+};
+
+/* ---------- Member drawer ---------- */
+function hrsRosterDoc(uid) {
+  return (hrsRosterDocs || []).find(d => d.id === uid) || null;
+}
+
+window.hrsOpenMemberModal = function (uid) {
+  if (!hrsIsStaff) return;
+  const d = hrsRosterDoc(uid);
+  if (!d) return;
+  hrsMemberModalUid = uid;
+  hrsPaintMemberModal();
+  const modal = document.getElementById('hub-member-modal');
+  if (modal) modal.style.display = '';
+};
+
+window.hrsCloseMemberModal = function () {
+  hrsMemberModalUid = null;
+  const modal = document.getElementById('hub-member-modal');
+  if (modal) modal.style.display = 'none';
+};
+
+function hrsPaintMemberModal() {
+  const d = hrsMemberModalUid ? hrsRosterDoc(hrsMemberModalUid) : null;
+  if (!d) { hrsCloseMemberModal(); return; }
+  const u = d.data();
+  const role = hrsEffectiveRole(u);
+  const status = u.membershipStatus || 'approved';
+  const isSelf = hrsUser && d.id === hrsUser.uid;
+  const set = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  set('mm-avatar', hrsInitials(u.displayName || u.email));
+  set('mm-name', u.displayName || 'Member');
+  set('mm-email', u.email || '');
+  set('mm-hours', String(Number(u.approvedHours || 0)));
+  set('mm-points', String(Number(u.points || 0)));
+  set('mm-grade', u.grade != null && u.grade !== '' ? String(u.grade) : '—');
+  const rp = document.getElementById('mm-role-pill');
+  if (rp) rp.outerHTML = hrsRolePill(role).replace('class="pill', 'id="mm-role-pill" style="margin-left:auto" class="pill');
+
+  const sh = document.getElementById('mm-status-hint');
+  const sa = document.getElementById('mm-status-actions');
+  if (sh) sh.textContent = status === 'pending' ? 'Waiting for approval.' : ('Approved' + (u.membershipReviewedBy ? ' by ' + u.membershipReviewedBy : '') + '.');
+  if (sa) {
+    const uidJs = JSON.stringify(d.id);
+    sa.innerHTML = status === 'pending'
+      ? `<button type="button" class="btn-g btn-sm" onclick='hrsApproveMember(${uidJs})'>Approve</button> <button type="button" class="btn-reject btn-sm" onclick='hrsRejectMember(${uidJs})'>Reject</button>`
+      : '<span class="pill ok">Active</span>';
+  }
+
+  document.querySelectorAll('#mm-dues button').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-v') === ((u.duesStatus || 'unpaid') === 'paid' ? 'paid' : 'unpaid'));
+    b.disabled = status !== 'approved';
+  });
+
+  const canRole = hrsStaffRole === 'advisor' && !isSelf;
+  document.querySelectorAll('#mm-role button').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-v') === role);
+    b.disabled = !canRole;
+  });
+  const rh = document.getElementById('mm-role-hint');
+  if (rh) {
+    rh.textContent = isSelf
+      ? 'You cannot change your own role.'
+      : (hrsStaffRole === 'advisor'
+        ? 'Officers and advisers get Staff tools. Changing this requires a typed confirmation.'
+        : 'Only advisers can change roles. Ask an adviser if this member should be staff.');
+  }
+  const rb = document.getElementById('mm-remove-btn');
+  if (rb) rb.disabled = !!isSelf;
+}
+
+window.hrsMemberSetDues = async function (status) {
+  if (!hrsMemberModalUid) return;
+  document.querySelectorAll('#mm-dues button').forEach(b => b.classList.toggle('active', b.getAttribute('data-v') === status));
+  await hrsSetDues(hrsMemberModalUid, status);
+};
+
+/* ---------- Guarded role change (advisers only) ----------
+   Grant  → admins/{email} created + users/{uid}.role updated (one batch)
+   Revoke → admins/{email} deleted + users/{uid}.role = member          */
+window.hrsRequestRoleChange = async function (nextRole) {
+  if (!hrsMemberModalUid || hrsStaffRole !== 'advisor') return;
+  const d = hrsRosterDoc(hrsMemberModalUid);
+  if (!d) return;
+  const u = d.data();
+  const uid = d.id;
+  if (hrsUser && uid === hrsUser.uid) { hrsToast('You cannot change your own role.', true); return; }
+  const current = hrsEffectiveRole(u);
+  if (nextRole === current) return;
+  const name = u.displayName || u.email || 'this member';
+  const emailLower = String(u.emailLower || u.email || '').toLowerCase().trim();
+  if (!emailLower) { hrsToast('This profile has no email on file.', true); return; }
+  // Snap the segmented control back until confirmed
+  document.querySelectorAll('#mm-role button').forEach(b => b.classList.toggle('active', b.getAttribute('data-v') === current));
+
+  const granting = nextRole !== 'member';
+  const label = ROLE_LABEL[nextRole] || nextRole;
+  const phrase = granting
+    ? ('Make ' + name + ' an ' + label.toLowerCase())
+    : ('Remove staff access from ' + name);
+  const powers = granting
+    ? '<b>' + escapeHtml(hrsFirstName(name)) + ' will be able to:</b><ul>' + ROLE_POWERS[nextRole].map(p => '<li>' + escapeHtml(p) + '</li>').join('') + '</ul>'
+    : '<b>' + escapeHtml(hrsFirstName(name)) + ' will lose:</b><ul><li>All Staff tools (approvals, events, check-in, announcements)</li><li>Their role badge returns to Member. Hours and points are kept.</li></ul>';
+  const res = await hubConfirm({
+    kicker: granting ? 'Grant admin access' : 'Revoke admin access',
+    title: granting ? ('Make ' + name + ' an ' + label.toLowerCase() + '?') : ('Remove staff access from ' + name + '?'),
+    body: granting
+      ? 'Admin access takes effect the next time they open Member Hub. Only advisers can undo this.'
+      : 'They keep their membership, hours, and points.',
+    note: powers,
+    danger: !granting || nextRole === 'advisor',
+    confirmText: granting ? ('Grant ' + label.toLowerCase() + ' access') : 'Revoke access',
+    phrase
+  });
+  if (!res.ok) return;
+
+  try {
+    const batch = writeBatch(db);
+    const adminRef = doc(db, 'admins', emailLower);
+    if (granting) {
+      batch.set(adminRef, {
+        role: nextRole,
+        email: emailLower,
+        uid,
+        grantedBy: hrsUser.uid,
+        grantedByEmail: hrsUser.email,
+        grantedAt: serverTimestamp()
+      });
+    } else {
+      batch.delete(adminRef);
+    }
+    batch.update(doc(db, 'users', uid), {
+      role: nextRole,
+      roleChangedBy: hrsUser.email,
+      roleChangedAt: serverTimestamp()
+    });
+    await batch.commit();
+    if (hrsAdminsMap) {
+      if (granting) hrsAdminsMap[emailLower] = nextRole; else delete hrsAdminsMap[emailLower];
+    }
+    hrsToast(granting ? (name + ' is now an ' + label.toLowerCase() + '.') : ('Staff access removed for ' + name + '.'));
+    hrsPaintMemberModal();
+    hrsRenderRosterView();
+  } catch (err) {
+    console.error(err);
+    const denied = err && err.code === 'permission-denied';
+    hrsToast(denied
+      ? 'Firestore rejected this change. Publish the latest firestore.rules so advisers can manage the staff roster.'
+      : 'Could not change role. Please try again.', true);
+  }
+};
+
+/* ---------- Staff: meetings list ---------- */
+function hrsRenderStaffMeetings() {
+  const el = document.getElementById('staff-meetings');
+  if (!el || !hrsIsStaff) return;
+  const now = Date.now();
+  const all = Object.keys(hrsEventsCache).map(id => ({ id, e: hrsEventsCache[id] }))
+    .map(x => ({ ...x, t: x.e && x.e.startAt && x.e.startAt.toMillis ? x.e.startAt.toMillis() : 0 }));
+  const upcoming = all.filter(x => x.e.status === 'open' && x.t >= now - 6 * 3600000).sort((a, b) => a.t - b.t).slice(0, 6);
+  const past = all.filter(x => !(x.e.status === 'open' && x.t >= now - 6 * 3600000)).sort((a, b) => b.t - a.t).slice(0, 4);
+  if (!upcoming.length && !past.length) {
+    el.innerHTML = '<div class="gal-note">No events yet. Create one from the Events tab or the calendar.</div>';
+    return;
+  }
+  const row = (x, isPast) => {
+    const e = x.e;
+    const idJs = JSON.stringify(x.id);
+    const live = hrsCheckinWindowOpen(e);
+    const pill = live ? '<span class="pill ok">Check-in open</span>'
+      : (e.status !== 'open' ? '<span class="pill plain">Closed</span>' : (isPast ? '<span class="pill plain">Past</span>' : ''));
+    return `<div class="att-row">
+      <div class="att-who">
+        <b>${escapeHtml(e.title || 'Event')}</b>
+        <small><span>${formatEventWhen(e.startAt)}</span><span>·</span><span>${escapeHtml(e.location || 'TBD')}</span><span>·</span><span>${e.signupCount || 0} RSVP${(e.signupCount || 0) === 1 ? '' : 's'}</span>${e.hoursCredit > 0 ? '<span>·</span><span>' + e.hoursCredit + ' hrs credit</span>' : ''}${pill ? '<span>' + pill + '</span>' : ''}</small>
+      </div>
+      <div class="hrs-queue-actions">
+        <button type="button" class="btn-gh btn-xs" onclick='hrsOpenAttendance(${idJs})'>Attendance</button>
+        ${e.status === 'open' ? `<button type="button" class="${live ? 'btn-g' : 'btn-gh'} btn-xs" onclick='hrsOpenCheckinProjector(${idJs})'>${live ? 'Projector' : 'Start check-in'}</button>` : ''}
+      </div>
+    </div>`;
+  };
+  el.innerHTML = upcoming.map(x => row(x, false)).join('')
+    + (past.length ? '<div class="toolbar" style="border-top:1px solid var(--hub-line)"><span class="sec-sub">Recent</span></div>' + past.map(x => row(x, true)).join('') : '');
+}
+
+/* ---------- Attendance (staff): live, filterable ---------- */
+function hrsAttStop() {
+  if (hrsAttUnsub) { try { hrsAttUnsub(); } catch (_) {} hrsAttUnsub = null; }
+}
+
+window.hrsCloseAttendance = function () {
+  hrsAttStop();
+  hrsAttendanceEventId = null;
+  hrsAttDocs = [];
+};
+
+window.hrsOpenAttendance = function (eventId) {
+  if (!hrsIsStaff || !eventId) return;
+  hrsAttStop();
+  hrsAttendanceEventId = eventId;
+  hrsAttDocs = [];
+  hrsAttFilter = 'all';
+  document.querySelectorAll('#att-filter button').forEach(b => b.classList.toggle('active', b.getAttribute('data-f') === 'all'));
+  const search = document.getElementById('att-search');
+  if (search) search.value = '';
+  hubTab('attendance');
+  hrsPaintAttendanceHead();
+  const list = document.getElementById('att-list');
+  if (list) list.innerHTML = '<div class="gal-note">Loading sign-ups…</div>';
+  hrsAttUnsub = onSnapshot(query(
+    collection(db, 'eventSignups'),
+    where('eventId', '==', eventId),
+    limit(200)
+  ), snap => {
+    hrsAttDocs = (snap.docs || []).slice();
+    hrsRenderAttendance();
+  }, err => {
+    console.error(err);
+    if (list) list.innerHTML = '<div class="gal-note">Could not load attendance. Please try again.</div>';
+  });
+};
+
+function hrsPaintAttendanceHead() {
+  const ev = hrsEventsCache[hrsAttendanceEventId] || {};
+  const title = document.getElementById('att-title');
+  const sub = document.getElementById('att-sub');
+  const live = document.getElementById('att-live-pill');
+  const credit = document.getElementById('att-credit-btn');
+  if (title) title.textContent = ev.title || 'Attendance';
+  if (sub) sub.textContent = formatEventWhen(ev.startAt) + (ev.location ? ' · ' + ev.location : '');
+  if (live) {
+    const open = hrsCheckinWindowOpen(ev);
+    live.textContent = open ? 'Check-in open' : (ev.checkinEnabled ? 'Check-in closed' : 'Check-in not started');
+    live.className = 'pill ' + (open ? 'ok' : 'plain');
+  }
+  if (credit) {
+    const h = Number(ev.hoursCredit || 0);
+    credit.textContent = h > 0 ? ('Credit ' + h + ' hr' + (h === 1 ? '' : 's')) : 'No hours set';
+    credit.disabled = !(h > 0);
+  }
+}
+
+window.hrsSetAttFilter = function (f, btn) {
+  hrsAttFilter = f || 'all';
+  document.querySelectorAll('#att-filter button').forEach(b => b.classList.toggle('active', b === btn));
+  hrsFilterAttendance();
+};
+
+window.hrsFilterAttendance = function () {
+  const q = hrsNormPhrase((document.getElementById('att-search') || {}).value || '');
+  document.querySelectorAll('#att-list .att-row').forEach(row => {
+    const att = row.getAttribute('data-att') || '';
+    const hay = row.getAttribute('data-hay') || '';
+    let show = true;
+    if (hrsAttFilter === 'present' && att !== 'present') show = false;
+    if (hrsAttFilter === 'absent' && att !== 'absent') show = false;
+    if (hrsAttFilter === 'unmarked' && att) show = false;
+    if (q && hay.indexOf(q) < 0) show = false;
+    row.classList.toggle('is-hidden', !show);
+  });
+};
+
+function hrsRenderAttendance() {
+  const list = document.getElementById('att-list');
+  const stats = document.getElementById('att-stats');
+  if (!list) return;
+  hrsPaintAttendanceHead();
+  const docs = hrsAttDocs.filter(d => d.data().status !== 'cancelled');
+  const n = { total: docs.length, present: 0, absent: 0, excused: 0, unmarked: 0, credited: 0 };
+  docs.forEach(d => {
+    const a = d.data().attendance || '';
+    if (a === 'present') n.present++; else if (a === 'absent') n.absent++; else if (a === 'excused') n.excused++; else n.unmarked++;
+    if (d.data().hoursCredited) n.credited++;
+  });
+  if (stats) {
+    stats.innerHTML = `
+      <div class="stat"><b>${n.total}</b><span>On the list</span></div>
+      <div class="stat ok"><b>${n.present}</b><span>Present</span></div>
+      <div class="stat danger"><b>${n.absent}</b><span>Absent</span></div>
+      <div class="stat info"><b>${n.excused}</b><span>Excused</span></div>
+      <div class="stat"><b>${n.unmarked}</b><span>Unmarked</span></div>
+      <div class="stat gold"><b>${n.credited}</b><span>Hours credited</span></div>`;
+  }
+  // Walk-in picker: approved members not already on the list
+  const sel = document.getElementById('att-walkin-select');
+  if (sel) {
+    const onList = {};
+    hrsAttDocs.forEach(d => { if (d.data().uid) onList[d.data().uid] = true; });
+    const opts = (hrsRosterDocs || [])
+      .filter(d => (d.data().membershipStatus || 'approved') === 'approved' && !onList[d.id])
+      .sort((a, b) => hrsNormPhrase(a.data().displayName || a.data().email).localeCompare(hrsNormPhrase(b.data().displayName || b.data().email)))
+      .map(d => `<option value="${escapeHtml(d.id)}">${escapeHtml(d.data().displayName || d.data().email || 'Member')}</option>`);
+    sel.innerHTML = '<option value="">Add walk-in from roster…</option>' + opts.join('');
+  }
+  if (!docs.length) {
+    list.innerHTML = '<div class="gal-note">No one is on the list yet. RSVPs and check-ins appear here live.</div>';
+    return;
+  }
+  docs.sort((a, b) => {
+    const ua = a.data(), ub = b.data();
+    const ra = ua.attendance === 'present' ? 0 : (ua.attendance ? 2 : 1);
+    const rb = ub.attendance === 'present' ? 0 : (ub.attendance ? 2 : 1);
+    if (ra !== rb) return ra - rb;
+    return hrsNormPhrase(ua.displayName || ua.email).localeCompare(hrsNormPhrase(ub.displayName || ub.email));
+  });
+  list.innerHTML = docs.map(d => {
+    const s = d.data();
+    const att = s.attendance || '';
+    const idJs = JSON.stringify(d.id);
+    const walkIn = !!s.walkIn || (s.attendanceBy && s.attendanceBy !== 'self' && !s.signedUpAt);
+    const how = s.attendanceBy === 'self' ? 'Scanned in' : (s.attendanceBy ? 'Marked by staff' : '');
+    const bits = [
+      escapeHtml(s.email || ''),
+      walkIn ? '<span class="pill plain info">Walk-in</span>' : '<span class="pill plain">RSVP</span>',
+      att && s.attendanceAt ? escapeHtml((how ? how + ' · ' : '') + hrsTime(s.attendanceAt)) : '',
+      s.hoursCredited ? '<span class="pill plain gold">Hours credited</span>' : ''
+    ].filter(Boolean).map(b => '<span>' + b + '</span>').join('');
+    const mk = (v, label) => `<button type="button" data-v="${v}" class="${att === v ? 'active' : ''}" onclick='hrsSetAttendance(${idJs},"${v}")'>${label}</button>`;
+    return `<div class="att-row" id="att-row-${escapeHtml(d.id)}" data-att="${escapeHtml(att)}" data-hay="${escapeHtml(hrsNormPhrase((s.displayName || '') + ' ' + (s.email || '')))}">
+      <div class="att-who"><b>${escapeHtml(s.displayName || s.email || 'Member')}</b><small>${bits}</small></div>
+      <div class="seg">${mk('present', 'Present')}${mk('absent', 'Absent')}${mk('excused', 'Excused')}</div>
+    </div>`;
+  }).join('');
+  hrsFilterAttendance();
+}
+
+window.hrsSetAttendance = async function (signupId, value) {
+  if (!hrsIsStaff || !hrsUser) return;
+  if (!['present', 'absent', 'excused'].includes(value)) return;
+  const row = document.getElementById('att-row-' + signupId);
+  if (row) {
+    row.setAttribute('data-att', value);
+    row.querySelectorAll('.seg button').forEach(b => b.classList.toggle('active', b.getAttribute('data-v') === value));
+  }
+  try {
+    await updateDoc(doc(db, 'eventSignups', signupId), {
+      attendance: value,
+      attendanceAt: serverTimestamp(),
+      attendanceBy: hrsUser.email
+    });
+  } catch (err) {
+    console.error(err);
+    hrsToast('Could not update attendance. Please try again.', true);
+    hrsRenderAttendance();
+  }
+};
+
+window.hrsMarkUnmarkedAbsent = async function () {
+  if (!hrsIsStaff || !hrsAttendanceEventId) return;
+  const targets = hrsAttDocs.filter(d => d.data().status !== 'cancelled' && !d.data().attendance);
+  if (!targets.length) { hrsToast('Everyone on the list is already marked.'); return; }
+  const res = await hubConfirm({
+    kicker: 'Attendance',
+    title: 'Mark ' + targets.length + ' unmarked member' + (targets.length === 1 ? '' : 's') + ' absent?',
+    body: 'Use this after the meeting. You can still change anyone to present or excused afterward.',
+    confirmText: 'Mark absent'
+  });
+  if (!res.ok) return;
+  try {
+    const batch = writeBatch(db);
+    targets.slice(0, 400).forEach(d => batch.update(d.ref, { attendance: 'absent', attendanceAt: serverTimestamp(), attendanceBy: hrsUser.email }));
+    await batch.commit();
+    hrsToast('Marked ' + targets.length + ' absent.');
+  } catch (err) {
+    console.error(err);
+    hrsToast('Could not update attendance. Please try again.', true);
+  }
+};
+
+window.hrsAddWalkin = async function () {
+  if (!hrsIsStaff || !hrsAttendanceEventId) return;
+  const sel = document.getElementById('att-walkin-select');
+  const uid = sel && sel.value;
+  if (!uid) { hrsToast('Pick a member first.', true); return; }
+  const d = hrsRosterDoc(uid);
+  if (!d) return;
+  const u = d.data();
+  const signupId = hrsAttendanceEventId + '_' + uid;
+  try {
+    const batch = writeBatch(db);
+    batch.set(doc(db, 'eventSignups', signupId), {
+      eventId: hrsAttendanceEventId,
+      uid,
+      email: u.email || '',
+      displayName: u.displayName || u.email || 'Member',
+      status: 'signed_up',
+      signedUpAt: serverTimestamp(),
+      attendance: 'present',
+      attendanceAt: serverTimestamp(),
+      attendanceBy: hrsUser.email,
+      walkIn: true,
+      addedBy: hrsUser.uid
+    });
+    batch.update(doc(db, 'chapterEvents', hrsAttendanceEventId), { signupCount: increment(1) });
+    await batch.commit();
+    hrsToast((u.displayName || 'Member') + ' marked present.');
+    if (sel) sel.value = '';
+  } catch (err) {
+    console.error(err);
+    hrsToast(err && err.code === 'permission-denied'
+      ? 'Firestore rejected this. Publish the latest firestore.rules to allow staff walk-ins.'
+      : 'Could not add walk-in. Please try again.', true);
+  }
+};
+
+/* ---------- Member: live meeting card + attendance history ---------- */
+function hrsPaintCheckinLive() {
+  const el = document.getElementById('ci-live');
+  if (!el) return;
+  const live = Object.keys(hrsEventsCache).map(id => ({ id, e: hrsEventsCache[id] }))
+    .filter(x => hrsCheckinWindowOpen(x.e))
+    .sort((a, b) => (a.e.startAt.toMillis ? a.e.startAt.toMillis() : 0) - (b.e.startAt.toMillis ? b.e.startAt.toMillis() : 0))[0];
+  if (!live) {
+    const next = hrsNextOpenEvent();
+    el.className = 'ci-idle';
+    el.innerHTML = next
+      ? '<b>No meeting is open for check-in right now.</b><br>Next up: ' + escapeHtml(next.e.title || 'Meeting') + ' · ' + escapeHtml(formatEventWhen(next.e.startAt)) + '.'
+      : '<b>No meeting is open for check-in right now.</b><br>When an officer starts check-in, the live meeting will show here.';
+    return;
+  }
+  const mine = hrsMyAttendanceDocs.find(d => d.data().eventId === live.id && d.data().status !== 'cancelled');
+  const present = !!(mine && mine.data().attendance === 'present');
+  const endsAt = new Date((live.e.startAt.toMillis ? live.e.startAt.toMillis() : 0) + 2 * 3600000);
+  el.className = 'ci-live';
+  el.innerHTML = '<div class="dot"></div><div style="min-width:0;flex:1"><b>' + escapeHtml(live.e.title || 'Meeting') + '</b>'
+    + '<span>' + escapeHtml(formatEventWhen(live.e.startAt)) + (live.e.location ? ' · ' + escapeHtml(live.e.location) : '') + ' · closes ' + escapeHtml(hrsTime(endsAt)) + '</span></div>'
+    + (present ? '<span class="pill ok">You\'re present</span>' : '<span class="pill warn">Not checked in</span>');
+}
+
+function hrsRenderMyAttendance() {
+  const list = document.getElementById('hist-list');
+  const stats = document.getElementById('hist-stats');
+  if (!list) return;
+  const now = Date.now();
+  const rows = hrsMyAttendanceDocs.map(d => {
+    const s = d.data();
+    const e = hrsEventsCache[s.eventId];
+    const t = e && e.startAt && e.startAt.toMillis ? e.startAt.toMillis() : 0;
+    return { s, e, t };
+  }).filter(x => x.e && x.s.status !== 'cancelled' && (x.s.attendance || x.t < now - 2 * 3600000))
+    .sort((a, b) => b.t - a.t);
+  const n = { present: 0, absent: 0, excused: 0, hours: 0 };
+  rows.forEach(x => {
+    if (x.s.attendance === 'present') n.present++;
+    else if (x.s.attendance === 'absent') n.absent++;
+    else if (x.s.attendance === 'excused') n.excused++;
+    if (x.s.hoursCredited && x.e.hoursCredit > 0) n.hours += Number(x.e.hoursCredit);
+  });
+  hrsSetCount('hist-count', rows.length);
+  if (stats) {
+    const rate = rows.length ? Math.round((n.present / rows.length) * 100) : 0;
+    stats.innerHTML = rows.length
+      ? `<span class="pill ok">${n.present} present</span><span class="pill danger">${n.absent} absent</span><span class="pill info">${n.excused} excused</span><span class="pill gold">${rate}% attendance</span>${n.hours ? `<span class="pill plain">${n.hours} hrs credited</span>` : ''}`
+      : '';
+    stats.style.display = rows.length ? '' : 'none';
+  }
+  if (!rows.length) {
+    list.innerHTML = '<div class="gal-note">No meetings recorded yet. Check in at your first meeting and it will appear here.</div>';
+    return;
+  }
+  list.innerHTML = rows.slice(0, 40).map(x => {
+    const a = x.s.attendance || '';
+    const pill = a === 'present' ? '<span class="pill ok">Present</span>'
+      : a === 'absent' ? '<span class="pill danger">Absent</span>'
+      : a === 'excused' ? '<span class="pill info">Excused</span>'
+      : '<span class="pill plain">Not marked</span>';
+    const hrs = x.s.hoursCredited && x.e.hoursCredit > 0 ? `<span class="pill gold">+${x.e.hoursCredit} hrs</span>` : '';
+    return `<div class="hist-row">
+      <div><b>${escapeHtml(x.e.title || 'Meeting')}</b><small>${escapeHtml(formatEventWhen(x.e.startAt))}${x.e.location ? ' · ' + escapeHtml(x.e.location) : ''}${a === 'present' && x.s.attendanceAt ? ' · checked in ' + escapeHtml(hrsTime(x.s.attendanceAt)) : ''}</small></div>
+      <div class="hist-right">${hrs}${pill}</div>
+    </div>`;
+  }).join('');
+}
 
 function hrsFeedNote(text, retry) {
   const btn = retry
@@ -3178,7 +4241,7 @@ function attachPortalListeners(user) {
     limit(80)
   );
   hrsListenQuery(myRsvpQ, (snap) => {
-    const docs = (snap.docs || []).filter(d => d.data().status === 'signed_up');
+    const docs = (snap.docs || []).slice();
     renderMyRsvps({ docs, empty: !docs.length });
   });
 
@@ -3228,6 +4291,19 @@ function attachPortalListeners(user) {
       const el = document.getElementById('hrs-member-queue');
       if (el) el.innerHTML = hrsFeedNote('Could not load pending members.', true);
     });
+
+    if (hrsStaffRole === 'advisor') {
+      hrsListenQuery(query(collection(db, 'admins'), limit(100)), (snap) => {
+        const map = {};
+        (snap.docs || []).forEach(d => {
+          const r = (d.data() || {}).role;
+          map[String(d.id).toLowerCase()] = (r === 'officer' || r === 'advisor') ? r : 'advisor';
+        });
+        hrsAdminsMap = map;
+        hrsRenderRosterView();
+        if (hrsMemberModalUid) hrsPaintMemberModal();
+      }, () => { hrsAdminsMap = null; });
+    }
 
     const rosterQ = query(collection(db, 'users'), limit(250));
     hrsListenQuery(rosterQ, (snap) => {
@@ -3638,6 +4714,8 @@ function renderMemberQueueFromDocs(docs) {
   if (!el) return;
   const pending = (docs || []).filter(d => (d.data().membershipStatus || '') === 'pending');
   hrsPendingMemberCount = pending.length;
+  hrsSetCount('pending-count', pending.length, true);
+  hrsSetCount('nav-pending', pending.length, true);
   hrsUpdateCommand();
   pending.sort((a, b) => {
     const aAppeal = a.data().membershipAppealAt ? 1 : 0;
@@ -3666,101 +4744,40 @@ function renderMemberQueueFromDocs(docs) {
         </div>
       </div>
       <div class="member-queue-actions">
-        <button class="btn-g" style="padding:.65rem 1.2rem;font-size:.78rem" onclick="hrsApproveMember('${id}')">Approve</button>
-        <button class="btn-reject" onclick="hrsRejectMember('${id}')">Reject</button>
+        <button class="btn-g btn-sm" onclick="hrsApproveMember('${id}')">Approve</button>
+        <button class="btn-reject btn-sm" onclick="hrsRejectMember('${id}')">Reject</button>
       </div>
     </div>`;
   }).join('');
 }
 
 function renderMemberRoster(snap) {
-  const el = document.getElementById('hrs-member-roster');
   hrsRosterDocs = snap && snap.docs ? snap.docs.slice() : [];
   hrsUpdateCommand();
-  if (!el) return;
-  const docs = (snap.docs || []).filter(d => {
-    const st = d.data().membershipStatus || 'approved';
-    return st === 'approved' || st === 'pending';
-  });
-  if (!docs.length) {
-    el.innerHTML = '<div class="gal-note">No members yet.</div>';
-    return;
-  }
-  const rows = docs.map(d => {
-    const u = d.data();
-    const uid = d.id;
-    const status = u.membershipStatus || 'approved';
-    const role = u.role || 'member';
-    const isSelf = hrsUser && uid === hrsUser.uid;
-    let actions = '';
-    if (status === 'pending' && hrsIsStaff && !isSelf) {
-      actions = `<div style="display:flex;gap:.35rem;flex-wrap:wrap">
-        <button type="button" class="btn-g" style="padding:.4rem .7rem;font-size:.72rem;min-height:0" onclick="hrsApproveMember('${uid}')">Approve</button>
-        <button type="button" class="btn-reject" style="padding:.4rem .7rem;font-size:.72rem;min-height:0" onclick="hrsRejectMember('${uid}')">Reject</button>
-      </div>`;
-    } else if (!isSelf && hrsIsStaff) {
-      actions = `<button type="button" class="btn-reject" style="padding:.4rem .7rem;font-size:.72rem;min-height:0" onclick='hrsOpenRemoveModal(${JSON.stringify(uid)},${JSON.stringify(u.email || '')},${JSON.stringify(u.displayName || u.email || 'Member')})'>Remove</button>`;
-    } else if (isSelf) {
-      actions = '<span style="color:rgba(255,255,255,.35);font-size:.75rem">You</span>';
-    }
-    const dues = (u.duesStatus || 'unpaid') === 'paid' ? 'paid' : 'unpaid';
-    let duesCell = escapeHtml(dues);
-    if (hrsIsStaff && status === 'approved') {
-      duesCell = dues === 'paid'
-        ? `paid · <button type="button" class="btn-gh" style="padding:.35rem .6rem;font-size:.7rem;min-height:0;margin-left:.35rem" onclick="hrsSetDues('${uid}','unpaid')">Unpaid</button>`
-        : `unpaid · <button type="button" class="btn-g" style="padding:.35rem .6rem;font-size:.7rem;min-height:0;margin-left:.35rem" onclick="hrsSetDues('${uid}','paid')">Paid</button>`;
-    }
-    return `<tr>
-      <td>${escapeHtml(u.displayName || '—')}</td>
-      <td>${escapeHtml(u.email || '')}</td>
-      <td>${u.grade != null && u.grade !== '' ? escapeHtml(String(u.grade)) : '—'}</td>
-      <td>${escapeHtml(status)}</td>
-      <td>${duesCell}</td>
-      <td>${escapeHtml(role)}</td>
-      <td>${actions}</td>
-    </tr>`;
-  }).join('');
-  el.innerHTML = `<div class="roster-wrap"><table class="roster-table">
-    <thead><tr><th>Name</th><th>Email</th><th>Grade</th><th>Status</th><th>Dues</th><th>Role</th><th></th></tr></thead>
-    <tbody>${rows}</tbody>
-  </table></div>`;
+  hrsRenderRosterView();
+  if (hrsMemberModalUid) hrsPaintMemberModal();
+  if (hrsAttendanceEventId) hrsRenderAttendance();
 }
 
-window.hrsOpenRemoveModal = function (uid, email, name) {
+window.hrsOpenRemoveModal = async function (uid, email, name) {
   if (!hrsIsStaff) return;
-  if (hrsUser && uid === hrsUser.uid) {
-    hrsToast('You cannot remove your own account.', true);
-    return;
+  if (!uid && hrsMemberModalUid) {
+    const d = hrsRosterDoc(hrsMemberModalUid);
+    if (!d) return;
+    uid = d.id; email = d.data().email || ''; name = d.data().displayName || email;
   }
-  hrsRemoveTarget = { uid, email: email || '', name: name || '' };
-  const modal = document.getElementById('hrs-remove-modal');
-  const nameEl = document.getElementById('rm-name');
-  const conf = document.getElementById('rm-confirm-email');
-  const msg = document.getElementById('rm-msg');
-  if (nameEl) nameEl.textContent = (name || email || uid) + (email ? ' (' + email + ')' : '');
-  if (conf) conf.value = '';
-  if (msg) { msg.textContent = ''; msg.className = 'hrs-verify-msg err'; }
-  if (modal) modal.style.display = '';
-};
-
-window.hrsCloseRemoveModal = function () {
-  hrsRemoveTarget = null;
-  const modal = document.getElementById('hrs-remove-modal');
-  if (modal) modal.style.display = 'none';
-};
-
-window.hrsConfirmRemoveMember = async function () {
-  if (!hrsIsStaff || !hrsRemoveTarget) return;
-  const target = hrsRemoveTarget;
-  const typed = (document.getElementById('rm-confirm-email') || {}).value || '';
-  const msg = document.getElementById('rm-msg');
-  const btn = document.getElementById('rm-confirm-btn');
-  if (typed.trim().toLowerCase() !== String(target.email || '').trim().toLowerCase()) {
-    if (msg) msg.textContent = 'Email does not match. Type the member\'s email exactly to confirm.';
-    return;
-  }
-  if (btn) { btn.disabled = true; btn.textContent = 'Removing…'; }
-  if (msg) msg.textContent = '';
+  if (!uid) return;
+  if (hrsUser && uid === hrsUser.uid) { hrsToast('You cannot remove your own account.', true); return; }
+  const target = { uid, email: email || '', name: name || email || 'Member' };
+  const res = await hubConfirm({
+    kicker: 'Remove member',
+    danger: true,
+    title: 'Remove ' + target.name + ' from the chapter?',
+    body: 'This deletes their Member Hub profile and cancels their RSVPs. Hours and points are lost. They can sign in again and must be re-approved.',
+    confirmText: 'Remove permanently',
+    phrase: target.email || ('remove ' + target.name)
+  });
+  if (!res.ok) return;
   try {
     const signupsSnap = await getDocs(query(
       collection(db, 'eventSignups'),
@@ -3769,12 +4786,12 @@ window.hrsConfirmRemoveMember = async function () {
     const batch = writeBatch(db);
     let ops = 0;
     signupsSnap.docs.forEach(d => {
-      const s = d.data();
-      if (s.status === 'signed_up') {
+      const sg = d.data();
+      if (sg.status === 'signed_up') {
         batch.update(d.ref, { status: 'cancelled' });
         ops++;
-        if (s.eventId) {
-          batch.update(doc(db, 'chapterEvents', s.eventId), { signupCount: increment(-1) });
+        if (sg.eventId) {
+          batch.update(doc(db, 'chapterEvents', sg.eventId), { signupCount: increment(-1) });
           ops++;
         }
       }
@@ -3783,14 +4800,11 @@ window.hrsConfirmRemoveMember = async function () {
     ops++;
     if (ops > 450) throw new Error('Too many RSVPs to cancel in one step. Contact a developer.');
     await batch.commit();
+    hrsCloseMemberModal();
     hrsToast('Member removed. They can sign in again and must be re-approved.');
-    hrsCloseRemoveModal();
   } catch (err) {
     console.error(err);
-    if (msg) msg.textContent = 'Could not remove this member. Please try again.';
     hrsToast('Could not remove member. Please try again.', true);
-  } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Remove permanently'; }
   }
 };
 
@@ -3812,11 +4826,18 @@ window.hrsApproveMember = async function (uid) {
 
 window.hrsRejectMember = async function (uid) {
   if (!hrsIsStaff) return;
-  const note = (prompt('Write a short note for the applicant. They can ask to be reviewed again — this is not a permanent ban.') || '').trim();
-  if (note.length < 8) {
-    hrsToast('Add a short note so they know what to fix.', true);
-    return;
-  }
+  const target = hrsRosterDoc(uid);
+  const tname = target ? (target.data().displayName || target.data().email || 'this applicant') : 'this applicant';
+  const res = await hubConfirm({
+    kicker: 'Membership',
+    title: 'Reject ' + tname + '?',
+    body: 'They will see your note and can ask to be reviewed again. This is not a permanent ban.',
+    confirmText: 'Reject with note',
+    input: { label: 'Note to applicant', placeholder: 'e.g. Please pay dues first, or use your school email.', minLen: 8 }
+  });
+  if (!res.ok) return;
+  const note = res.value;
+  if (hrsMemberModalUid === uid) hrsCloseMemberModal();
   try {
     await updateDoc(doc(db, 'users', uid), {
       membershipStatus: 'rejected',
@@ -3877,7 +4898,7 @@ window.hrsCreateAnnouncement = async function (event) {
 
 window.hrsArchiveAnnouncement = async function (id) {
   if (!hrsIsStaff) return;
-  if (!confirm('Archive this announcement? Members will no longer see it.')) return;
+  if (!(await hubConfirm({ kicker: 'Announcement', title: 'Archive this announcement?', body: 'Members will no longer see it. You can still delete it later.', confirmText: 'Archive' })).ok) return;
   try {
     await updateDoc(doc(db, 'announcements', id), {
       status: 'archived',
@@ -3892,7 +4913,7 @@ window.hrsArchiveAnnouncement = async function (id) {
 
 window.hrsDeleteAnnouncement = async function (id) {
   if (!hrsIsStaff) return;
-  if (!confirm('Permanently delete this announcement? This cannot be undone.')) return;
+  if (!(await hubConfirm({ kicker: 'Announcement', danger: true, title: 'Delete this announcement?', body: 'This cannot be undone.', confirmText: 'Delete' })).ok) return;
   try {
     await deleteDoc(doc(db, 'announcements', id));
     hrsToast('Announcement deleted.');
@@ -3934,6 +4955,8 @@ function renderQueue(snap) {
   const el = document.getElementById('hrs-queue');
   const docs = snap.docs || [];
   hrsQueueCount = docs.length;
+  hrsSetCount('hours-count', docs.length, true);
+  hrsSetCount('nav-hours', docs.length, true);
   hrsUpdateCommand();
   if (!el) return;
   if (!docs.length) { el.innerHTML = '<div class="gal-note">No pending submissions.</div>'; return; }
@@ -3952,12 +4975,12 @@ function renderQueue(snap) {
       <div class="hrs-queue-desc">${escapeHtml(s.description)}</div>
       ${s.proofFileURL ? `<div class="ev-res"><a href="${s.proofFileURL}" target="_blank">View Proof ↗</a></div>` : ''}
       <div class="hrs-queue-actions">
-        <button class="btn-g" style="padding:.7rem 1.4rem;font-size:.82rem" onclick='hrsApprove(${JSON.stringify(id)},${Number(s.hours)||0},${uidJs})'>Approve</button>
-        <button class="btn-reject" onclick="hrsToggleReject('${id}')">Reject</button>
+        <button class="btn-g btn-sm" onclick='hrsApprove(${JSON.stringify(id)},${Number(s.hours)||0},${uidJs})'>Approve</button>
+        <button class="btn-reject btn-sm" onclick="hrsToggleReject('${id}')">Reject</button>
       </div>
       <div class="hrs-reject-note" id="hrs-reject-${id}">
         <textarea class="hrs-input" id="hrs-reject-note-${id}" placeholder="Reason (optional) — shown to the member"></textarea>
-        <button class="btn-g" onclick="hrsReject('${id}')">Confirm Reject</button>
+        <button class="btn-g btn-sm" onclick="hrsReject('${id}')">Confirm reject</button>
       </div>
     </div>`;
   }).join('');
@@ -3990,27 +5013,25 @@ function eventCardHtml(id, e, opts) {
     action = `<button class="btn-g" onclick="hrsSignup('${id}')">Sign Up</button>`;
   }
 
-  const adminClose = (hrsIsStaff && e.status === 'open' && !(opts && opts.mine))
-    ? `<button class="btn-gh" style="padding:.55rem .8rem;font-size:.7rem" onclick="hrsCloseEvent('${id}')">Close</button>`
-    : '';
-  const adminDel = (hrsIsStaff && !(opts && opts.mine))
-    ? `<button class="btn-reject" style="padding:.55rem .8rem;font-size:.7rem" onclick="hrsDeleteEvent('${id}')">Delete</button>`
-    : '';
-  const adminAtt = (hrsIsStaff && !(opts && opts.mine))
-    ? `<button class="btn-gh" style="padding:.55rem .8rem;font-size:.7rem" onclick="hrsOpenAttendance('${id}')">Attendance</button>`
-    : '';
-  const adminCi = (hrsIsStaff && !(opts && opts.mine) && e.status === 'open')
-    ? `<button class="btn-g" style="padding:.55rem .8rem;font-size:.7rem" onclick="hrsOpenCheckinProjector('${id}')">Check-in <span class="beta-badge">Beta</span></button>`
-    : '';
+  const staffTools = (hrsIsStaff && !(opts && opts.mine));
+  const live = hrsCheckinWindowOpen(e);
+  const staffRow = staffTools ? `<div class="evt-staff"><span class="lbl">Staff</span>
+      ${e.status === 'open' ? `<button type="button" class="${live ? 'btn-g' : 'btn-gh'} btn-xs" onclick="hrsOpenCheckinProjector('${id}')">${live ? 'Projector' : 'Start check-in'}</button>` : ''}
+      <button type="button" class="btn-gh btn-xs" onclick="hrsOpenAttendance('${id}')">Attendance</button>
+      ${e.status === 'open' ? `<button type="button" class="btn-gh btn-xs" onclick="hrsCloseEvent('${id}')">Close</button>` : ''}
+      <button type="button" class="btn-reject btn-xs" onclick="hrsDeleteEvent('${id}')">Delete</button>
+    </div>` : '';
+  const livePill = live ? '<span class="pill ok">Check-in open</span>' : '';
 
   return `<div class="evt-card${full || closed ? ' evt-full' : ''}">
     <div>
       <span class="evt-type">${escapeHtml(typeLabel)}</span>
       <h4>${escapeHtml(e.title)}</h4>
-      <div class="evt-meta">${formatEventWhen(e.startAt)} · ${escapeHtml(e.location || 'TBD')}${hoursNote}<br>${count}${cap ? '/' + cap : ''} signed up${e.checkinEnabled ? ' · check-in open' : ''}</div>
+      <div class="evt-meta">${formatEventWhen(e.startAt)} · ${escapeHtml(e.location || 'TBD')}${hoursNote}<br>${count}${cap ? '/' + cap : ''} signed up${livePill}</div>
       <div class="evt-desc">${escapeHtml(e.description || '')}</div>
     </div>
-    <div class="evt-actions">${action}${adminCi}${adminAtt}${adminClose}${adminDel}</div>
+    <div class="evt-actions">${action}</div>
+    ${staffRow}
   </div>`;
 }
 
@@ -4059,6 +5080,10 @@ function renderEvents(snap) {
   paintMyRsvps();
   hrsRenderCalendar();
   hrsUpdateCommand();
+  hrsRenderStaffMeetings();
+  hrsPaintCheckinLive();
+  hrsRenderMyAttendance();
+  if (hrsAttendanceEventId) hrsPaintAttendanceHead();
   if (hrsPendingAutoCheckin) {
     hrsPendingAutoCheckin = false;
     hrsMemberCheckin({ preventDefault() {} }, true);
@@ -4085,10 +5110,13 @@ function paintMyRsvps() {
 
 function renderMyRsvps(snap) {
   hrsMySignups = {};
+  hrsMyAttendanceDocs = (snap.docs || []).slice();
   snap.docs.forEach(d => {
     const s = d.data();
-    if (s.eventId) hrsMySignups[s.eventId] = d.id;
+    if (s.eventId && s.status === 'signed_up') hrsMySignups[s.eventId] = d.id;
   });
+  hrsRenderMyAttendance();
+  hrsPaintCheckinLive();
 
   // Refresh event cards so Sign Up / Cancel stays in sync with RSVP state
   if (Object.keys(hrsEventsCache).length) {
@@ -4200,7 +5228,7 @@ window.hrsSignup = async function (eventId) {
 
 window.hrsCancelSignup = async function (eventId) {
   if (!hrsUser) return;
-  if (!confirm('Cancel your RSVP for this event?')) return;
+  if (!(await hubConfirm({ kicker: 'RSVP', title: 'Cancel your RSVP?', body: 'You can sign up again while spots are open.', confirmText: 'Cancel RSVP' })).ok) return;
   const signupId = hrsMySignups[eventId] || (eventId + '_' + hrsUser.uid);
   try {
     const batch = writeBatch(db);
@@ -4215,7 +5243,7 @@ window.hrsCancelSignup = async function (eventId) {
 
 window.hrsCloseEvent = async function (eventId) {
   if (!hrsIsStaff) return;
-  if (!confirm('Close this event? Members will no longer be able to sign up.')) return;
+  if (!(await hubConfirm({ kicker: 'Event', title: 'Close sign-ups for this event?', body: 'Members will no longer be able to RSVP. Attendance and check-in history are kept.', confirmText: 'Close event' })).ok) return;
   try {
     await updateDoc(doc(db, 'chapterEvents', eventId), { status: 'closed' });
     hrsToast('Event closed.');
@@ -4227,7 +5255,7 @@ window.hrsCloseEvent = async function (eventId) {
 
 window.hrsDeleteEvent = async function (eventId) {
   if (!hrsIsStaff) return;
-  if (!confirm('Permanently delete this event? RSVPs will be cancelled. This cannot be undone.')) return;
+  if (!(await hubConfirm({ kicker: 'Event', danger: true, title: 'Delete this event?', body: 'All RSVPs are cancelled and attendance for it is gone. This cannot be undone.', confirmText: 'Delete event', phrase: 'delete this event' })).ok) return;
   try {
     const signupsSnap = await getDocs(query(
       collection(db, 'eventSignups'),
@@ -4254,98 +5282,6 @@ window.hrsDeleteEvent = async function (eventId) {
   }
 };
 
-window.hrsCloseAttendance = function () {
-  hrsAttendanceEventId = null;
-  const panel = document.getElementById('hub-attendance');
-  if (panel) panel.classList.remove('att-open');
-  const list = document.getElementById('att-list');
-  if (list) list.innerHTML = '';
-};
-
-window.hrsOpenAttendance = async function (eventId) {
-  if (!hrsIsStaff) return;
-  hrsAttendanceEventId = eventId;
-  hubTab('events', document.querySelector('[data-hub="events"]'));
-  const panel = document.getElementById('hub-attendance');
-  const title = document.getElementById('att-title');
-  const sub = document.getElementById('att-sub');
-  const list = document.getElementById('att-list');
-  const ev = hrsEventsCache[eventId] || {};
-  if (title) title.textContent = 'Attendance · ' + (ev.title || 'Event');
-  if (sub) sub.textContent = formatEventWhen(ev.startAt) + (ev.location ? ' · ' + ev.location : '');
-  if (list) list.innerHTML = '<div class="gal-note">Loading sign-ups…</div>';
-  if (panel) {
-    panel.classList.add('att-open');
-    try { panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (_) {}
-  }
-  try {
-    const snap = await getDocs(query(
-      collection(db, 'eventSignups'),
-      where('eventId', '==', eventId),
-      limit(120)
-    ));
-    if (!list) return;
-    const docs = (snap.docs || []).filter(d => d.data().status === 'signed_up');
-    if (!docs.length) {
-      list.innerHTML = '<div class="gal-note">No one is signed up yet.</div>';
-      return;
-    }
-    list.innerHTML = docs.map(d => {
-      const s = d.data();
-      const att = s.attendance || '';
-      const mk = (val, label) =>
-        `<button type="button" class="${att === val ? 'active' : ''}" onclick="hrsSetAttendance('${d.id}','${val}')">${label}</button>`;
-      return `<div class="att-row" id="att-row-${d.id}">
-        <div>
-          <div class="hrs-queue-name">${escapeHtml(s.displayName || s.email || 'Member')}</div>
-          <div class="att-meta" style="color:rgba(255,255,255,.4);font-size:.78rem;margin-top:.15rem">${escapeHtml(s.email || '')}${att ? ' · ' + escapeHtml(att) : ''}</div>
-        </div>
-        <div class="att-actions">
-          ${mk('present', 'Present')}
-          ${mk('absent', 'Absent')}
-          ${mk('excused', 'Excused')}
-        </div>
-      </div>`;
-    }).join('');
-  } catch (err) {
-    console.error(err);
-    if (!list) return;
-    if (err.code === 'failed-precondition') {
-      list.innerHTML = '<div class="gal-note">Attendance could not load. Please refresh and try again.</div>';
-    } else {
-      list.innerHTML = '<div class="gal-note">Could not load attendance. Please try again.</div>';
-    }
-  }
-};
-
-window.hrsSetAttendance = async function (signupId, value) {
-  if (!hrsIsStaff || !hrsUser) return;
-  if (!['present', 'absent', 'excused'].includes(value)) return;
-  try {
-    await updateDoc(doc(db, 'eventSignups', signupId), {
-      attendance: value,
-      attendanceAt: serverTimestamp(),
-      attendanceBy: hrsUser.email
-    });
-    const row = document.getElementById('att-row-' + signupId);
-    if (row) {
-      const map = { Present: 'present', Absent: 'absent', Excused: 'excused' };
-      row.querySelectorAll('.att-actions button').forEach(b => {
-        b.classList.toggle('active', map[b.textContent.trim()] === value);
-      });
-      const meta = row.querySelector('.att-meta');
-      if (meta) {
-        const email = meta.getAttribute('data-email') || '';
-        meta.textContent = email + (value ? ' · ' + value : '');
-      }
-    }
-    hrsToast('Marked ' + value);
-  } catch (err) {
-    console.error(err);
-    hrsToast('Could not update attendance. Please try again.', true);
-  }
-};
-
 window.hrsToggleReject = function (id) {
   const el = document.getElementById('hrs-reject-' + id);
   if (el) el.classList.toggle('open');
@@ -4353,7 +5289,7 @@ window.hrsToggleReject = function (id) {
 
 window.hrsApprove = async function (id, hours, uid) {
   if (!hrsIsStaff) return;
-  if (!confirm('Approve ' + hours + ' hour(s) for ' + (hours * 10) + ' points?')) return;
+  if (!(await hubConfirm({ kicker: 'Hours', title: 'Approve ' + hours + ' hour' + (hours === 1 ? '' : 's') + '?', body: 'The member receives ' + (hours * 10) + ' points immediately.', confirmText: 'Approve' })).ok) return;
   try {
     const batch = writeBatch(db);
     batch.update(doc(db, 'hourSubmissions', id), {
