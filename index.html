@@ -422,6 +422,7 @@ textarea.hrs-input{resize:vertical;min-height:90px}
 #page-hours .hub-toast{position:fixed;bottom:1.25rem;left:50%;transform:translateX(-50%);z-index:10000;background:var(--hub-toast-bg);border:1px solid var(--hub-line);color:var(--hub-text);padding:.95rem 1.3rem;border-radius:12px;font-size:1rem;max-width:min(520px,92vw);box-shadow:var(--hub-shadow)}
 #page-hours .hub-toast.err{border-color:var(--hub-danger-line);color:var(--hub-danger)}
 #page-hours .hub-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:10001;display:flex;align-items:center;justify-content:center;padding:1.25rem}
+#page-hours #hub-confirm-modal{z-index:10005;background:rgba(0,0,0,.62)}
 #page-hours .hub-modal{width:min(460px,100%);background:var(--hub-modal-bg);border:1px solid var(--hub-line);border-radius:16px;padding:1.6rem;box-shadow:var(--hub-shadow)}
 #page-hours .hub-modal h3{font-family:'Outfit',sans-serif;font-size:1.35rem;font-weight:600;color:var(--hub-text);margin:0 0 .5rem}
 #page-hours .hub-modal p{color:var(--hub-muted);font-size:1rem;line-height:1.65;margin:0 0 1rem}
@@ -3803,10 +3804,11 @@ window.hrsRequestRoleChange = async function (nextRole) {
     hrsRenderRosterView();
   } catch (err) {
     console.error(err);
-    const denied = err && err.code === 'permission-denied';
+    const code = (err && err.code) || 'unknown';
+    const denied = code === 'permission-denied';
     hrsToast(denied
-      ? 'Firestore rejected this change. Publish the latest firestore.rules so advisers can manage the staff roster.'
-      : 'Could not change role. Please try again.', true);
+      ? 'Firestore rejected this change (permission-denied). Publish the latest firestore.rules so advisers can manage the staff roster.'
+      : 'Could not change role (' + code + '): ' + String((err && err.message) || err).slice(0, 140), true);
   }
 };
 
